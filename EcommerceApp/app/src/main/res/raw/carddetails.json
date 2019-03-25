@@ -1,0 +1,28 @@
+{
+	"cartValues":[ {
+			"item": "Blue Jeans",
+			"size": "L",
+			"price": 1450
+		},
+		{
+			"item": "Strips Shirt",
+			"size": "M",
+			"price": 999
+		},
+		{
+			"item": "Navi Blue Shirt",
+			"size": "S",
+			"price": 500
+		},
+		{
+			"item": "Black T-shirt",
+			"size": "M",
+			"price": 650
+		}, {
+			"item": "Blue Chinos ",
+			"size": "S",
+			"price": 980
+		}]
+
+	
+}

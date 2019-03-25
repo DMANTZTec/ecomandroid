@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "339903724136",
+    "firebase_url": "https://ecapplication-7c0cf.firebaseio.com",
+    "project_id": "ecapplication-7c0cf",
+    "storage_bucket": "ecapplication-7c0cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339903724136:android:1cf765959c3be422",
+        "android_client_info": {
+          "package_name": "com.dmantz.ecommerceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "339903724136-3u94e73v4vr2tkoopvgmel38tm86kvel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dmantz.ecommerceapp",
+            "certificate_hash": "44dca6629155ec67287372ddcaceb6e92fd7b21e"
+          }
+        },
+        {
+          "client_id": "339903724136-m7ftdalvvitr95eitmt40j4tglifo6tg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzuf8hKZC0bpGo-Ywo6zuJQCjOw9cacHA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "339903724136-eqo4oi069niagg76d02di9209hbosooq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

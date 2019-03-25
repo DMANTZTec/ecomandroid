@@ -1,0 +1,30 @@
+{
+  "categorie": [
+    {
+      "filterData": "MEN",
+      "displayName": "MEN"
+    },
+    {
+      "filterData": "WOMEN",
+      "displayName": "WOMEN"
+    },
+    {
+      "filterData": "KIDS",
+      "displayName": "KIDS"
+    }
+  ],
+  "brand": [
+    {
+      "filterData": "NIKE",
+      "displayName": "NIKI"
+    },
+    {
+      "filterData": "REBOK",
+      "displayName": "REEBOK"
+    },
+    {
+      "filterData": "PUMA",
+      "displayName": "PUMA"
+    }
+  ]
+}
