@@ -84,11 +84,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 //update quantity in orderItem
 
-                    ecApp.orderClientObj.addItem(orderItem);
-
-                mBadge.setNumber(ecApp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
-
-
+                ecApp.orderClientObj.addItem(orderItem);
                 Log.d(TAG, "onClick: count " + ecApp.orderClientObj.getCurrentOrder());
                 Toast toast = Toast.makeText(getApplicationContext(), "Item added to cart", Toast.LENGTH_SHORT);
                 toast.show();
@@ -169,7 +165,6 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
 
-
         // after clicking buy now button it will go to payment gatway
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,6 +241,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
         ProductSkus productSku = productInfoObj.getProductSkus().get(0);
 
+
         orderItem = new OrderItem();
         orderItem.setProductName(productInfoObj.getProductName());
         orderItem.setPrice(productSku.getPrice());
@@ -255,13 +251,32 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
         ElegantNumberButton quantityIncrementBtn = (ElegantNumberButton) findViewById(R.id.elegentBtn);
         quantityIncrementBtn.setBackgroundColor(Color.BLUE);
+
         quantityIncrementBtn.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+
+              //  orderItem.setQuantity(productInfoObj.getProductSkus().iterator().next().);
+
+                orderItem.setQuantity(String.valueOf(newValue));
+                mBadge.setNumber(Integer.parseInt(orderItem.getQuantity()));
+
+                //mBadge.setNumber(Integer.parseInt(ecApp.orderClientObj.getCurrentOrder().getOrderItemObj().iterator().next().getQuantity()));
+
+            }
+        });
+
+       /* quantityIncrementBtn.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
+            @Override
+            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+             // mBadge.setNumber(ecApp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
+
+
                 orderItem.setQuantity(String.valueOf(newValue));
                 Log.d(TAG, "onValueChange: "+orderItem.getQuantity());
             }
         });
+        */
 
         List<Option> options = productSku.getOptions();
         Iterator i = options.iterator();
@@ -316,11 +331,11 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
         //price
         //discount
 
-        Log.d(TAG, "getItemInfo: "+totalQuantity);
+        Log.d(TAG, "getItemInfo: " + totalQuantity);
 
-                Log.d(TAG, "onClick: count " + ecApp.orderClientObj.getCurrentOrder());
+        Log.d(TAG, "onClick: count " + ecApp.orderClientObj.getCurrentOrder());
 
-            }
+    }
 
 
     @Override

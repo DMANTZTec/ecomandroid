@@ -23,7 +23,7 @@ public class Order {
 
         if (orderItemObj.isEmpty()) {
             orderItemObj.add(orderItem);
-            Log.d(TAG, "Inside addItem me thod: orderItem array list " + orderItemObj);
+            Log.d(TAG, "Inside addItem method: orderItem array list " + orderItemObj);
 
         } else {
             if (orderItemObj.stream().filter(productFilter -> orderItem.getProductSku().equals(productFilter.getProductSku())).count() > 0) {
@@ -37,6 +37,8 @@ public class Order {
 
 
     }
+
+
 
 
     public String getcustomerId() {

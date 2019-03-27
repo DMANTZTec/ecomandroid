@@ -22,6 +22,7 @@ public class CartViewActivity extends AppCompatActivity {
     public static final String TAG = CartViewActivity.class.getSimpleName();
 
     TextView orderIdText;
+    Button btnCheckout;
 
 
     private RecyclerView.Adapter cartAdapter;
@@ -40,6 +41,8 @@ public class CartViewActivity extends AppCompatActivity {
 
         ECApplication lapp = (ECApplication) getApplication();
 
+        btnCheckout = findViewById(R.id.btn_checkout);
+
         orderIdText = (TextView) findViewById(R.id.yourOrderText);
         orderIdText.setText(lapp.orderClientObj.getOrderId());
 
@@ -49,10 +52,13 @@ public class CartViewActivity extends AppCompatActivity {
         cartAdapter = new CartViewAdapter(getApplicationContext(), orderItems);
         cartViewRecyclerview.setAdapter(cartAdapter);
 
-        NotificationBadge cartNotification;
-        cartNotification = findViewById(R.id.actionbar_notification_textview);
 
-        cartNotification.setNumber(lapp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
+        NotificationBadge mBadge;
+        mBadge = findViewById(R.id.actionbar_notification_textview);
+        mBadge.setNumber(Integer.parseInt(orderItems.iterator().next().getQuantity()));
+
+
+        //mBadge.setNumber(lapp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
 
         Log.d(TAG, "onCreate: " + lapp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
     }

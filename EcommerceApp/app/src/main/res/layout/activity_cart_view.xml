@@ -114,13 +114,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="400dp">
 
-                <EditText
-                    android:id="@+id/couponCodeEditTect"
-                    android:layout_width="250dp"
+                <TextView
+                    android:id="@+id/cartTotal"
+                    android:text="CartSubTotal"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-
-                    android:hint="Coupon code"
+                    android:padding="10dp" />
+                <TextView
+                    android:layout_toRightOf="@id/cartTotal"
+                    android:id="@+id/cartSubTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:padding="10dp" />
             </RelativeLayout>
 
@@ -130,7 +136,7 @@
         <Button
 
 
-            android:id="@+id/btn_payment"
+            android:id="@+id/btn_checkout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

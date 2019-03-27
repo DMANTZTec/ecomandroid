@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.dmantz.ecommerceapp.ECApplication;
+import com.dmantz.ecommerceapp.OrderClient;
 import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.Order;
 import com.dmantz.ecommerceapp.model.OrderItem;
@@ -30,6 +31,7 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
     private ProductInfo productInfoObj;
     Context context;
     ECApplication ECApp;
+
 
 
     public CartViewAdapter(Context context, List<OrderItem> porderItemList) {
@@ -58,11 +60,26 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
         //holder.itemName.setText(orderObj.getOrderItemObj().get(position).getMrpPrice());
         //holder.itemPrice.setText(orderObj.getOrderItemObj().get(position).getProductSku());
         //Picasso.get().load(orderObj.getOrderArrayList().get(position).getProductImage()).fit().into(holder.itemImage)
-        holder.elegantNumberButton.setNumber(orderItemList.get(position).getQuantity());
 
-        
-        holder.totalPrice.setText(totalPrice(orderItemList.get(position).getPrice(),orderItemList.get(position).getQuantity()));
-/*        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+        holder.elegantNumberButton.setNumber(orderItemList.iterator().next().getQuantity());
+
+        holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
+            @Override
+            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+
+                ECApp = (ECApplication)context.getApplicationContext();
+
+                ECApp.orderClientObj.updateQuantity(ECApp.orderClientObj.getOrderId(), orderItemList.get(position).getProductSku(), String.valueOf(newValue));
+                //  orderItemList.get(position).setQuantity(String.valueOf(newValue));
+
+            }
+        });
+
+
+        //  holder.totalPrice.setText(totalPrice(orderItemList.get(position).getPrice(),orderItemList.get(position).getQuantity()));
+        /*
+
+  holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @
             public void onClick(View view) {Override
 
@@ -76,6 +93,7 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
 
             }
         }); */
+
     }
 
 
@@ -134,7 +152,6 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
 
         return newTotal;
     }
-
 
 
 }
