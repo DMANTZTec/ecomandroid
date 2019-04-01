@@ -13,6 +13,7 @@ public class OrderItem {
     private String giftWrapped;
     private String productId;
     private String productName;
+    private double totalPrice;
 
 
     public OrderItem() {
@@ -51,6 +52,7 @@ public class OrderItem {
     }
 
     public String getQuantity() {
+
         return quantity;
     }
 
@@ -80,5 +82,28 @@ public class OrderItem {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "productSku='" + productSku + '\'' +
+                ", mrpPrice='" + mrpPrice + '\'' +
+                ", price='" + price + '\'' +
+                ", discountApplied='" + discountApplied + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", giftWrapped='" + giftWrapped + '\'' +
+                ", productId='" + productId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", totalPrice=" + totalPrice +
+                '}';
     }
 }

@@ -256,8 +256,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
 
-              //  orderItem.setQuantity(productInfoObj.getProductSkus().iterator().next().);
-
+                //  orderItem.setQuantity(productInfoObj.getProductSkus().iterator().next().);
                 orderItem.setQuantity(String.valueOf(newValue));
                 mBadge.setNumber(Integer.parseInt(orderItem.getQuantity()));
 

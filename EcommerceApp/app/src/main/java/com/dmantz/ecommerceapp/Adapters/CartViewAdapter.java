@@ -31,7 +31,7 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
     private ProductInfo productInfoObj;
     Context context;
     ECApplication ECApp;
-
+    Order order;
 
 
     public CartViewAdapter(Context context, List<OrderItem> porderItemList) {
@@ -67,19 +67,25 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
 
-                ECApp = (ECApplication)context.getApplicationContext();
+                ECApp = (ECApplication) context.getApplicationContext();
+
 
                 ECApp.orderClientObj.updateQuantity(ECApp.orderClientObj.getOrderId(), orderItemList.get(position).getProductSku(), String.valueOf(newValue));
                 //  orderItemList.get(position).setQuantity(String.valueOf(newValue));
+
 
             }
         });
 
 
-        //  holder.totalPrice.setText(totalPrice(orderItemList.get(position).getPrice(),orderItemList.get(position).getQuantity()));
+        String s = String.valueOf(orderItemList.iterator().next().getTotalPrice());
+        String k = String.valueOf(orderItemList.iterator().next().getTotalPrice());
+        holder.totalPrice.setText(s);
+        holder.totalPrice.setText(k);
+        Log.d(TAG, "onBindViewHolder: "+s);
         /*
 
-  holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @
             public void onClick(View view) {Override
 

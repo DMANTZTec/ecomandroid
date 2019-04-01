@@ -44,7 +44,7 @@ public class CartViewActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btn_checkout);
 
         orderIdText = (TextView) findViewById(R.id.yourOrderText);
-        orderIdText.setText(lapp.orderClientObj.getOrderId());
+       // orderIdText.setText(lapp.orderClientObj.getCurrentOrder().getOrderId());
 
 
         // productInfoObj = lapp.catalogClient.getProduct("103");
@@ -55,12 +55,12 @@ public class CartViewActivity extends AppCompatActivity {
 
         NotificationBadge mBadge;
         mBadge = findViewById(R.id.actionbar_notification_textview);
-        mBadge.setNumber(Integer.parseInt(orderItems.iterator().next().getQuantity()));
+        ECApplication ECApp = (ECApplication) getApplicationContext();
+        mBadge.setNumber(Integer.parseInt(ECApp.orderClientObj.getCurrentOrder().getOrderItemObj().iterator().next().getQuantity()));
 
 
         //mBadge.setNumber(lapp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
 
-        Log.d(TAG, "onCreate: " + lapp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
     }
 
 
