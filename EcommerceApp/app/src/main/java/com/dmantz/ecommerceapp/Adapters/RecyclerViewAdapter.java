@@ -86,7 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             // holder.mProductSize.setText(mproductList.getProductList().get(position).getItemSize());
             holder.mProductSize.setText(mCatlog.getProducts().get(position).getProductManufacturerName());
             // holder.mProductPrice.setText(String.valueOf(mproductList.getProductList().get(position).getItemPrice()));
-            holder.mProductPrice.setText(mCatlog.getProducts().get(position).getProductSkus().get(position).getPrice());
+            holder.mProductPrice.setText(Double.toString(mCatlog.getProducts().get(position).getProductSkus().get(position).getPrice()));
             //Picasso.get().load(mproductList.getProductList().get(position).getItemImageUrl()).fit().into(holder.mProductImage);
             Log.d("picasso", mproductList.getProductList().get(position).getItemImageUrl());
             //holder.mProductImage.setImageURI(mproductList.getProductList().get(position).getItemImage());

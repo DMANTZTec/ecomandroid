@@ -23,6 +23,7 @@ public class CartViewActivity extends AppCompatActivity {
 
     TextView orderIdText;
     Button btnCheckout;
+    OrderItem orderItem = new OrderItem();
 
 
     private RecyclerView.Adapter cartAdapter;
@@ -44,7 +45,7 @@ public class CartViewActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btn_checkout);
 
         orderIdText = (TextView) findViewById(R.id.yourOrderText);
-       // orderIdText.setText(lapp.orderClientObj.getCurrentOrder().getOrderId());
+        orderIdText.setText("ORDER ID : "+ Integer.toString(lapp.orderClientObj.getOrderId()));
 
 
         // productInfoObj = lapp.catalogClient.getProduct("103");
@@ -56,7 +57,7 @@ public class CartViewActivity extends AppCompatActivity {
         NotificationBadge mBadge;
         mBadge = findViewById(R.id.actionbar_notification_textview);
         ECApplication ECApp = (ECApplication) getApplicationContext();
-        mBadge.setNumber(Integer.parseInt(ECApp.orderClientObj.getCurrentOrder().getOrderItemObj().iterator().next().getQuantity()));
+        mBadge.setNumber(ECApp.orderClientObj.getCurrentOrder().totalQuantity());
 
 
         //mBadge.setNumber(lapp.orderClientObj.getCurrentOrder().getOrderItemObj().size());

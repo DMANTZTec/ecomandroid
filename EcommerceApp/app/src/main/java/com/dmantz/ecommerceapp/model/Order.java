@@ -11,7 +11,6 @@ public class Order {
 
     String customerId;
     int OrderId;
-    double totalPrice;
 
 
     List<OrderItem> orderItemObj = new ArrayList<>();
@@ -43,31 +42,41 @@ public class Order {
 
     public void calculateTotal() {
 
-        int price;
+        double price;
         int quantity;
-
 
 
         for (OrderItem orderItem : orderItemObj) {
 
 
-            price = Integer.parseInt(orderItem.getPrice());
+            price = orderItem.getPrice();
             quantity = Integer.parseInt(orderItem.getQuantity());
-            orderItem.setTotalPrice(price *quantity);
+            orderItem.setTotalPrice(price * quantity);
 
-            String sku =orderItem.getProductSku();
 
-            totalPrice = orderItem.getTotalPrice();
 
-            Log.d(TAG, "calculateTotal: "+totalPrice);
-            Log.d(TAG, "calculateTotal: "+orderItem.toString());
+            Log.d(TAG, "calculateTotal: " + orderItem.toString());
 
         }
-        Log.d(TAG, "calculateTotal: "+orderItemObj.toString());
-
+        Log.d(TAG, "calculateTotal: " + orderItemObj.toString());
 
 
     }
+
+    public int totalQuantity(){
+        int totalQuantity = 0;
+        for (OrderItem orderItem : orderItemObj){
+
+            int qty = Integer.parseInt(orderItem.getQuantity());
+            totalQuantity = totalQuantity+qty;
+            orderItem.setTotalQuantity(totalQuantity);
+            Log.d(TAG, "totalQuantity: "+totalQuantity);
+        }
+
+        return totalQuantity;
+    }
+
+
 
 
     public String getcustomerId() {
@@ -94,12 +103,5 @@ public class Order {
         this.orderItemObj = orderItemObj;
     }
 
-    public double getTotalPrice() {
-        Log.d(TAG, "getTotalPrice: "+totalPrice);
-        return totalPrice;
-    }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 }

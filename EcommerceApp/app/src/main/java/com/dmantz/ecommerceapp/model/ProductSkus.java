@@ -7,7 +7,7 @@ public class ProductSkus {
     private String sku;
     private List<Option> options = null;
     private String image;
-    private String price;
+    private Double price;
 
 
 
@@ -39,11 +39,11 @@ public class ProductSkus {
         this.image = image;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

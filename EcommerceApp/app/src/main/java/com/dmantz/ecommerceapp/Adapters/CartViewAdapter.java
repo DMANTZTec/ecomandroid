@@ -21,6 +21,7 @@ import com.dmantz.ecommerceapp.model.OrderItem;
 import com.dmantz.ecommerceapp.model.ProductInfo;
 import com.nex3z.notificationbadge.NotificationBadge;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHolder> {
@@ -32,6 +33,7 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
     Context context;
     ECApplication ECApp;
     Order order;
+    String s;
 
 
     public CartViewAdapter(Context context, List<OrderItem> porderItemList) {
@@ -54,14 +56,15 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.itemName.setText(orderItemList.get(position).getProductName());
-        holder.itemPrice.setText(orderItemList.get(position).getPrice());
+        holder.itemPrice.setText(Double.toString(orderItemList.get(position).getPrice()));
         //holder.itemPrice.setText(productInfoObj.getProductSkus().get(position).getPrice());
         //holder.itemName.setText(productInfoObj.getProductName());
         //holder.itemName.setText(orderObj.getOrderItemObj().get(position).getMrpPrice());
         //holder.itemPrice.setText(orderObj.getOrderItemObj().get(position).getProductSku());
         //Picasso.get().load(orderObj.getOrderArrayList().get(position).getProductImage()).fit().into(holder.itemImage)
 
-        holder.elegantNumberButton.setNumber(orderItemList.iterator().next().getQuantity());
+        holder.elegantNumberButton.setNumber(orderItemList.get(position).getQuantity());
+
 
         holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
@@ -73,16 +76,17 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
                 ECApp.orderClientObj.updateQuantity(ECApp.orderClientObj.getOrderId(), orderItemList.get(position).getProductSku(), String.valueOf(newValue));
                 //  orderItemList.get(position).setQuantity(String.valueOf(newValue));
 
+                double d = orderItemList.get(position).getPrice() * Integer.parseInt(String.valueOf(newValue));
+                holder.totalPrice.setText(Integer.toString((int) d));
 
             }
         });
 
 
-        String s = String.valueOf(orderItemList.iterator().next().getTotalPrice());
-        String k = String.valueOf(orderItemList.iterator().next().getTotalPrice());
-        holder.totalPrice.setText(s);
-        holder.totalPrice.setText(k);
-        Log.d(TAG, "onBindViewHolder: "+s);
+        holder.totalPrice.setText(Integer.toString((int) orderItemList.get(position).getTotalPrice()));
+
+
+
         /*
 
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {

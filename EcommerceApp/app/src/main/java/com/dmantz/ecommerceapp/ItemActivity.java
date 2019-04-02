@@ -319,7 +319,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
         TextView priceText = new TextView(this);
 
-        priceText.setText(productInfoObj.getProductSkus().get(0).getPrice());
+        priceText.setText(Double.toString(productInfoObj.getProductSkus().get(0).getPrice()));
         priceText.setPadding(10, 10, 10, 10);
         priceText.setTextSize(30);
         priceText.setTextColor(Color.BLUE);

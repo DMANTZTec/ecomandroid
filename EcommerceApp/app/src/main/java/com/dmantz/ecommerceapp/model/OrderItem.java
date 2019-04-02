@@ -7,13 +7,14 @@ public class OrderItem {
 
     private String productSku;
     private String mrpPrice;
-    private String price;
+    private Double price;
     private String discountApplied;
     private String quantity;
     private String giftWrapped;
     private String productId;
     private String productName;
     private double totalPrice;
+    private int totalQuantity;
 
 
     public OrderItem() {
@@ -35,11 +36,11 @@ public class OrderItem {
         this.mrpPrice = mrpPrice;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -90,6 +91,14 @@ public class OrderItem {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     @Override

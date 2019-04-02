@@ -31,7 +31,6 @@ public class OrderClient {
     int orderId;
 
 
-
     public static OrderClient getOrderClient() {
 
         if (orderClientObj == null) {
@@ -48,14 +47,15 @@ public class OrderClient {
 
 
             createOrder("102", orderItemObj);
-           // Log.d(TAG, "addItem: order id " + orderId);
+            // Log.d(TAG, "addItem: order id " + orderId);
             // currentOrder.setOrderId(orderId);
 
             currentOrder = new Order();
             currentOrder.addItem(orderItemObj);
             currentOrder.setOrderId(orderId);
             currentOrder.calculateTotal();
-          //  currentOrder.totalQuantity(orderItemObj.getQuantity());
+            currentOrder.totalQuantity();
+            //  currentOrder.totalQuantity(orderItemObj.getQuantity());
 
 
         } else {
@@ -63,10 +63,23 @@ public class OrderClient {
             //then call updateItemInOrder(Integer newQuantity,String OrderId)
             //else do the below steps
 
+            for (OrderItem orderItem : currentOrder.getOrderItemObj()) {
 
-            addItemToOrder(orderItemObj, "102");
-            currentOrder.addItem(orderItemObj);
-            currentOrder.calculateTotal();
+
+                if (orderItemObj.equals(orderItem)) {
+
+                    updateQuantity(currentOrder.getOrderId(), currentOrder.getOrderItemObj().iterator().next().getProductSku(), currentOrder.getOrderItemObj().iterator().next().getQuantity());
+                    Log.d(TAG, "entered into if statement after adding same item  ");
+
+                } else {
+                    addItemToOrder(orderItemObj, "102");
+                    currentOrder.addItem(orderItemObj);
+                    currentOrder.calculateTotal();
+                    currentOrder.totalQuantity();
+
+                }
+
+            }
         }
     }
 
@@ -75,7 +88,7 @@ public class OrderClient {
 
 
         try {
-            URL url = new URL(updateUrl );
+            URL url = new URL(updateUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("PUT");
             connection.setRequestProperty("content-Type", "application/json");
@@ -83,18 +96,17 @@ public class OrderClient {
             //connection.setDoOutput(true);
 
 
-
             Gson gson = new Gson();
 
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("orderId",currentOrder.getOrderId());
+            jsonObject.addProperty("orderId", currentOrder.getOrderId());
 
             JsonObject additemObjJson = new JsonObject();
 
 
-           // JsonObject updateOrderROJson = new JsonObject();
+            // JsonObject updateOrderROJson = new JsonObject();
             additemObjJson.addProperty("productSku", orderItemObj.getProductSku());
-            additemObjJson.addProperty("quantity", currentOrder.getOrderItemObj().iterator().next().getQuantity());
+            additemObjJson.addProperty("quantity", orderItemObj.getQuantity());
             Log.d(TAG, "updateQuantity: " + additemObjJson);
 
             jsonObject.add("addItem", additemObjJson);
@@ -121,7 +133,6 @@ public class OrderClient {
 
             JSONObject storejsonObj = new JSONObject(response.toString());
             //List listObj = new ArrayList();
-
 
 
             Log.d(TAG, "list obj" + storejsonObj);
@@ -164,7 +175,6 @@ public class OrderClient {
             createOrderROJson.add("orderItemObj", new Gson().toJsonTree(orderlistArray));
 
 
-
             String createOrderROStr = gson.toJson(createOrderROJson);
 
 
@@ -194,7 +204,7 @@ public class OrderClient {
             orderId = storejsonObj.getInt("orderId");
 
 
-               //currentOrder.setOrderId(orderId);
+            //currentOrder.setOrderId(orderId);
 
             Log.d(TAG, "list obj" + storejsonObj);
             //Log.d(TAG, "orderidfromJson: " + currentOrder.getOrderId());
@@ -238,15 +248,17 @@ public class OrderClient {
             Gson gson = new Gson();
 
             JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("orderId", orderId);
 
-            JsonObject updateOrderROJson = new JsonObject();
+            JsonObject additemObjJson = new JsonObject();
 
-            updateOrderROJson.addProperty("orderId", orderId);
-            updateOrderROJson.addProperty("newQuantity", quantity);
-            updateOrderROJson.addProperty("productSku", productSku);
-            Log.d(TAG, "updateQuantity: " + updateOrderROJson);
 
-            jsonObject.add("updateQuantity", updateOrderROJson);
+            // JsonObject updateOrderROJson = new JsonObject();
+            additemObjJson.addProperty("productSku",productSku);
+            additemObjJson.addProperty("newQuantity", quantity);
+            Log.d(TAG, "updateQuantity: " + additemObjJson);
+
+            jsonObject.add("updateQuantity", additemObjJson);
 
             String updateOrderROStr = gson.toJson(jsonObject);
             Log.d(TAG, "updateQuantity  " + updateOrderROStr);

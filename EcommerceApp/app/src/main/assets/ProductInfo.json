@@ -22,7 +22,7 @@
 
                ],
                "Image":"URL",
-               "price":"1024"
+               "price":1024
             },
             {  
                "sku":"RDME-RD-5",
@@ -59,7 +59,7 @@
                   }
                ],
                "Image":"URL",
-               "price":"1100"
+               "price":1100
             },
             {  
                "sku":"SAMSUNG-RD-5",
