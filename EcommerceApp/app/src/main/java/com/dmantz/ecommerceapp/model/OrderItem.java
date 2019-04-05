@@ -1,7 +1,5 @@
 package com.dmantz.ecommerceapp.model;
 
-import java.util.ArrayList;
-
 public class OrderItem {
 
 
@@ -9,12 +7,13 @@ public class OrderItem {
     private String mrpPrice;
     private Double price;
     private String discountApplied;
-    private String quantity;
+    private int quantity;
     private String giftWrapped;
     private String productId;
     private String productName;
     private double totalPrice;
     private int totalQuantity;
+    private int cartTotalPrice;
 
 
     public OrderItem() {
@@ -52,12 +51,12 @@ public class OrderItem {
         this.discountApplied = discountApplied;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
 
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -99,6 +98,14 @@ public class OrderItem {
 
     public void setTotalQuantity(int totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public int getCartTotalPrice() {
+        return cartTotalPrice;
+    }
+
+    public void setCartTotalPrice(int cartTotalPrice) {
+        this.cartTotalPrice = cartTotalPrice;
     }
 
     @Override

@@ -29,11 +29,8 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
     public static final String TAG = CartViewAdapter.class.getSimpleName();
 
     private List<OrderItem> orderItemList;
-    private ProductInfo productInfoObj;
     Context context;
     ECApplication ECApp;
-    Order order;
-    String s;
 
 
     public CartViewAdapter(Context context, List<OrderItem> porderItemList) {
@@ -63,27 +60,38 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
         //holder.itemPrice.setText(orderObj.getOrderItemObj().get(position).getProductSku());
         //Picasso.get().load(orderObj.getOrderArrayList().get(position).getProductImage()).fit().into(holder.itemImage)
 
-        holder.elegantNumberButton.setNumber(orderItemList.get(position).getQuantity());
+        holder.elegantNumberButton.setNumber(String.valueOf(orderItemList.get(position).getQuantity()));
 
 
         holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
 
+
                 ECApp = (ECApplication) context.getApplicationContext();
 
-
-                ECApp.orderClientObj.updateQuantity(ECApp.orderClientObj.getOrderId(), orderItemList.get(position).getProductSku(), String.valueOf(newValue));
+                for (OrderItem orderitem : orderItemList){
+                    if (orderitem.equals(orderItemList)){
+                        ECApp.orderClientObj.updateQuantity(ECApp.orderClientObj.getOrderId(), orderItemList.get(position).getProductSku(), newValue);
+ 
+                        }
+                }
                 //  orderItemList.get(position).setQuantity(String.valueOf(newValue));
+                // holder.totalPrice.setText(Integer.toString((int) ECApp.orderClientObj.getCurrentOrder().getOrderItemObj().iterator().next().getTotalPrice()));
 
-                double d = orderItemList.get(position).getPrice() * Integer.parseInt(String.valueOf(newValue));
-                holder.totalPrice.setText(Integer.toString((int) d));
+                holder.totalPrice.setText(Integer.toString((int) orderItemList.get(position).getTotalPrice()));
+
+
+                //holder.totalPrice.setText(ECApp.orderClientObj.getCurrentOrder().calculateTotal());
 
             }
+
+
         });
 
 
         holder.totalPrice.setText(Integer.toString((int) orderItemList.get(position).getTotalPrice()));
+
 
 
 
@@ -121,9 +129,12 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
         public ElegantNumberButton elegantNumberButton;
         public Button deleteBtn;
         public TextView totalPrice;
+        public TextView cartTotal;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             itemName = (TextView) itemView.findViewById(R.id.cartView_itemName);
             itemPrice = itemView.findViewById(R.id.cartView_itemPrice);
             itemImage = itemView.findViewById(R.id.cartView_image);
@@ -131,6 +142,8 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
             //   deleteBtn = itemView.findViewById(R.id.cart_delete_btn);
 
             totalPrice = itemView.findViewById(R.id.total);
+
+
         }
     }
 
@@ -149,18 +162,6 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
 
     public void setOrderItemList(List<OrderItem> orderItemList) {
         this.orderItemList = orderItemList;
-    }
-
-    public String totalPrice(String price, String quantity) {
-
-        double p = Double.parseDouble(price);
-        double q = Double.parseDouble(quantity);
-
-        double total = p * q;
-
-        String newTotal = String.valueOf(total);
-
-        return newTotal;
     }
 
 

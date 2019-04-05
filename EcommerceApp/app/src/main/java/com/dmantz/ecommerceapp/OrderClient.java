@@ -47,7 +47,7 @@ public class OrderClient {
 
 
             createOrder("102", orderItemObj);
-            // Log.d(TAG, "addItem: order id " + orderId);
+            // Log.d0(TAG, "addItem: order id " + orderId);
             // currentOrder.setOrderId(orderId);
 
             currentOrder = new Order();
@@ -55,6 +55,7 @@ public class OrderClient {
             currentOrder.setOrderId(orderId);
             currentOrder.calculateTotal();
             currentOrder.totalQuantity();
+            currentOrder.cartTotal();
             //  currentOrder.totalQuantity(orderItemObj.getQuantity());
 
 
@@ -70,13 +71,20 @@ public class OrderClient {
 
                     updateQuantity(currentOrder.getOrderId(), currentOrder.getOrderItemObj().iterator().next().getProductSku(), currentOrder.getOrderItemObj().iterator().next().getQuantity());
                     Log.d(TAG, "entered into if statement after adding same item  ");
+                    currentOrder.totalQuantity();
+                  //  currentOrder.cartTotal();
 
                 } else {
+
                     addItemToOrder(orderItemObj, "102");
                     currentOrder.addItem(orderItemObj);
+                   // updateQuantity(currentOrder.getOrderId(),currentOrder.getOrderItemObj().iterator().next().getProductSku(),currentOrder.getOrderItemObj().iterator().next().getQuantity());
+
                     currentOrder.calculateTotal();
                     currentOrder.totalQuantity();
+                    currentOrder.cartTotal();
 
+                    currentOrder.getOrderItemObj().iterator().next().getQuantity();
                 }
 
             }
@@ -96,7 +104,7 @@ public class OrderClient {
             //connection.setDoOutput(true);
 
 
-            Gson gson = new Gson();
+            /*Gson gson = new Gson();
 
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("orderId", currentOrder.getOrderId());
@@ -114,7 +122,24 @@ public class OrderClient {
             String updateOrderROStr = gson.toJson(jsonObject);
             Log.d(TAG, "updateQuantity  " + updateOrderROStr);
             //Log.d("json convert order item", "productDisplayList: converted jso
+*/
+          //  List<OrderItem> orderlistArray = new ArrayList<>();
+         //   orderlistArray.add(orderItemObj);
+            Gson gson = new Gson();
 
+
+            JsonObject updateOrder = new JsonObject();
+            updateOrder.addProperty("orderId",getOrderId());
+
+
+            JsonObject createOrderROJson = new JsonObject();
+            //createOrderROJson.addProperty("addItem", customerId);
+            updateOrder.add("addItem", createOrderROJson);
+            createOrderROJson.add("orderItem",new Gson().toJsonTree(orderItemObj));
+
+
+            String updateOrderROStr = gson.toJson(updateOrder);
+            Log.d(TAG, "createOrder: " + updateOrderROStr);
 
             DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
             dataOutputStream.write(updateOrderROStr.getBytes());
@@ -136,6 +161,7 @@ public class OrderClient {
 
 
             Log.d(TAG, "list obj" + storejsonObj);
+
             //JSONObject jsonObj = storejsonObj.getJSONObject("orderItem");
 
             //Log.d("jsonarray", "products" + jsonObj);
@@ -165,15 +191,12 @@ public class OrderClient {
             List<OrderItem> orderlistArray = new ArrayList<>();
             orderlistArray.add(orderItemObj);
 
-
             Gson gson = new Gson();
-
 
             JsonObject createOrderROJson = new JsonObject();
 
             createOrderROJson.addProperty("customerId", customerId);
             createOrderROJson.add("orderItemObj", new Gson().toJsonTree(orderlistArray));
-
 
             String createOrderROStr = gson.toJson(createOrderROJson);
 
@@ -204,6 +227,7 @@ public class OrderClient {
             orderId = storejsonObj.getInt("orderId");
 
 
+
             //currentOrder.setOrderId(orderId);
 
             Log.d(TAG, "list obj" + storejsonObj);
@@ -226,7 +250,7 @@ public class OrderClient {
     }
 
     //below method is  for updating the quantity
-    public void updateQuantity(int orderId, String productSku, String quantity)
+    public void updateQuantity(int orderId, String productSku, int quantity)
 
     {
 
@@ -254,7 +278,7 @@ public class OrderClient {
 
 
             // JsonObject updateOrderROJson = new JsonObject();
-            additemObjJson.addProperty("productSku",productSku);
+            additemObjJson.addProperty("productSku", productSku);
             additemObjJson.addProperty("newQuantity", quantity);
             Log.d(TAG, "updateQuantity: " + additemObjJson);
 

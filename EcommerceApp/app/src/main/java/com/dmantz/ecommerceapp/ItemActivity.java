@@ -85,6 +85,8 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
                 //update quantity in orderItem
 
                 ecApp.orderClientObj.addItem(orderItem);
+
+                mBadge.setNumber(ecApp.orderClientObj.getCurrentOrder().totalQuantity());
                 Log.d(TAG, "onClick: count " + ecApp.orderClientObj.getCurrentOrder());
                 Toast toast = Toast.makeText(getApplicationContext(), "Item added to cart", Toast.LENGTH_SHORT);
                 toast.show();
@@ -252,18 +254,24 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
         ElegantNumberButton quantityIncrementBtn = (ElegantNumberButton) findViewById(R.id.elegentBtn);
         quantityIncrementBtn.setBackgroundColor(Color.BLUE);
 
+
         quantityIncrementBtn.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
 
                 //  orderItem.setQuantity(productInfoObj.getProductSkus().iterator().next().);
-                orderItem.setQuantity(String.valueOf(newValue));
-                mBadge.setNumber(Integer.parseInt(orderItem.getQuantity()));
+
+                    int qty = Integer.parseInt(quantityIncrementBtn.getNumber());
+                    orderItem.setQuantity(qty);
+                    Log.d(TAG, "onValueChange: get quantity from orderitem" + quantityIncrementBtn.getNumber());
+
 
                 //mBadge.setNumber(Integer.parseInt(ecApp.orderClientObj.getCurrentOrder().getOrderItemObj().iterator().next().getQuantity()));
 
             }
         });
+
+
 
        /* quantityIncrementBtn.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
@@ -347,6 +355,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     }
+
 
 
 }

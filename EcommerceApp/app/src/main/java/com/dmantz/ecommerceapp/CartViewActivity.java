@@ -21,9 +21,10 @@ public class CartViewActivity extends AppCompatActivity {
 
     public static final String TAG = CartViewActivity.class.getSimpleName();
 
-    TextView orderIdText;
+    TextView orderIdText,cartTotalValue;
     Button btnCheckout;
     OrderItem orderItem = new OrderItem();
+
 
 
     private RecyclerView.Adapter cartAdapter;
@@ -35,6 +36,7 @@ public class CartViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart_view);
 
 
+        cartTotalValue = findViewById(R.id.cartSubTotal);
         RecyclerView cartViewRecyclerview = (RecyclerView) findViewById(R.id.cartView_RecyclerView);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         cartViewRecyclerview.setLayoutManager(linearLayoutManager);
@@ -46,7 +48,10 @@ public class CartViewActivity extends AppCompatActivity {
 
         orderIdText = (TextView) findViewById(R.id.yourOrderText);
         orderIdText.setText("ORDER ID : "+ Integer.toString(lapp.orderClientObj.getOrderId()));
+        int k =lapp.orderClientObj.getCurrentOrder().cartTotal();
+        cartTotalValue.setText(Integer.toString(k));
 
+       // ECApplication ECApp = (ECApplication) getApplicationContext();
 
         // productInfoObj = lapp.catalogClient.getProduct("103");
         List<OrderItem> orderItems = lapp.orderClientObj.getCurrentOrder().getOrderItemObj();
@@ -54,15 +59,19 @@ public class CartViewActivity extends AppCompatActivity {
         cartViewRecyclerview.setAdapter(cartAdapter);
 
 
+
         NotificationBadge mBadge;
         mBadge = findViewById(R.id.actionbar_notification_textview);
-        ECApplication ECApp = (ECApplication) getApplicationContext();
-        mBadge.setNumber(ECApp.orderClientObj.getCurrentOrder().totalQuantity());
+
+        int p =lapp.orderClientObj.getCurrentOrder().totalQuantity();
+        mBadge.setNumber(p);
+
 
 
         //mBadge.setNumber(lapp.orderClientObj.getCurrentOrder().getOrderItemObj().size());
 
     }
+
 
 
 }

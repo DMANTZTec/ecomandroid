@@ -2,6 +2,8 @@ package com.dmantz.ecommerceapp.model;
 
 import android.util.Log;
 
+import com.dmantz.ecommerceapp.ECApplication;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +28,24 @@ public class Order {
         if (orderItemObj.isEmpty()) {
             orderItemObj.add(orderItem);
             Log.d(TAG, "Inside addItem method: orderItem array list " + orderItemObj);
+            calculateTotal();
+            totalQuantity();
+                cartTotal();
 
         } else {
             if (orderItemObj.stream().filter(productFilter -> orderItem.getProductSku().equals(productFilter.getProductSku())).count() > 0) {
 
+                totalQuantity();
+                calculateTotal();
+                cartTotal();
+
                 Log.d(TAG, "Product is already in Cart");
             } else {
                 orderItemObj.add(orderItem);
+                calculateTotal();
+                totalQuantity();
+                cartTotal();
+
                 Log.d(TAG, "addItem:  " + orderItemObj);
             }
         }
@@ -40,43 +53,51 @@ public class Order {
 
     }
 
-    public void calculateTotal() {
-
-        double price;
-        int quantity;
-
-
+    public int totalQuantity() {
+        int totalQuantity = 0;
         for (OrderItem orderItem : orderItemObj) {
 
-
-            price = orderItem.getPrice();
-            quantity = Integer.parseInt(orderItem.getQuantity());
-            orderItem.setTotalPrice(price * quantity);
-
-
-
-            Log.d(TAG, "calculateTotal: " + orderItem.toString());
-
-        }
-        Log.d(TAG, "calculateTotal: " + orderItemObj.toString());
-
-
-    }
-
-    public int totalQuantity(){
-        int totalQuantity = 0;
-        for (OrderItem orderItem : orderItemObj){
-
-            int qty = Integer.parseInt(orderItem.getQuantity());
-            totalQuantity = totalQuantity+qty;
+            int qty = orderItem.getQuantity();
+            totalQuantity = totalQuantity + qty;
             orderItem.setTotalQuantity(totalQuantity);
-            Log.d(TAG, "totalQuantity: "+totalQuantity);
+            Log.d(TAG, "totalQuantity: " + totalQuantity);
         }
 
         return totalQuantity;
     }
 
+    public void calculateTotal() {
 
+        double price;
+        int quantity;
+
+        for (OrderItem orderItem : orderItemObj) {
+
+
+            price = orderItem.getPrice();
+            quantity = (orderItem.getQuantity());
+            orderItem.setTotalPrice(price * quantity);
+
+            Log.d(TAG, "calculateTotal: " + orderItem.getTotalPrice());
+
+
+        }
+
+
+    }
+
+
+    public int cartTotal() {
+
+        int cartTotal = 0;
+        for (OrderItem orderItem : orderItemObj) {
+
+            int cartTot = (int) orderItem.getTotalPrice();
+            cartTotal = cartTotal + cartTot;
+            orderItem.setCartTotalPrice(cartTotal);
+        }
+        return cartTotal;
+    }
 
 
     public String getcustomerId() {
@@ -96,6 +117,7 @@ public class Order {
     }
 
     public List<OrderItem> getOrderItemObj() {
+
         return orderItemObj;
     }
 
