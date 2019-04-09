@@ -9,13 +9,11 @@ public class CatalogFilter {
 
 
     public String filterEnabled = "false";
+    public HashMap<String, ArrayList> filterCriteria = new HashMap<>();
 
     public CatalogFilter() {
 
-
     }
-    public HashMap<String, ArrayList> filterCriteria = new HashMap<>();
-
 
     public String getFilterEnabaled() {
         return filterEnabled;
@@ -25,7 +23,6 @@ public class CatalogFilter {
     public void setFilterEnabaled(String filterEnabaled) {
         this.filterEnabled = filterEnabaled;
     }
-
 
     public void add(String filterType, String filterData)
 

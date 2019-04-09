@@ -2,8 +2,6 @@ package com.dmantz.ecommerceapp.model;
 
 import android.util.Log;
 
-import com.dmantz.ecommerceapp.ECApplication;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +12,11 @@ public class Order {
     String customerId;
     int OrderId;
 
+    double totalAmt;
+    int totalQty;
 
-    List<OrderItem> orderItemObj = new ArrayList<>();
+
+    List<OrderItem> orderItemList = new ArrayList<>();
 
 
     public Order() {
@@ -23,39 +24,36 @@ public class Order {
     }
 
 
+    public boolean doesItemExists(OrderItem orderItem) {
+
+        if (orderItemList.stream().filter(productFilter -> orderItem.getProductSku().equals(productFilter.getProductSku())).count() > 0) {
+
+            return true;
+        } else return false;
+    }
+
     public void addItem(OrderItem orderItem) {
 
-        if (orderItemObj.isEmpty()) {
-            orderItemObj.add(orderItem);
-            Log.d(TAG, "Inside addItem method: orderItem array list " + orderItemObj);
-            calculateTotal();
+        if (orderItemList.isEmpty()) {
+            orderItemList.add(orderItem);
+            Log.d(TAG, "Inside addItem method: orderItem array list " + orderItemList);
+            calculateTotals();
             totalQuantity();
-                cartTotal();
+            cartTotal();
 
         } else {
-            if (orderItemObj.stream().filter(productFilter -> orderItem.getProductSku().equals(productFilter.getProductSku())).count() > 0) {
-
-                totalQuantity();
-                calculateTotal();
-                cartTotal();
-
-                Log.d(TAG, "Product is already in Cart");
-            } else {
-                orderItemObj.add(orderItem);
-                calculateTotal();
-                totalQuantity();
-                cartTotal();
-
-                Log.d(TAG, "addItem:  " + orderItemObj);
-            }
+            orderItemList.add(orderItem);
+            calculateTotals();
+            totalQuantity();
+            cartTotal();
+            Log.d(TAG, "addItem:  " + orderItemList);
         }
-
 
     }
 
     public int totalQuantity() {
         int totalQuantity = 0;
-        for (OrderItem orderItem : orderItemObj) {
+        for (OrderItem orderItem : orderItemList) {
 
             int qty = orderItem.getQuantity();
             totalQuantity = totalQuantity + qty;
@@ -66,31 +64,27 @@ public class Order {
         return totalQuantity;
     }
 
-    public void calculateTotal() {
+    public void calculateTotals() {
 
         double price;
         int quantity;
+        totalAmt = 0.0;
+        totalQty = 0;
+        for (OrderItem orderItem : orderItemList) {
 
-        for (OrderItem orderItem : orderItemObj) {
-
-
-            price = orderItem.getPrice();
-            quantity = (orderItem.getQuantity());
-            orderItem.setTotalPrice(price * quantity);
-
-            Log.d(TAG, "calculateTotal: " + orderItem.getTotalPrice());
+            totalAmt = totalAmt + orderItem.getPrice();
+            totalQty = totalQty + orderItem.getQuantity();
+            Log.d(TAG, "order total amt: " + totalAmt + ";" + "order total qty " + totalQty);
+            Log.d(TAG, "calculateTotals: "+orderItem.getPrice()*orderItem.getQuantity());
 
 
         }
-
-
     }
-
 
     public int cartTotal() {
 
         int cartTotal = 0;
-        for (OrderItem orderItem : orderItemObj) {
+        for (OrderItem orderItem : orderItemList) {
 
             int cartTot = (int) orderItem.getTotalPrice();
             cartTotal = cartTotal + cartTot;
@@ -116,14 +110,30 @@ public class Order {
         OrderId = orderId;
     }
 
-    public List<OrderItem> getOrderItemObj() {
+    public List<OrderItem> getOrderItemList() {
 
-        return orderItemObj;
+        return orderItemList;
     }
 
-    public void setOrderItemObj(ArrayList<OrderItem> orderItemObj) {
-        this.orderItemObj = orderItemObj;
+    public void setOrderItemList(ArrayList<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 
+
+    public double getTotalAmt() {
+        return totalAmt;
+    }
+
+    public void setTotalAmt(double totalAmt) {
+        this.totalAmt = totalAmt;
+    }
+
+    public int getTotalQty() {
+        return totalQty;
+    }
+
+    public void setTotalQty(int totalQty) {
+        this.totalQty = totalQty;
+    }
 
 }

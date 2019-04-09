@@ -24,7 +24,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
@@ -32,13 +31,14 @@ public class CatalogClient extends ProductList {
 
     public static final String TAG = CatalogClient.class.getSimpleName();
 
-    static CatalogClient catalogclientObj;
+    static CatalogClient catalogClientObj;
+
     private Catlog catlog;
     private ProductList productList;
     private CatalogFilter catalogFilterObj;
+    private Context context;
 
-    Context mContext;
-    String json = null;
+
     String catalogURL = "http://192.168.0.123:8080/UserApp/catalog";
 
 
@@ -49,24 +49,21 @@ public class CatalogClient extends ProductList {
             catalogFilterObj = new CatalogFilter();
             catalogFilterObj.setFilterEnabaled("False");
 
-
         }
 
-
     }
-
 
     public static CatalogClient getCatalogClient() {
 
 
-        if (catalogclientObj == null) {
-            catalogclientObj = new CatalogClient();
+        if (catalogClientObj == null) {
+            catalogClientObj = new CatalogClient();
         }
-        return catalogclientObj;
+        return catalogClientObj;
     }
 
     // This method is used to get catlog form backend
-    private Context context;
+
 
     public Context getContext() {
         return context;
@@ -79,6 +76,7 @@ public class CatalogClient extends ProductList {
     private void getCatalogFromBE() {
 
         ProductInfoJson();
+
         Gson gson = new Gson();
         catlog = gson.fromJson(jsonData, Catlog.class);
         Log.d(TAG, "getCatalogFromBE: " + catlog);

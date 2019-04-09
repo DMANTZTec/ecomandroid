@@ -116,8 +116,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
         List<String> mDataset = new ArrayList<>();
-        // specify an adapter (see also next example)
-
 
 
         adapter = new RecyclerViewAdapter(mCatlog, this);
