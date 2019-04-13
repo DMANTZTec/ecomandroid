@@ -4,27 +4,37 @@ import java.util.List;
 
 public class Catlog {
 
-    private List<ProductInfo> products = null;
-    private CatalogFilter filterCriteria;
+    private List<Product> products =null;
+   // private CatalogFilter filterCriteria;
 
 
     public Catlog() {
     }
 
 
-    public List<ProductInfo> getProducts() {
+    public List<Product> getProducts() {
+
         return products;
+
     }
 
-    public void setProducts(List<ProductInfo> products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 
-    public CatalogFilter getFilterCriteria() {
+   /* public CatalogFilter getFilterCriteria() {
         return filterCriteria;
     }
 
     public void setFilterCriteria(CatalogFilter filterCriteria) {
         this.filterCriteria = filterCriteria;
+    }
+    */
+
+    @Override
+    public String toString() {
+        return "Catlog{" +
+                "products=" + products +
+                '}';
     }
 }

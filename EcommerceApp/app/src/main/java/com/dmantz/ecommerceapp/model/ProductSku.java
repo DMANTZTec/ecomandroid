@@ -2,16 +2,17 @@ package com.dmantz.ecommerceapp.model;
 
 import java.util.List;
 
-public class ProductSkus {
+public class ProductSku {
 
     private String sku;
     private List<Option> options = null;
     private String image;
     private Double price;
+    private String productSkuCode;
 
 
 
-    public ProductSkus() {
+    public ProductSku() {
     }
 
 
@@ -47,4 +48,11 @@ public class ProductSkus {
         this.price = price;
     }
 
+    public String getProductSkuCode() {
+        return productSkuCode;
+    }
+
+    public void setProductSkuCode(String productSkuCode) {
+        this.productSkuCode = productSkuCode;
+    }
 }

@@ -13,24 +13,24 @@ import android.widget.TextView;
 
 import com.dmantz.ecommerceapp.ItemActivity;
 import com.dmantz.ecommerceapp.model.Catlog;
-import com.dmantz.ecommerceapp.model.Product;
 import com.dmantz.ecommerceapp.model.ProductList;
 import com.dmantz.ecommerceapp.R;
+import com.dmantz.ecommerceapp.model.Product;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-
+    public static final String TAG = RecyclerViewAdapter.class.getSimpleName();
     private ProductList mproductList;
     private Context mcontext;
-    private ArrayList<Product> mArrayList;
+    private List<Product> productList;
     private Catlog mCatlog;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mProductName;
-
         public TextView mProductSize;
         public TextView mProductPrice;
         public ImageView mProductImage;
@@ -55,9 +55,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d("TAG", "entered into add method");
     }
 
-    public RecyclerViewAdapter(Catlog catlog, Context context) {
+    public RecyclerViewAdapter(List<Product> mproducts, Context context) {
 
-        mCatlog = catlog;
+        productList = mproducts;
         mcontext = context;
     }
 
@@ -80,16 +80,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // - replace the contents of the view with that element
         try {
 
-
-            holder.mProductName.setText(mCatlog.getProducts().get(position).getProductName());
-            //  holder.mProductName.setText(mproductList.getProductList().get(position).getItemName());
-            // holder.mProductSize.setText(mproductList.getProductList().get(position).getItemSize());
-            holder.mProductSize.setText(mCatlog.getProducts().get(position).getProductManufacturerName());
-            // holder.mProductPrice.setText(String.valueOf(mproductList.getProductList().get(position).getItemPrice()));
-            holder.mProductPrice.setText(Double.toString(mCatlog.getProducts().get(position).getProductSkus().get(position).getPrice()));
-            //Picasso.get().load(mproductList.getProductList().get(position).getItemImageUrl()).fit().into(holder.mProductImage);
-            Log.d("picasso", mproductList.getProductList().get(position).getItemImageUrl());
-            //holder.mProductImage.setImageURI(mproductList.getProductList().get(position).getItemImage());
+            holder.mProductName.setText(productList.get(position).getProductName());
+            //  holder.mProductName.setText(mproductList.getProductsList().get(position).getItemName());
+            // holder.mProductSize.setText(mproductList.getProductsList().get(position).getItemSize());
+            // holder.mProductSize.setText(mCatlog.getProducts().get(position).getProductManufacturerName());
+            // holder.mProductPrice.setText(String.valueOf(mproductList.getProductsList().get(position).getItemPrice()));
+            // holder.mProductPrice.setText(Double.toString(mCatlog.getProducts().get(position).getProductSkus().get(position).getPrice()));
+            Picasso.get().load(productList.get(position).getProductSkus().get(position).getImage()).fit().into(holder.mProductImage);
+            //  Log.d("picasso", mproductList.getProductsList().get(position).getItemImageUrl());
+            //holder.mProductImage.setImageURI(mproductList.getProductsList().get(position).getItemImage());
 
 
         } catch (Exception e) {
@@ -97,7 +96,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
 
 
-        //  Uri uri = Uri.parse(String.valueOf(mproductList.getProductList().get(position).getItemImage()));
+        //  Uri uri = Uri.parse(String.valueOf(mproductList.getProductsList().get(position).getItemImage()));
         //  holder.mProductImage.setImageURI(uri);
 
 
@@ -108,12 +107,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Log.d("recyclicareview onlick ", "onClick: entered into onclick ");
                 Intent intent = new Intent(mcontext, ItemActivity.class);
                 intent.putExtra("productId", mCatlog.getProducts().get(position).getProductId());
-            /*    intent.putExtra("productName", mproductList.getProductList().get(position).getItemName());
-                intent.putExtra("productPrice", mproductList.getProductList().get(position).getItemPrice());
-                intent.putExtra("productSize", mproductList.getProductList().get(position).getItemSize());
-                intent.putExtra("productId", mproductList.getProductList().get(position).getItemId());
-                intent.putExtra("productDescription", mproductList.getProductList().get(position).getDescription());
-                intent.putExtra("productUrl", mproductList.getProductList().get(position).getItemImageUrl());
+            /*    intent.putExtra("productName", mproductList.getProductsList().get(position).getItemName());
+                intent.putExtra("productPrice", mproductList.getProductsList().get(position).getItemPrice());
+                intent.putExtra("productSize", mproductList.getProductsList().get(position).getItemSize());
+                intent.putExtra("productId", mproductList.getProductsList().get(position).getItemId());
+                intent.putExtra("productDescription", mproductList.getProductsList().get(position).getDescription());
+                intent.putExtra("productUrl", mproductList.getProductsList().get(position).getItemImageUrl());
 
             */
                 Log.d("on clicke recyclerview", "onClick: " + mCatlog.getProducts().get(position).getProductId());
@@ -130,8 +129,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mCatlog.getProducts().size();
-        //mproductList.getProductList().size();
+
+
+        return productList.size();
+        //mproductList.getProductsList().size();
     }
 
 

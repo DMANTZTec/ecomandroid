@@ -30,15 +30,16 @@ import android.widget.LinearLayout;
 
 import com.dmantz.ecommerceapp.Adapters.RecyclerViewAdapter;
 import com.dmantz.ecommerceapp.Fragments.OneFragment;
-import com.dmantz.ecommerceapp.model.CatalogFilter;
 import com.dmantz.ecommerceapp.model.Catlog;
 import com.dmantz.ecommerceapp.model.MenuModel;
-import com.dmantz.ecommerceapp.model.Product;
+import com.dmantz.ecommerceapp.model.ProductOld;
 import com.dmantz.ecommerceapp.model.ProductList;
+import com.dmantz.ecommerceapp.model.Product;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -52,16 +53,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    //catlog adapter
     private RecyclerViewAdapter adapter;
+    private  Catlog catlog;
+
+    //produts in the list
+    private List<Product> productList = new ArrayList<>();
 
     private ProductList mProductList;
     private ProductList mFilteredProductList;
 
 
-    private Catlog mCatlog;
-
     Button btnCategories;
-    private CatalogFilter catalogFilterObj;
 
     LinearLayout checkboxLinearLayout;
     CheckBox menuItemCheckBox;
@@ -80,6 +84,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         toolbar.setNavigationIcon(drawable);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
+
+
+
+        ECApplication lapp = (ECApplication) getApplication();
+        lapp.catalogClient.setContext(getApplicationContext());
+
+        catlog =  lapp.catalogClient.getCatlog(true);
+
+
 
         btnCategories = findViewById(R.id.catergories_button);
         btnCategories.setOnClickListener(new View.OnClickListener() {
@@ -108,32 +121,27 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
         mRecyclerView = findViewById(R.id.recyclerviewone);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        List<String> mDataset = new ArrayList<>();
 
-
+     /*   List<String> mDataset = new ArrayList<>();
         adapter = new RecyclerViewAdapter(mCatlog, this);
         mRecyclerView.setAdapter(adapter);
+*/
 
 
-        ECApplication lapp = (ECApplication) getApplication();
-
-        lapp.catalogClient.setContext(getApplicationContext());
 
         try {
 
-            mCatlog = new Catlog();
-            mCatlog = lapp.catalogClient.getCatlog(true);
 
-            mAdapter = new RecyclerViewAdapter(mCatlog, getApplicationContext());
+
+            //productList.add((Product) catlog.getProducts());
+            adapter = new RecyclerViewAdapter(catlog.getProducts(), this);
             //ECApplication)getApplication());
-            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setAdapter(adapter);
+
+            //productList.add(mCatlog.getProducts().iterator().next().getProductName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -207,16 +215,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         Log.d(TAG, "onQueryTextChange: ");
         newText = newText.toLowerCase();
-        ArrayList<Product> newList = new ArrayList<>();
+        ArrayList<ProductOld> newList = new ArrayList<>();
 
-        for (Product product : mProductList.getProductList()) {
-            String itemName = product.getItemName().toLowerCase();
+        for (ProductOld productOld : mProductList.getProductsList()) {
+            String itemName = productOld.getItemName().toLowerCase();
             if (itemName.contains(newText))
-                newList.add(product);
+                newList.add(productOld);
         }
 
         mFilteredProductList = new ProductList();
-        mFilteredProductList.setProductList(newList);
+        mFilteredProductList.setProductsList(newList);
 
         adapter = new RecyclerViewAdapter(mFilteredProductList, getApplicationContext());
         mRecyclerView.setAdapter(adapter);

@@ -8,18 +8,18 @@ public class ProductList {
     double itemPrice;
 
 
-    ArrayList<Product> productList = new ArrayList<>();
+    ArrayList<ProductOld> productsList = new ArrayList<>();
 
     public ProductList() {
 
     }
 
-    public ArrayList<Product> getProductList() {
-        return productList;
+    public ArrayList<ProductOld> getProductsList() {
+        return productsList;
     }
 
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
+    public void setProductsList(ArrayList<ProductOld> productsList) {
+        this.productsList = productsList;
     }
 
     public ProductList(String itemName, String itemSize, double itemPrice) {

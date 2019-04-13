@@ -7,9 +7,10 @@ import android.util.Log;
 import com.dmantz.ecommerceapp.model.CatalogFilter;
 import com.dmantz.ecommerceapp.model.Catlog;
 import com.dmantz.ecommerceapp.model.Product;
-import com.dmantz.ecommerceapp.model.ProductInfo;
+import com.dmantz.ecommerceapp.model.ProductOld;
 import com.dmantz.ecommerceapp.model.ProductList;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +19,12 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,13 +35,13 @@ public class CatalogClient extends ProductList {
 
     static CatalogClient catalogClientObj;
 
-    private Catlog catlog;
+    public Catlog catlog;
     private ProductList productList;
     private CatalogFilter catalogFilterObj;
     private Context context;
 
 
-    String catalogURL = "http://192.168.0.123:8080/UserApp/catalog";
+    String catalogURL = "http://192.168.0.183:8080/ec/catalog";
 
 
     public CatalogClient() {
@@ -62,7 +64,6 @@ public class CatalogClient extends ProductList {
         return catalogClientObj;
     }
 
-    // This method is used to get catlog form backend
 
 
     public Context getContext() {
@@ -73,21 +74,85 @@ public class CatalogClient extends ProductList {
         this.context = context;
     }
 
-    private void getCatalogFromBE() {
+    public void getCatalogFromBE() {
 
-        ProductInfoJson();
 
-        Gson gson = new Gson();
-        catlog = gson.fromJson(jsonData, Catlog.class);
-        Log.d(TAG, "getCatalogFromBE: " + catlog);
+        try {
 
+            URL url = new URL(catalogURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("content-Type", "application/json");
+            // connection.setDoInput(true);
+            //connection.setDoOutput(true);
+
+
+
+            Gson gson = new Gson();
+
+            JsonObject filterCriteriaJsonObj = new JsonObject();
+
+            JsonObject filterEnabledJsonObj = new JsonObject();
+            filterCriteriaJsonObj.add("filterCriteria",filterEnabledJsonObj);
+            filterEnabledJsonObj.addProperty("filterEnabled",catalogFilterObj.getFilterEnabaled());
+            String catalogFilterJson = gson.toJson(filterCriteriaJsonObj);
+
+
+            Log.d(TAG, "productDisplayList: converted json" + catalogFilterJson);
+
+
+            //updateFilter(catalogFilterObj.getFilterEnabaled(),filterNewObj.getFilterType(),filterNewObj.getFilterData());
+
+            DataOutputStream dataOutputStream = null;
+            dataOutputStream = new DataOutputStream(connection.getOutputStream());
+            dataOutputStream.write(catalogFilterJson.getBytes());
+            dataOutputStream.flush();
+
+            BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while ((line = bufferedresponse.readLine()) != null) {
+                response.append(line);
+                response.append("/r");
+            }
+            bufferedresponse.close();
+
+            JSONObject responseJsonObj = new JSONObject(response.toString());
+         // JSONArray responseArray = responseJsonObj.getJSONArray("products");
+            String responseBody = responseJsonObj.toString();
+            catlog = gson.fromJson(responseBody, Catlog.class);
+
+           // catlog.setProducts(catlog.getProducts());
+
+
+
+
+            for (Product product : catlog.getProducts() )
+            {
+
+            //    catlog.setProducts(Collections.singletonList(product));
+              //  catlog.getProducts().size();
+             //   catlog.setProducts(Collections.singletonList(product));
+                String s1 = String.valueOf(product.getProductSkus().iterator().next().getPrice());
+                Log.d(TAG, "getCatalogFromBE: "+s1);
+            }
+
+
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
-    public ProductInfo getProduct(String productId) {
+    public Product getProduct(Integer productId) {
 
-        List<ProductInfo> filteredProducts = catlog.getProducts().stream().filter(product -> product.getProductId().equals(productId)).collect(Collectors.toList());
+        List<Product> filteredProducts = catlog.getProducts().stream().filter(product -> product.getProductId().equals(productId)).collect(Collectors.toList());
         return filteredProducts.get(0);
 
         // catlog.getProducts().get( i).getProductSkus().g+et(i).getOptions().get(i).getOptionName();
@@ -135,35 +200,35 @@ public class CatalogClient extends ProductList {
         Log.d(TAG, "list obj" + storejsonObj);
         JSONArray jsonarrayObj = storejsonObj.getJSONArray("Catogery");
 
-        Log.d(TAG, "products" + jsonarrayObj);
+        Log.d(TAG, "productOlds" + jsonarrayObj);
 
         productList = new ProductList();
-        ArrayList<Product> products = new ArrayList<>();
+        ArrayList<ProductOld> productOlds = new ArrayList<>();
 
         //ProductList productlistObj = new ProductList();
         for (int i = 0; i < jsonarrayObj.length(); i++) {
 
             //System.out.println("itemName: "+jsonarrayObj.getJSONObject(i).get("item_name"));
-            Product currentProduct = new Product();
+            ProductOld currentProductOld = new ProductOld();
 
-            currentProduct.setItemName((String) jsonarrayObj.getJSONObject(i).get("item_name"));
-            currentProduct.setItemSize((String) jsonarrayObj.getJSONObject(i).get("size"));
-            currentProduct.setItemPrice((double) jsonarrayObj.getJSONObject(i).get("item_price"));
-            currentProduct.setItemId((int) jsonarrayObj.getJSONObject(i).get("id"));
-            currentProduct.setDescription((String) jsonarrayObj.getJSONObject(i).get("description"));
-            currentProduct.setItemImage((String) jsonarrayObj.getJSONObject(i).get("url"));
+            currentProductOld.setItemName((String) jsonarrayObj.getJSONObject(i).get("item_name"));
+            currentProductOld.setItemSize((String) jsonarrayObj.getJSONObject(i).get("size"));
+            currentProductOld.setItemPrice((double) jsonarrayObj.getJSONObject(i).get("item_price"));
+            currentProductOld.setItemId((int) jsonarrayObj.getJSONObject(i).get("id"));
+            currentProductOld.setDescription((String) jsonarrayObj.getJSONObject(i).get("description"));
+            currentProductOld.setItemImage((String) jsonarrayObj.getJSONObject(i).get("url"));
 
 
-            Log.d(TAG, "item-name" + currentProduct.getItemName());
-            Log.d(TAG, "productDisplayList: " + currentProduct.getItemId());
-            Log.d(TAG, "productDisplayList: " + currentProduct.getItemImageUrl());
-            products.add(currentProduct);
+            Log.d(TAG, "item-name" + currentProductOld.getItemName());
+            Log.d(TAG, "productDisplayList: " + currentProductOld.getItemId());
+            Log.d(TAG, "productDisplayList: " + currentProductOld.getItemImageUrl());
+            productOlds.add(currentProductOld);
 
             // Log.d("full ","fjdhkgr"+listObj.get);
         }
 
 
-        productList.setProductList(products);
+        productList.setProductsList(productOlds);
 
         //ProductList productObj = (ProductList) listObj.get(1);
         // Log.d("Result", "size of " + productObj.getItemName());
@@ -215,11 +280,12 @@ public class CatalogClient extends ProductList {
         this.catlog = catlog;
     }
 
+/*
 
     JSONObject storejsonObj;
     String jsonData = null;
 
-    public JSONObject ProductInfoJson() {
+   public JSONObject ProductInfoJson() {
 
 
         try {
@@ -250,6 +316,7 @@ public class CatalogClient extends ProductList {
 
 
     }
+*/
 
 
 }

@@ -18,10 +18,9 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.dmantz.ecommerceapp.model.Option;
-import com.dmantz.ecommerceapp.model.Order;
 import com.dmantz.ecommerceapp.model.OrderItem;
-import com.dmantz.ecommerceapp.model.ProductInfo;
-import com.dmantz.ecommerceapp.model.ProductSkus;
+import com.dmantz.ecommerceapp.model.ProductSku;
+import com.dmantz.ecommerceapp.model.Product;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.Iterator;
@@ -39,9 +38,14 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
     ImageView cartIconView;
     NotificationBadge mBadge;
     Spinner productColor, productSize;
-    String itemName, itemPrice, itemSize, ProductId, itemDescription, itemImage;
+    String itemName;
+    String itemPrice;
+    String itemSize;
+    Integer ProductId;
+    String itemDescription;
+    String itemImage;
 
-    ProductInfo productInfoObj = new ProductInfo();
+    Product productObj = new Product();
     OrderItem orderItem;
 
 
@@ -70,10 +74,10 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View view) {
 
 
-                ProductSkus productSku = productInfoObj.getProductSkus().get(0);
+                ProductSku productSku = productObj.getProductSkus().get(0);
 
                 orderItem = new OrderItem();
-                orderItem.setProductName(productInfoObj.getProductName());
+                orderItem.setProductName(productObj.getProductName());
                 orderItem.setPrice(productSku.getPrice());
                 orderItem.setProductSku(productSku.getSku());
 
@@ -119,10 +123,10 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // All the information will get from backend and displays to the itemActivity
     private void getItemInfo() {
-        ProductId = getIntent().getStringExtra("productId");
-        productInfoObj = ecApp.catalogClient.getProduct(ProductId);
+        ProductId = Integer.valueOf(getIntent().getStringExtra("productId"));
+        productObj = ecApp.catalogClient.getProduct(ProductId);
 
-        ProductSkus productSku = productInfoObj.getProductSkus().get(0);
+        ProductSku productSku = productObj.getProductSkus().get(0);
 
         quantityIncrementBtn.setBackgroundColor(Color.BLUE);
         quantityIncrementBtn.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
@@ -174,7 +178,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
         TextView priceText = new TextView(this);
 
-        priceText.setText(Double.toString(productInfoObj.getProductSkus().get(0).getPrice()));
+        priceText.setText(Double.toString(productObj.getProductSkus().get(0).getPrice()));
         priceText.setPadding(10, 10, 10, 10);
         priceText.setTextSize(30);
         priceText.setTextColor(Color.BLUE);

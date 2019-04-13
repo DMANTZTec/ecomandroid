@@ -1,77 +1,68 @@
 package com.dmantz.ecommerceapp.model;
 
+import java.util.List;
+
 public class Product {
 
-    public Product(String itemName, String itemSize, double itemPrice, String itemImageUrl, int itemId, String description) {
-        this.itemName = itemName;
-        this.itemSize = itemSize;
-        this.itemPrice = itemPrice;
-        this.itemImageUrl = itemImageUrl;
-        this.itemId = itemId;
-        this.description = description;
-    }
+    private String productId;
+    private String productManufacturerName;
+    private String productName;
+    private String brandName;
 
-    String itemName;
-    String itemSize;
-    double itemPrice;
-    String itemImageUrl;
-    int itemId;
-    String description;
+    private List<ProductSku> productSkus = null;
+
 
     public Product() {
     }
 
 
-    public String getDescription() {
-        return description;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-
-    public int getItemId() {
-        return itemId;
+    public String getProductManufacturerName() {
+        return productManufacturerName;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
+    public void setProductManufacturerName(String productManufacturerName) {
+        this.productManufacturerName = productManufacturerName;
     }
 
-
-    public String getItemName() {
-        return itemName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getItemSize() {
-        return itemSize;
+    public List<ProductSku> getProductSkus() {
+        return productSkus;
     }
 
-    public void setItemSize(String itemSize) {
-        this.itemSize = itemSize;
+    public void setProductSkus(List<ProductSku> productSkus) {
+        this.productSkus = productSkus;
     }
 
-    public double getItemPrice() {
-        return itemPrice;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public void setItemPrice(double itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
-
-    public String getItemImageUrl() {
-        return itemImageUrl;
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId='" + productId + '\'' +
+                ", productManufacturerName='" + productManufacturerName + '\'' +
+                ", productName='" + productName + '\'' +
+                ", productSkus=" + productSkus +
+                '}';
     }
-
-    public void setItemImage(String itemImageStr) {
-        this.itemImageUrl = itemImageStr;
-    }
-
-
 }
