@@ -41,11 +41,11 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
     String itemName;
     String itemPrice;
     String itemSize;
-    Integer ProductId;
+    String ProductId;
     String itemDescription;
     String itemImage;
 
-    Product productObj = new Product();
+    Product productObj;
     OrderItem orderItem;
 
 
@@ -123,7 +123,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // All the information will get from backend and displays to the itemActivity
     private void getItemInfo() {
-        ProductId = Integer.valueOf(getIntent().getStringExtra("productId"));
+        ProductId = getIntent().getStringExtra("productId");
         productObj = ecApp.catalogClient.getProduct(ProductId);
 
         ProductSku productSku = productObj.getProductSkus().get(0);
@@ -178,7 +178,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
         TextView priceText = new TextView(this);
 
-        priceText.setText(Double.toString(productObj.getProductSkus().get(0).getPrice()));
+        priceText.setText(String.valueOf(productSku.getPrice()));
         priceText.setPadding(10, 10, 10, 10);
         priceText.setTextSize(30);
         priceText.setTextColor(Color.BLUE);

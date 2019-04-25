@@ -84,9 +84,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //  holder.mProductName.setText(mproductList.getProductsList().get(position).getItemName());
             // holder.mProductSize.setText(mproductList.getProductsList().get(position).getItemSize());
             // holder.mProductSize.setText(mCatlog.getProducts().get(position).getProductManufacturerName());
-            // holder.mProductPrice.setText(String.valueOf(mproductList.getProductsList().get(position).getItemPrice()));
+             holder.mProductPrice.setText(String.valueOf(productList.get(position).getProductSkus().get(0).getPrice()));
             // holder.mProductPrice.setText(Double.toString(mCatlog.getProducts().get(position).getProductSkus().get(position).getPrice()));
-            Picasso.get().load(productList.get(position).getProductSkus().get(position).getImage()).fit().into(holder.mProductImage);
+            Picasso.get().load(productList.get(position).getProductSkus().get(0).getImage()).fit().into(holder.mProductImage);
             //  Log.d("picasso", mproductList.getProductsList().get(position).getItemImageUrl());
             //holder.mProductImage.setImageURI(mproductList.getProductsList().get(position).getItemImage());
 
@@ -106,7 +106,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 Log.d("recyclicareview onlick ", "onClick: entered into onclick ");
                 Intent intent = new Intent(mcontext, ItemActivity.class);
-                intent.putExtra("productId", mCatlog.getProducts().get(position).getProductId());
+                intent.putExtra("productId", productList.get(position).getProductId());
+
+
+
             /*    intent.putExtra("productName", mproductList.getProductsList().get(position).getItemName());
                 intent.putExtra("productPrice", mproductList.getProductsList().get(position).getItemPrice());
                 intent.putExtra("productSize", mproductList.getProductsList().get(position).getItemSize());
@@ -115,7 +118,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("productUrl", mproductList.getProductsList().get(position).getItemImageUrl());
 
             */
-                Log.d("on clicke recyclerview", "onClick: " + mCatlog.getProducts().get(position).getProductId());
+               // Log.d("on clicke recyclerview", "onClick: " + mCatlog.getProducts().get(position).getProductId());
 
 
                 mcontext.startActivity(intent);

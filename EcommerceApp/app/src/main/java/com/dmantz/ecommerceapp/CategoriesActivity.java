@@ -2,20 +2,14 @@ package com.dmantz.ecommerceapp;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -23,54 +17,60 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
-import com.dmantz.ecommerceapp.Adapters.RecyclerViewAdapter;
-import com.dmantz.ecommerceapp.Fragments.OneFragment;
-import com.dmantz.ecommerceapp.model.Catlog;
+import com.dmantz.ecommerceapp.Adapters.CategoriesListAdapter;
+import com.dmantz.ecommerceapp.model.CategoriesChild;
+import com.dmantz.ecommerceapp.model.CategoriesParent;
 import com.dmantz.ecommerceapp.model.MenuModel;
-import com.dmantz.ecommerceapp.model.ProductOld;
 import com.dmantz.ecommerceapp.model.ProductList;
-import com.dmantz.ecommerceapp.model.Product;
+import com.dmantz.ecommerceapp.model.ProductOld;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, NavigationView.OnNavigationItemSelectedListener {
+public class CategoriesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, NavigationView.OnNavigationItemSelectedListener {
 
-
-    public static final String TAG = MainActivity.class.getSimpleName();
-
+    public static final String TAG = CategoriesActivity.class.getSimpleName();
     private DrawerLayout mDrawerLayout;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    //catlog adapter
-    private RecyclerViewAdapter adapter;
-    private Catlog catlog;
-
     private ProductList mProductList;
     private ProductList mFilteredProductList;
 
     LinearLayout checkboxLinearLayout;
     CheckBox menuItemCheckBox;
+    ECApplication ECApp;
+    List<String> parentName = new ArrayList<>();
+    List<String> childName = new ArrayList<>();
 
-    public MainActivity() {
+    CategoriesParent catlogDir;
+    ExpandableListView categoriesExpandableList;
+    CategoriesListAdapter categoriesAdapter;
 
-    }
+    private ArrayList<CategoriesParent> parentList = new ArrayList<>();
+    private LinkedHashMap<List<String>, CategoriesParent> categories = new LinkedHashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_categories2);
+
+
+        ECApp = (ECApplication) getApplicationContext();
+        ECApp.catalogClient.getCatlogDir();
+
+
+        loadData();
+
 
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.appbar);
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.navigation_icon);
@@ -78,40 +78,128 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
 
-        ECApplication lapp = (ECApplication) getApplication();
-        lapp.catalogClient.setContext(getApplicationContext());
-
-        catlog = lapp.catalogClient.getCatlog(true);
-
-
-        //      viewPager = findViewById(R.id.viewpager);
-        //      setupViewPager(viewPager);
-        //     tabLayout = findViewById(R.id.tabs);
-        //     tabLayout.setupWithViewPager(viewPager);
-
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.navigation_icon);
 
+        categoriesExpandableList = (ExpandableListView) findViewById(R.id.categoriesListView);
+        categoriesAdapter = new CategoriesListAdapter(this, parentList);
+
+        categoriesExpandableList.setAdapter(categoriesAdapter);
+
+        // expandAll();
         addMenuItemInNavDrawer();
 
-        mRecyclerView = findViewById(R.id.recyclerviewone);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        categoriesExpandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                CategoriesParent categoriesP = parentList.get(groupPosition);
+
+                CategoriesChild categoriesC = categoriesP.getChildCatalog().get(childPosition);
+
+                return false;
+            }
+        });
 
 
-        try {
+        categoriesExpandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-            //productList.add((Product) catlog.getProducts());
-            adapter = new RecyclerViewAdapter(catlog.getProducts(), this);
-            //ECApplication)getApplication());
-            mRecyclerView.setAdapter(adapter);
-            //productList.add(mCatlog.getProducts().iterator().next().getProductName());
-        } catch (Exception e) {
-            e.printStackTrace();
+                CategoriesParent categoriesP = parentList.get(groupPosition);
+
+                return false;
+            }
+        });
+    }
+
+
+    private void expandAll() {
+        int count = categoriesAdapter.getGroupCount();
+        for (int i = 0; i < count; i++) {
+            categoriesExpandableList.expandGroup(i);
         }
     }
 
+
+    private void collapseAll() {
+        int count = categoriesAdapter.getGroupCount();
+        for (int i = 0; i < count; i++) {
+            categoriesExpandableList.collapseGroup(i);
+        }
+    }
+
+
+    private void loadData() {
+
+
+        List<CategoriesParent> parent = ECApp.catalogClient.getCategoriesParentList();
+        for (CategoriesParent categoriesParent : parent) {
+
+            parentName.add(categoriesParent.getCatalogDesc());
+            Log.d(TAG, "loadData: " + parentName.toString());
+        }
+
+//        List<CategoriesChild> childList = ECApp.catalogClient.getCategoriesParentList();
+
+        List<CategoriesChild> categoriesChild = ECApp.catalogClient.categoriesParentList.iterator().next().getChildCatalog();
+        for (CategoriesChild categoriesChild1 : categoriesChild) {
+            childName.add(categoriesChild1.getCatalogDesc());
+            Log.d(TAG, "loadData: " + childName);
+        }
+
+
+        //  List<String> stringList = catName.stream().filter(productList -> productList.getCatalogName()).collect(Collectors.toList());
+        // Log.d(TAG, "loadData: "+stringList);
+       /* for (int i =0;i<= ECApp.catalogClient.getCategories().getChildCatalog().size();i++){
+            String s = catName.iterator().next().getCatalogName();
+        }
+        */
+
+        addProduct(parentName, childName);
+
+
+    }
+
+    private int addProduct(List<String> department, List<String> product) {
+
+        int groupPosition = 0;
+        // parentName = ECApp.catalogClient.getCategoriesParentList().iterator();
+
+        //check the hash map if the group already exists
+        CategoriesParent parent = categories.get(department);
+
+        //categories.put(stringList, parent);
+
+        List<String> k = new ArrayList<>();
+        for (String s : parentName) {
+
+            Log.d(TAG, "categories activity " + s);
+            k.add(s);
+            categories.put(k, parent);
+            parentList.add(parent);
+
+        }
+
+
+        List<String> catlogList = new ArrayList<>();
+        //size of the children list
+
+        catlogList.add(String.valueOf(childName));
+
+        int listSize = catlogList.size();
+        //add to the counter
+        listSize++;
+        //create a new child and add that to the group
+        //   CategoriesChild childObj = categories.get(product);
+
+        //ECApp.catalogClient.getCategoriesParentList().iterator().next().setChildCatalog(catlogList);
+
+        //find the group position inside the list
+        groupPosition = catlogList.indexOf(parent);
+        return groupPosition;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -158,8 +246,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    public void onCategoriesClick(){
-        Intent OnClick = new Intent(this,CategoriesActivity.class);
+    public void onCategoriesClick() {
+        Intent OnClick = new Intent(this, CategoriesActivity.class);
         startActivity(OnClick);
     }
 
@@ -173,11 +261,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "ONE");
-        viewPager.setAdapter(adapter);
-    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -199,46 +282,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         mFilteredProductList = new ProductList();
         mFilteredProductList.setProductsList(newList);
-
-        adapter = new RecyclerViewAdapter(mFilteredProductList, getApplicationContext());
-        mRecyclerView.setAdapter(adapter);
-        // mRecyclerView.updateList(newList);
         return true;
+
     }
+
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
     }
 
 
@@ -328,10 +379,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 try {
 
                                     mProductList = lapp.catalogClient.productDisplayList();
-                                    mAdapter = new RecyclerViewAdapter(mProductList, getApplicationContext());
-                                    //ECApplication)getApplication());
-                                    mRecyclerView.setAdapter(mAdapter);
-                                    // miIntent.putExtra("filterEnabled", "true");
+
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -344,9 +392,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
                                 try {
                                     mProductList = lapp.catalogClient.productDisplayList();
-                                    mAdapter = new RecyclerViewAdapter(mProductList, getApplicationContext());
-                                    //ECApplication)getApplication());
-                                    mRecyclerView.setAdapter(mAdapter);
+
                                 } catch (Exception e) {
 
                                     e.printStackTrace();
@@ -373,8 +419,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
 }
-
-
-
-

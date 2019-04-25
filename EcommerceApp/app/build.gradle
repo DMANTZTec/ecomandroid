@@ -11,15 +11,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-        packagingOptions{
+    packagingOptions {
 
-            exclude 'META-INF/LICENCE'
-            exclude 'META-INF/LICENCE-FIREBASE-txt'
-            exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENCE'
+        exclude 'META-INF/LICENCE-FIREBASE-txt'
+        exclude 'META-INF/NOTICE'
 
 
-
-        }
+    }
 
 
 
@@ -35,7 +34,7 @@ android {
     }
 }
 
-repositories{
+repositories {
 
     mavenCentral()
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.dmantz.ecommerceapp.model.CatalogFilter;
+import com.dmantz.ecommerceapp.model.CategoriesChild;
+import com.dmantz.ecommerceapp.model.CategoriesParent;
 import com.dmantz.ecommerceapp.model.Catlog;
 import com.dmantz.ecommerceapp.model.Product;
 import com.dmantz.ecommerceapp.model.ProductOld;
@@ -20,11 +22,9 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +35,16 @@ public class CatalogClient extends ProductList {
 
     static CatalogClient catalogClientObj;
 
+    List<CategoriesParent> categoriesParentList = new ArrayList<>();
+    CategoriesParent categories;
     public Catlog catlog;
     private ProductList productList;
     private CatalogFilter catalogFilterObj;
     private Context context;
 
 
-    String catalogURL = "http://192.168.0.183:8080/ec/catalog";
+    String catalogURL = "http://192.168.0.117:8080/ec/catalog";
+    String categoriesUrl = "http://192.168.0.117:8080/catalog_dir";
 
 
     public CatalogClient() {
@@ -65,7 +68,6 @@ public class CatalogClient extends ProductList {
     }
 
 
-
     public Context getContext() {
         return context;
     }
@@ -87,14 +89,13 @@ public class CatalogClient extends ProductList {
             //connection.setDoOutput(true);
 
 
-
             Gson gson = new Gson();
 
             JsonObject filterCriteriaJsonObj = new JsonObject();
 
             JsonObject filterEnabledJsonObj = new JsonObject();
-            filterCriteriaJsonObj.add("filterCriteria",filterEnabledJsonObj);
-            filterEnabledJsonObj.addProperty("filterEnabled",catalogFilterObj.getFilterEnabaled());
+            filterCriteriaJsonObj.add("filterCriteria", filterEnabledJsonObj);
+            filterEnabledJsonObj.addProperty("filterEnabled", catalogFilterObj.getFilterEnabaled());
             String catalogFilterJson = gson.toJson(filterCriteriaJsonObj);
 
 
@@ -118,27 +119,21 @@ public class CatalogClient extends ProductList {
             bufferedresponse.close();
 
             JSONObject responseJsonObj = new JSONObject(response.toString());
-         // JSONArray responseArray = responseJsonObj.getJSONArray("products");
+            // JSONArray responseArray = responseJsonObj.getJSONArray("products");
             String responseBody = responseJsonObj.toString();
             catlog = gson.fromJson(responseBody, Catlog.class);
 
-           // catlog.setProducts(catlog.getProducts());
+            // catlog.setProducts(catlog.getProducts());
 
 
+            for (Product product : catlog.getProducts()) {
 
-
-            for (Product product : catlog.getProducts() )
-            {
-
-            //    catlog.setProducts(Collections.singletonList(product));
-              //  catlog.getProducts().size();
-             //   catlog.setProducts(Collections.singletonList(product));
+                //    catlog.setProducts(Collections.singletonList(product));
+                //  catlog.getProducts().size();
+                //   catlog.setProducts(Collections.singletonList(product));
                 String s1 = String.valueOf(product.getProductSkus().iterator().next().getPrice());
-                Log.d(TAG, "getCatalogFromBE: "+s1);
+                Log.d(TAG, "getCatalogFromBE: " + s1);
             }
-
-
-
 
 
         } catch (IOException e) {
@@ -150,7 +145,7 @@ public class CatalogClient extends ProductList {
     }
 
 
-    public Product getProduct(Integer productId) {
+    public Product getProduct(String productId) {
 
         List<Product> filteredProducts = catlog.getProducts().stream().filter(product -> product.getProductId().equals(productId)).collect(Collectors.toList());
         return filteredProducts.get(0);
@@ -280,7 +275,90 @@ public class CatalogClient extends ProductList {
         this.catlog = catlog;
     }
 
-/*
+
+    public void getCatlogDir() {
+
+
+        try {
+
+            URL url = new URL(categoriesUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("content-Type", "application/json");
+            // connection.setDoInput(true);
+            //connection.setDoOutput(true);
+
+            Gson gson = new Gson();
+
+
+            JsonObject categoriesJsonObj = new JsonObject();
+            categoriesJsonObj.addProperty("startLevel", 1);
+            categoriesJsonObj.addProperty("endLevel", 2);
+            categoriesJsonObj.addProperty("storeId", 1);
+            categoriesJsonObj.addProperty("productCatlogId", 0);
+
+
+            String categoriesJson = gson.toJson(categoriesJsonObj);
+
+            Log.d(TAG, "list of CategoriesDir" + categoriesJson);
+
+            DataOutputStream dataOutputStream = null;
+            dataOutputStream = new DataOutputStream(connection.getOutputStream());
+            dataOutputStream.write(categoriesJson.getBytes());
+            dataOutputStream.flush();
+
+            BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while ((line = bufferedresponse.readLine()) != null) {
+                response.append(line);
+                response.append("/r");
+            }
+            bufferedresponse.close();
+
+
+            JSONArray responseJsonObj = new JSONArray(response.toString());
+            // JSONArray responseArray = responseJsonObj.getJSONArray("produ cts");
+
+            for (int i = 0; i < responseJsonObj.length(); i++) {
+                JSONObject js = responseJsonObj.getJSONObject(i);
+                String responseBody = js.toString();
+                categories = gson.fromJson(responseBody, CategoriesParent.class);
+
+                categoriesParentList.add(categories);
+            }
+
+            Log.d(TAG, "inside loop of response: " + getCategories());
+
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public CategoriesParent getCategories() {
+        return categories;
+    }
+
+    public void setCategories(CategoriesParent categories) {
+        this.categories = categories;
+    }
+
+    public List<CategoriesParent> getCategoriesParentList() {
+        return categoriesParentList;
+    }
+
+    public void setCategoriesParentList(List<CategoriesParent> categoriesParentList) {
+        this.categoriesParentList = categoriesParentList;
+    }
+
+    /*
 
     JSONObject storejsonObj;
     String jsonData = null;
