@@ -48,7 +48,7 @@ public class CategoriesListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        List<CategoriesChild> productList = ECApp.catalogClient.getCategoriesParentList().get(childPosition).getChildCatalog();
+        List<CategoriesChild> productList = ECApp.catalogClient.getCategoriesParentList().get(groupPosition).getChildCatalog();
         return productList.get(childPosition);
     }
 
@@ -96,7 +96,7 @@ public class CategoriesListAdapter extends BaseExpandableListAdapter {
 
 
         TextView childItem = (TextView) convertView.findViewById(R.id.categoriesChildText);
-        childItem.setText(ECApp.catalogClient.getCategoriesParentList().get(groupPosition).getChildCatalog().get(childPosition).getCatalogDesc());
+        childItem.setText(ECApp.catalogClient.getCategoriesParentList().get(groupPosition).getChildCatalog().get(childPosition).getCatalogName());
 
         return convertView;
     }

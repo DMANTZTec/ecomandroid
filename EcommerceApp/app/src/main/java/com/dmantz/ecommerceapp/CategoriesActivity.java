@@ -48,6 +48,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
     LinearLayout checkboxLinearLayout;
     CheckBox menuItemCheckBox;
     ECApplication ECApp;
+
     List<String> parentName = new ArrayList<>();
     List<String> childName = new ArrayList<>();
 
@@ -68,10 +69,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
         ECApp = (ECApplication) getApplicationContext();
         ECApp.catalogClient.getCatlogDir();
 
-
         loadData();
-
-
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.appbar);
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.navigation_icon);
         toolbar.setNavigationIcon(drawable);
@@ -137,7 +135,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
         List<CategoriesParent> parent = ECApp.catalogClient.getCategoriesParentList();
         for (CategoriesParent categoriesParent : parent) {
 
-            parentName.add(categoriesParent.getCatalogDesc());
+            parentName.add(categoriesParent.getCatalogName());
             Log.d(TAG, "loadData: " + parentName.toString());
         }
 
@@ -145,47 +143,32 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
         List<CategoriesChild> categoriesChild = ECApp.catalogClient.categoriesParentList.iterator().next().getChildCatalog();
         for (CategoriesChild categoriesChild1 : categoriesChild) {
-            childName.add(categoriesChild1.getCatalogDesc());
+            childName.add(categoriesChild1.getCatalogName());
             Log.d(TAG, "loadData: " + childName);
         }
-
-
-        //  List<String> stringList = catName.stream().filter(productList -> productList.getCatalogName()).collect(Collectors.toList());
-        // Log.d(TAG, "loadData: "+stringList);
-       /* for (int i =0;i<= ECApp.catalogClient.getCategories().getChildCatalog().size();i++){
-            String s = catName.iterator().next().getCatalogName();
-        }
-        */
-
         addProduct(parentName, childName);
-
-
     }
 
     private int addProduct(List<String> department, List<String> product) {
 
         int groupPosition = 0;
-        // parentName = ECApp.catalogClient.getCategoriesParentList().iterator();
 
         //check the hash map if the group already exists
         CategoriesParent parent = categories.get(department);
 
-        //categories.put(stringList, parent);
-
-        List<String> k = new ArrayList<>();
+        List<String> parentList = new ArrayList<>();
         for (String s : parentName) {
 
             Log.d(TAG, "categories activity " + s);
-            k.add(s);
-            categories.put(k, parent);
-            parentList.add(parent);
+            parentList.add(s);
+            categories.put(parentList, parent);
+            this.parentList.add(parent);
 
         }
 
 
         List<String> catlogList = new ArrayList<>();
         //size of the children list
-
         catlogList.add(String.valueOf(childName));
 
         int listSize = catlogList.size();
@@ -227,10 +210,6 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
                 return true;
 
 
-            case R.id.categories:
-                onCategoriesClick();
-                return true;
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -246,17 +225,11 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
     }
 
-    public void onCategoriesClick() {
-        Intent OnClick = new Intent(this, CategoriesActivity.class);
-        startActivity(OnClick);
-    }
 
     @Override
     public void onBackPressed() {
 
-        Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent a = new Intent(this, MainActivity.class);
         startActivity(a);
 
     }

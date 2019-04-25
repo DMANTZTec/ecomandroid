@@ -43,7 +43,7 @@ public class CatalogClient extends ProductList {
     private Context context;
 
 
-    String catalogURL = "http://192.168.0.117:8080/ec/catalog";
+    String catalogURL = "http://192.168.0.183:8080/ec/catalog";
     String categoriesUrl = "http://192.168.0.117:8080/catalog_dir";
 
 
@@ -294,7 +294,7 @@ public class CatalogClient extends ProductList {
             JsonObject categoriesJsonObj = new JsonObject();
             categoriesJsonObj.addProperty("startLevel", 1);
             categoriesJsonObj.addProperty("endLevel", 2);
-            categoriesJsonObj.addProperty("storeId", 1);
+            categoriesJsonObj.addProperty("storeId", 2);
             categoriesJsonObj.addProperty("productCatlogId", 0);
 
 
