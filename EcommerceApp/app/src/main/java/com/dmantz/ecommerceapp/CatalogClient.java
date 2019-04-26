@@ -36,14 +36,14 @@ public class CatalogClient extends ProductList {
     static CatalogClient catalogClientObj;
 
     List<CategoriesParent> categoriesParentList = new ArrayList<>();
-    CategoriesParent categories;
+    CategoriesParent categories ;
     public Catlog catlog;
     private ProductList productList;
     private CatalogFilter catalogFilterObj;
     private Context context;
 
 
-    String catalogURL = "http://192.168.0.183:8080/ec/catalog";
+    String catalogURL = "http://192.168.0.140:8080/ec/catalog";
     String categoriesUrl = "http://192.168.0.117:8080/catalog_dir";
 
 
@@ -54,6 +54,13 @@ public class CatalogClient extends ProductList {
             catalogFilterObj = new CatalogFilter();
             catalogFilterObj.setFilterEnabaled("False");
 
+        }
+
+    }
+
+    public void check(){
+        if (categoriesParentList.isEmpty()){
+            getCatlogDir();
         }
 
     }
@@ -327,6 +334,7 @@ public class CatalogClient extends ProductList {
 
                 categoriesParentList.add(categories);
             }
+
 
             Log.d(TAG, "inside loop of response: " + getCategories());
 

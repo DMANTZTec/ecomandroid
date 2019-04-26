@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.dmantz.ecommerceapp.Adapters.CategoriesListAdapter;
@@ -49,6 +50,8 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
     CheckBox menuItemCheckBox;
     ECApplication ECApp;
 
+    ImageView img;
+
     List<String> parentName = new ArrayList<>();
     List<String> childName = new ArrayList<>();
 
@@ -67,8 +70,9 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
 
         ECApp = (ECApplication) getApplicationContext();
-        ECApp.catalogClient.getCatlogDir();
 
+        parentList.clear();
+        categories.clear();
         loadData();
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.appbar);
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.navigation_icon);
@@ -88,13 +92,14 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
         addMenuItemInNavDrawer();
 
 
-        categoriesExpandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+
+
+        categoriesExpandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-                CategoriesParent categoriesP = parentList.get(groupPosition);
 
-                CategoriesChild categoriesC = categoriesP.getChildCatalog().get(childPosition);
 
                 return false;
             }
@@ -105,7 +110,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-                CategoriesParent categoriesP = parentList.get(groupPosition);
+                //CategoriesParent categoriesP = parentList.get(groupPosition);
 
                 return false;
             }
@@ -131,6 +136,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
     private void loadData() {
 
+        ECApp.catalogClient.check();
 
         List<CategoriesParent> parent = ECApp.catalogClient.getCategoriesParentList();
         for (CategoriesParent categoriesParent : parent) {
@@ -230,6 +236,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
     public void onBackPressed() {
 
         Intent a = new Intent(this, MainActivity.class);
+
         startActivity(a);
 
     }

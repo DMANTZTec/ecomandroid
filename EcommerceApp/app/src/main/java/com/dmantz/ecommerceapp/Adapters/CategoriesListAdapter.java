@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dmantz.ecommerceapp.ECApplication;
 import com.dmantz.ecommerceapp.R;
@@ -14,6 +16,8 @@ import com.dmantz.ecommerceapp.model.CategoriesChild;
 import com.dmantz.ecommerceapp.model.CategoriesParent;
 
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class CategoriesListAdapter extends BaseExpandableListAdapter {
 
@@ -71,6 +75,7 @@ public class CategoriesListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         TextView heading;
+        ImageView img;
 
         ECApp = (ECApplication) context.getApplicationContext();
 
@@ -81,13 +86,33 @@ public class CategoriesListAdapter extends BaseExpandableListAdapter {
         }
 
         heading = (TextView) convertView.findViewById(R.id.categoriesParentText);
+        img = convertView.findViewById(R.id.ivGroupIndicator);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getApplicationContext(), "clicked on image", Toast.LENGTH_LONG);
+                toast.show();
+
+            }
+        });
+        heading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast toast = Toast.makeText(getApplicationContext(), "clicked group name", Toast.LENGTH_LONG);
+                toast.show();
+
+            }
+        });
         heading.setText(ECApp.catalogClient.getCategoriesParentList().get(groupPosition).getCatalogName());
+
 
         return convertView;
     }
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
         CategoriesChild childCatalog = (CategoriesChild) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

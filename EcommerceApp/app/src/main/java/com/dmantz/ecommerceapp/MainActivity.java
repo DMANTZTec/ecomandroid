@@ -38,6 +38,7 @@ import com.dmantz.ecommerceapp.model.Product;
 
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
