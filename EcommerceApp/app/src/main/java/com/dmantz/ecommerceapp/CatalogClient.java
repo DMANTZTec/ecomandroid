@@ -407,3 +407,4 @@ public class CatalogClient extends ProductList {
 
 }
 
+/*the end*/
