@@ -86,24 +86,8 @@ public class CategoriesListAdapter extends BaseExpandableListAdapter {
         }
 
         heading = (TextView) convertView.findViewById(R.id.categoriesParentText);
-        img = convertView.findViewById(R.id.ivGroupIndicator);
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast toast = Toast.makeText(getApplicationContext(), "clicked on image", Toast.LENGTH_LONG);
-                toast.show();
 
-            }
-        });
-        heading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Toast toast = Toast.makeText(getApplicationContext(), "clicked group name", Toast.LENGTH_LONG);
-                toast.show();
-
-            }
-        });
         heading.setText(ECApp.catalogClient.getCategoriesParentList().get(groupPosition).getCatalogName());
 
 
@@ -113,15 +97,16 @@ public class CategoriesListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
+        ImageView img;
         CategoriesChild childCatalog = (CategoriesChild) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.activity_categories_child, null);
         }
 
-
         TextView childItem = (TextView) convertView.findViewById(R.id.categoriesChildText);
         childItem.setText(ECApp.catalogClient.getCategoriesParentList().get(groupPosition).getChildCatalog().get(childPosition).getCatalogName());
+
 
         return convertView;
     }

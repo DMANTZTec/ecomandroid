@@ -22,6 +22,7 @@ import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.dmantz.ecommerceapp.Adapters.CategoriesListAdapter;
 import com.dmantz.ecommerceapp.model.CategoriesChild;
@@ -95,16 +96,13 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
 
 
-        categoriesExpandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        categoriesExpandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-
-
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
                 return false;
             }
         });
-
 
         categoriesExpandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
