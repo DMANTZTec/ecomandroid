@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dmantz.ecommerceapp.CategoriesActivity;
 import com.dmantz.ecommerceapp.ECApplication;
 import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.CategoriesChild;
@@ -86,8 +87,6 @@ public class CategoriesListAdapter extends BaseExpandableListAdapter {
         }
 
         heading = (TextView) convertView.findViewById(R.id.categoriesParentText);
-
-
         heading.setText(ECApp.catalogClient.getCategoriesParentList().get(groupPosition).getCatalogName());
 
 

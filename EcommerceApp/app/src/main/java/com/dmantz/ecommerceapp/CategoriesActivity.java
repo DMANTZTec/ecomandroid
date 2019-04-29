@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
@@ -93,9 +94,6 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
         addMenuItemInNavDrawer();
 
 
-
-
-
         categoriesExpandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -104,13 +102,44 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
             }
         });
 
+
         categoriesExpandableList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-                //CategoriesParent categoriesP = parentList.get(groupPosition);
+                img = (ImageView) v.findViewById(R.id.ivGroupIndicator);
 
-                return false;
+                //CategoriesParent categoriesP = parentList.get(groupPosition);
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Toast.makeText(CategoriesActivity.this, "Entered into parent ", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
+                img.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        if (parent.isGroupExpanded(groupPosition)) {
+                            parent.collapseGroup(groupPosition);
+                            img.setImageResource(R.drawable.ic_action_categories);
+                        } else {
+
+
+                            parent.expandGroup(groupPosition);
+                            img.setImageResource(R.drawable.ic_action_categories);
+                        }
+
+                    }
+                });
+
+
+                return true;
             }
         });
     }
