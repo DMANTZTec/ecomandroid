@@ -43,9 +43,6 @@ public class CartViewActivity extends AppCompatActivity {
         orderIdText.setText("ORDER ID : "+ Integer.toString(lapp.orderClientObj.getOrderId()));
 
 
-
-
-
         List<OrderItem> orderItems = lapp.orderClientObj.getCurrentOrder().getOrderItemList();
         cartAdapter = new CartViewAdapter(getApplicationContext(), orderItems);
         cartViewRecyclerview.setAdapter(cartAdapter);

@@ -2,6 +2,7 @@ package com.dmantz.ecommerceapp;
 
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.dmantz.ecommerceapp.model.CatalogFilter;
@@ -36,14 +37,25 @@ public class CatalogClient extends ProductList {
     static CatalogClient catalogClientObj;
 
     List<CategoriesParent> categoriesParentList = new ArrayList<>();
-    CategoriesParent categories ;
+    CategoriesParent categories;
     public Catlog catlog;
     private ProductList productList;
+
+    public CatalogFilter getCatalogFilterObj() {
+        return catalogFilterObj;
+    }
+
+    public void setCatalogFilterObj(CatalogFilter catalogFilterObj) {
+        this.catalogFilterObj = catalogFilterObj;
+    }
+
     private CatalogFilter catalogFilterObj;
     private Context context;
+    CategoriesActivity categoriesActivity = new CategoriesActivity();
 
 
-    String catalogURL = "http://192.168.0.140:8080/ec/catalog";
+
+    String catalogURL = "http://192.168.0.183:8080/ec/catalog";
     String categoriesUrl = "http://192.168.0.117:8080/catalog_dir";
 
 
@@ -53,13 +65,14 @@ public class CatalogClient extends ProductList {
         if (catalogFilterObj == null) {
             catalogFilterObj = new CatalogFilter();
             catalogFilterObj.setFilterEnabaled("False");
+            int id = catalogFilterObj.getCatalogId();
 
         }
 
     }
 
-    public void check(){
-        if (categoriesParentList.isEmpty()){
+    public void check() {
+        if (categoriesParentList.isEmpty()) {
             getCatlogDir();
         }
 
@@ -102,11 +115,13 @@ public class CatalogClient extends ProductList {
 
             JsonObject filterEnabledJsonObj = new JsonObject();
             filterCriteriaJsonObj.add("filterCriteria", filterEnabledJsonObj);
+
+           filterEnabledJsonObj.addProperty("catalog_id", catalogFilterObj.getCatalogId());
             filterEnabledJsonObj.addProperty("filterEnabled", catalogFilterObj.getFilterEnabaled());
             String catalogFilterJson = gson.toJson(filterCriteriaJsonObj);
 
 
-            Log.d(TAG, "productDisplayList: converted json" + catalogFilterJson);
+            Log.d(TAG, "productDisplayList: converted json" + filterCriteriaJsonObj);
 
 
             //updateFilter(catalogFilterObj.getFilterEnabaled(),filterNewObj.getFilterType(),filterNewObj.getFilterData());
@@ -117,10 +132,10 @@ public class CatalogClient extends ProductList {
             dataOutputStream.flush();
 
             BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
+            String res;
             StringBuffer response = new StringBuffer();
-            while ((line = bufferedresponse.readLine()) != null) {
-                response.append(line);
+            while ((res = bufferedresponse.readLine()) != null) {
+                response.append(res);
                 response.append("/r");
             }
             bufferedresponse.close();
@@ -301,7 +316,7 @@ public class CatalogClient extends ProductList {
             JsonObject categoriesJsonObj = new JsonObject();
             categoriesJsonObj.addProperty("startLevel", 1);
             categoriesJsonObj.addProperty("endLevel", 2);
-            categoriesJsonObj.addProperty("storeId", 2);
+            categoriesJsonObj.addProperty("storeId", 1);
             categoriesJsonObj.addProperty("productCatlogId", 0);
 
 
@@ -337,8 +352,6 @@ public class CatalogClient extends ProductList {
 
 
             Log.d(TAG, "inside loop of response: " + getCategories());
-
-
 
 
         } catch (IOException e) {
@@ -404,6 +417,12 @@ public class CatalogClient extends ProductList {
     }
 */
 
+
+    public int catid(int catalogId){
+
+
+        return catalogId;
+    }
 
 }
 

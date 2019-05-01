@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -26,9 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dmantz.ecommerceapp.Adapters.CategoriesListAdapter;
+import com.dmantz.ecommerceapp.Adapters.RecyclerViewAdapter;
+import com.dmantz.ecommerceapp.model.CatalogFilter;
 import com.dmantz.ecommerceapp.model.CategoriesChild;
 import com.dmantz.ecommerceapp.model.CategoriesParent;
+import com.dmantz.ecommerceapp.model.Catlog;
 import com.dmantz.ecommerceapp.model.MenuModel;
+import com.dmantz.ecommerceapp.model.Product;
 import com.dmantz.ecommerceapp.model.ProductList;
 import com.dmantz.ecommerceapp.model.ProductOld;
 
@@ -54,10 +59,13 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
     ImageView img;
 
-    List<String> parentName = new ArrayList<>();
+    ArrayList<String> parentName = new ArrayList<>();
     List<String> childName = new ArrayList<>();
 
     CategoriesParent catlogDir;
+
+    Catlog catlog = new Catlog();
+    CatalogFilter catalogFilter;
     ExpandableListView categoriesExpandableList;
     CategoriesListAdapter categoriesAdapter;
 
@@ -72,6 +80,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
 
         ECApp = (ECApplication) getApplicationContext();
+
 
         parentList.clear();
         categories.clear();
@@ -93,12 +102,37 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
         // expandAll();
         addMenuItemInNavDrawer();
 
+        Bundle bundle = new Bundle();
+
 
         categoriesExpandableList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                return false;
+
+                for (CategoriesChild categoriesChild : ECApp.catalogClient.getCategoriesParentList().iterator().next().getChildCatalog()) {
+                    int childId = categoriesChild.getCatalogId();
+                    bundle.putInt("catalog_id", childId);
+                }
+
+
+                //CategoriesParent categoriesP = parentList.get(groupPosition);
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        ECApp.catalogClient.getCatalogFilterObj().setCatalogId(bundle.getInt("catalog_id"));
+                        ECApp.catalogClient.getCatlog(true);
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+
+
+                    }
+                });
+
+
+                return true;
             }
         });
 
@@ -108,15 +142,28 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
                 img = (ImageView) v.findViewById(R.id.ivGroupIndicator);
+                // catalogFilter = new CatalogFilter();
+
+                bundle.putInt("catalog_id", ECApp.catalogClient.categoriesParentList.get(groupPosition).getCatalogId());
 
                 //CategoriesParent categoriesP = parentList.get(groupPosition);
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        Toast.makeText(CategoriesActivity.this, "Entered into parent ", Toast.LENGTH_LONG).show();
+                        //catalogFilter = new CatalogFilter();
+                        //catalogFilter.setCatalogId(bundle.getInt("catalog_id"));
+                        ECApp.catalogClient.getCatalogFilterObj().setCatalogId(bundle.getInt("catalog_id"));
+                        ECApp.catalogClient.getCatlog(true);
+                        //Log.d(TAG, "onClick: catalog filter obj" +catalogFilter.toString());
+                        //Log.d(TAG, "bundle onClick: " + catalogFilter.getCatalogId());
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
 
                     }
+
+
                 });
 
 
@@ -141,7 +188,10 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
                 return true;
             }
+
+
         });
+        ECApp.catalogClient.getCatlog(true);
     }
 
 
@@ -170,6 +220,7 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
             parentName.add(categoriesParent.getCatalogName());
             Log.d(TAG, "loadData: " + parentName.toString());
+
         }
 
 //        List<CategoriesChild> childList = ECApp.catalogClient.getCategoriesParentList();
@@ -430,4 +481,20 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
     }
+
+
+    public CatalogFilter getCatalogFilter() {
+        return catalogFilter;
+    }
+
+    public void setCatalogFilter(CatalogFilter catalogFilter) {
+        this.catalogFilter = catalogFilter;
+    }
+
+    public int catId(CatalogFilter catalogFilter) {
+
+        return catalogFilter.getCatalogId();
+    }
+
+
 }

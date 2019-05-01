@@ -10,6 +10,7 @@ public class CatalogFilter {
 
     public String filterEnabled = "false";
     public HashMap<String, ArrayList> filterCriteria = new HashMap<>();
+    public  int catalogId ;
 
     public CatalogFilter() {
 
@@ -71,4 +72,20 @@ public class CatalogFilter {
     }
 
 
+    public int getCatalogId() {
+        return catalogId;
+    }
+
+    public void setCatalogId(int catalogId) {
+        this.catalogId = catalogId;
+    }
+
+    @Override
+    public String toString() {
+        return "CatalogFilter{" +
+                "filterEnabled='" + filterEnabled + '\'' +
+                ", filterCriteria=" + filterCriteria +
+                ", catalogId=" + catalogId +
+                '}';
+    }
 }
