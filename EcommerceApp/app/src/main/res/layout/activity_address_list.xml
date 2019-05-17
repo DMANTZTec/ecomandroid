@@ -87,7 +87,7 @@
                 android:textSize="20dp" />
 
             <Button
-                android:id="@+id/EditAddressBtn"
+                android:id="@+id/sendAddressBtn"
                 android:layout_width="140dp"
                 android:layout_height="50dp"
                 android:layout_below="@id/pinCode"
@@ -97,13 +97,13 @@
                 android:textColor="#0000ff" />
 
             <Button
-                android:id="@+id/sendAddressBtn"
+                android:id="@+id/editAddressBtn"
                 android:layout_width="180dp"
                 android:layout_height="50dp"
                 android:layout_below="@id/pinCode"
                 android:layout_marginLeft="30sp"
                 android:layout_marginTop="10dp"
-                android:layout_toEndOf="@id/EditAddressBtn"
+                android:layout_toEndOf="@id/sendAddressBtn"
                 android:background="@color/white"
                 android:text="Edit Address"
                 android:textColor="#0000ff" />

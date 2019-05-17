@@ -7,6 +7,7 @@ import com.dmantz.ecommerceapp.model.OrderItem;
 import com.dmantz.ecommerceapp.model.Shipping;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class OrderClient {
     private String updateUrl = "http://192.168.100.20:8090/EcommerceApp/updateOrder";
     private String shippingUrl = "http://192.168.100.20:8090/EcommerceApp/addShippingAddress";
     private String addressListUrl = "http://192.168.100.20:8090/EcommerceApp/viewShippingAddresses";
+
     private Shipping shipping;
 
     public static OrderClient getOrderClient() {
@@ -321,7 +324,9 @@ public class OrderClient {
             JSONArray jsonArray = new JSONArray(response.toString());
             Gson gson = new Gson();
 
-            addressList =  gson.fromJson(String.valueOf(jsonArray),ArrayList.class );
+            Type collectionType = new TypeToken<ArrayList<Shipping>>() {
+            }.getType();
+            addressList =  gson.fromJson(String.valueOf(jsonArray),collectionType );
 
         } catch (IOException e) {
             e.printStackTrace();

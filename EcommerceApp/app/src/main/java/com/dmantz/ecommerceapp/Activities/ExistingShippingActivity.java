@@ -1,9 +1,9 @@
 package com.dmantz.ecommerceapp.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.dmantz.ecommerceapp.Adapters.AddressAdapter;
@@ -33,17 +33,11 @@ public class ExistingShippingActivity extends ShippingActivity {
 
         addressAdapter = new AddressAdapter(ExistingShippingActivity.this, addressList);
         listView.setAdapter(addressAdapter);
-
-
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Log.d(TAG, "entered into item click ");
-            }
-        });
+
+
 
     }
 

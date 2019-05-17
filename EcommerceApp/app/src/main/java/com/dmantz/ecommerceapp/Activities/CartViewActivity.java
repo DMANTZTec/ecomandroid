@@ -67,7 +67,7 @@ public class CartViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent;
-                String s = null;
+                String s = "";
                 for (Shipping shipping : lapp.orderClientObj.addressList()){
                      s = shipping.getCustomerId();
                 }
@@ -77,7 +77,9 @@ public class CartViewActivity extends AppCompatActivity {
 
                     intent = new Intent(CartViewActivity.this, ExistingShippingActivity.class);
 
-                } else {
+                }
+                else {
+
                     intent = new Intent(CartViewActivity.this, ShippingActivity.class);
                 }
                 startActivity(intent);

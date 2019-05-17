@@ -40,7 +40,7 @@
                 android:textAlignment="center"
                 android:id="@+id/shippingListview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="450dp"
                 android:layout_margin="5dp"
                 android:divider="#ccc"
                 android:dividerHeight="10dp"
@@ -55,6 +55,12 @@
 
 
 
+        <Button
+            android:id="@+id/addNewAddress"
+            android:text="Add new Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shippingListview"/>
 
 
 
