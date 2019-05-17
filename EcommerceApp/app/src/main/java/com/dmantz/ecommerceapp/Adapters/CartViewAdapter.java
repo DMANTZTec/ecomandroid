@@ -3,7 +3,6 @@ package com.dmantz.ecommerceapp.Adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,11 @@ import java.util.List;
 
 public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHolder> {
 
-    public static final String TAG = CartViewAdapter.class.getSimpleName();
 
-    private List<OrderItem> orderItemList;
+    public static final String TAG = CartViewAdapter.class.getSimpleName();
     Context context;
     ECApplication ECApp;
+    private List<OrderItem> orderItemList;
 
 
     public CartViewAdapter(Context context, List<OrderItem> porderItemList) {
@@ -55,11 +54,11 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
         //holder.itemPrice.setText(orderObj.getOrderItemList().get(position).getProductSku());
         //Picasso.get().load(orderObj.getOrderArrayList().get(position).getProductImage()).fit().into(holder.itemImage)
 
-        ECApp = (ECApplication)context.getApplicationContext();
+        ECApp = (ECApplication) context.getApplicationContext();
         ECApp.orderClientObj.getCurrentOrder().calculateTotals();
 
         holder.elegantNumberButton.setNumber(Integer.toString(orderItemList.get(position).getQuantity()));
-        holder.totalPrice.setText(Integer.toString((int)ECApp.orderClientObj.getCurrentOrder().getOrderItemList().get(position).getTotalPrice()));
+        holder.totalPrice.setText(Integer.toString((int) ECApp.orderClientObj.getCurrentOrder().getOrderItemList().get(position).getTotalPrice()));
 
 
         holder.elegantNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
@@ -67,13 +66,12 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
 
 
-
                 for (OrderItem orderitem : orderItemList) {
                     if (orderitem.equals(orderItemList)) {
                         ECApp.orderClientObj.updateQuantityBE(ECApp.orderClientObj.getOrderId(), orderItemList.get(position).getProductSku(), newValue);
                     }
                 }
-                holder.totalPrice.setText(Integer.toString((int) ECApp.orderClientObj.getCurrentOrder().getOrderItemList().iterator().next().getCartTotalPrice()));
+                holder.totalPrice.setText(Integer.toString(ECApp.orderClientObj.getCurrentOrder().getOrderItemList().iterator().next().getCartTotalPrice()));
             }
         });
 
@@ -104,33 +102,6 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
         return orderItemList.size();
     }
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView itemName;
-        public TextView itemPrice;
-        public ImageView itemImage;
-        public ElegantNumberButton elegantNumberButton;
-        public Button deleteBtn;
-        public TextView totalPrice;
-        public TextView cartTotal;
-
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            itemName = (TextView) itemView.findViewById(R.id.cartView_itemName);
-            itemPrice = itemView.findViewById(R.id.cartView_itemPrice);
-            itemImage = itemView.findViewById(R.id.cartView_image);
-            elegantNumberButton = itemView.findViewById(R.id.cardView_elegentBtn);
-            //   deleteBtn = itemView.findViewById(R.id.cart_delete_btn);
-
-            totalPrice = itemView.findViewById(R.id.total);
-
-
-        }
-    }
-
     /*   public void delete(int position) {
 
            orderItemList.remove(position);
@@ -146,6 +117,32 @@ public class CartViewAdapter extends RecyclerView.Adapter<CartViewAdapter.ViewHo
 
     public void setOrderItemList(List<OrderItem> orderItemList) {
         this.orderItemList = orderItemList;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView itemName;
+        public TextView itemPrice;
+        public ImageView itemImage;
+        public ElegantNumberButton elegantNumberButton;
+        public Button deleteBtn;
+        public TextView totalPrice;
+        public TextView cartTotal;
+
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            itemName = itemView.findViewById(R.id.cartView_itemName);
+            itemPrice = itemView.findViewById(R.id.cartView_itemPrice);
+            itemImage = itemView.findViewById(R.id.cartView_image);
+            elegantNumberButton = itemView.findViewById(R.id.cardView_elegentBtn);
+            //   deleteBtn = itemView.findViewById(R.id.cart_delete_btn);
+
+            totalPrice = itemView.findViewById(R.id.total);
+
+
+        }
     }
 
 

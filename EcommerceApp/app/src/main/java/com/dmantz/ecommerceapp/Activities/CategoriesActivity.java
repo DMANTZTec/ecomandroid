@@ -1,7 +1,8 @@
-package com.dmantz.ecommerceapp;
+package com.dmantz.ecommerceapp.Activities;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -9,8 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -18,57 +17,42 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.dmantz.ecommerceapp.Adapters.CategoriesListAdapter;
-import com.dmantz.ecommerceapp.Adapters.RecyclerViewAdapter;
-import com.dmantz.ecommerceapp.model.CatalogFilter;
+import com.dmantz.ecommerceapp.ECApplication;
+import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.CategoriesChild;
 import com.dmantz.ecommerceapp.model.CategoriesParent;
-import com.dmantz.ecommerceapp.model.Catlog;
 import com.dmantz.ecommerceapp.model.MenuModel;
-import com.dmantz.ecommerceapp.model.Product;
 import com.dmantz.ecommerceapp.model.ProductList;
 import com.dmantz.ecommerceapp.model.ProductOld;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CategoriesActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TAG = CategoriesActivity.class.getSimpleName();
-    private DrawerLayout mDrawerLayout;
-    private ProductList mProductList;
-    private ProductList mFilteredProductList;
-
     LinearLayout checkboxLinearLayout;
     CheckBox menuItemCheckBox;
     ECApplication ECApp;
-
     ImageView img;
-
     ArrayList<String> parentName = new ArrayList<>();
     List<String> childName = new ArrayList<>();
-
-    CategoriesParent catlogDir;
-
-    Catlog catlog = new Catlog();
-    CatalogFilter catalogFilter;
     ExpandableListView categoriesExpandableList;
     CategoriesListAdapter categoriesAdapter;
-
+    private DrawerLayout mDrawerLayout;
+    private ProductList mProductList;
+    private ProductList mFilteredProductList;
     private ArrayList<CategoriesParent> parentList = new ArrayList<>();
     private LinkedHashMap<List<String>, CategoriesParent> categories = new LinkedHashMap<>();
 
@@ -194,23 +178,6 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
         ECApp.catalogClient.getCatlog(true);
     }
 
-
-    private void expandAll() {
-        int count = categoriesAdapter.getGroupCount();
-        for (int i = 0; i < count; i++) {
-            categoriesExpandableList.expandGroup(i);
-        }
-    }
-
-
-    private void collapseAll() {
-        int count = categoriesAdapter.getGroupCount();
-        for (int i = 0; i < count; i++) {
-            categoriesExpandableList.collapseGroup(i);
-        }
-    }
-
-
     private void loadData() {
 
         ECApp.catalogClient.check();
@@ -232,124 +199,6 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
         }
         addProduct(parentName, childName);
     }
-
-    private int addProduct(List<String> department, List<String> product) {
-
-        int groupPosition = 0;
-
-        //check the hash map if the group already exists
-        CategoriesParent parent = categories.get(department);
-
-        List<String> parentList = new ArrayList<>();
-        for (String s : parentName) {
-
-            Log.d(TAG, "categories activity " + s);
-            parentList.add(s);
-            categories.put(parentList, parent);
-            this.parentList.add(parent);
-
-        }
-
-
-        List<String> catlogList = new ArrayList<>();
-        //size of the children list
-        catlogList.add(String.valueOf(childName));
-
-        int listSize = catlogList.size();
-        //add to the counter
-        listSize++;
-        //create a new child and add that to the group
-        //   CategoriesChild childObj = categories.get(product);
-
-        //ECApp.catalogClient.getCategoriesParentList().iterator().next().setChildCatalog(catlogList);
-
-        //find the group position inside the list
-        groupPosition = catlogList.indexOf(parent);
-        return groupPosition;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu: sucesfully entered into method");
-        getMenuInflater().inflate(R.menu.app_bar_menu, menu);
-        // MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setOnQueryTextListener(this);
-
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-
-            case R.id.carticon:
-                cartonclick();
-                return true;
-
-
-        }
-
-        return super.onOptionsItemSelected(item);
-
-
-    }
-
-
-    public void cartonclick() {
-        Intent i = new Intent(this, LoginActivity.class);
-        startActivity(i);
-
-
-    }
-
-
-    @Override
-    public void onBackPressed() {
-
-        Intent a = new Intent(this, MainActivity.class);
-
-        startActivity(a);
-
-    }
-
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-
-        Log.d(TAG, "onQueryTextChange: ");
-        newText = newText.toLowerCase();
-        ArrayList<ProductOld> newList = new ArrayList<>();
-
-        for (ProductOld productOld : mProductList.getProductsList()) {
-            String itemName = productOld.getItemName().toLowerCase();
-            if (itemName.contains(newText))
-                newList.add(productOld);
-        }
-
-        mFilteredProductList = new ProductList();
-        mFilteredProductList.setProductsList(newList);
-        return true;
-
-    }
-
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
-
 
     private void addMenuItemInNavDrawer() {
 
@@ -476,25 +325,135 @@ public class CategoriesActivity extends AppCompatActivity implements SearchView.
 
     }
 
+    private int addProduct(List<String> department, List<String> product) {
+
+        int groupPosition = 0;
+
+        //check the hash map if the group already exists
+        CategoriesParent parent = categories.get(department);
+
+        List<String> parentList = new ArrayList<>();
+        for (String s : parentName) {
+
+            Log.d(TAG, "categories activity " + s);
+            parentList.add(s);
+            categories.put(parentList, parent);
+            this.parentList.add(parent);
+
+        }
+
+
+        List<String> catlogList = new ArrayList<>();
+        //size of the children list
+        catlogList.add(String.valueOf(childName));
+
+        int listSize = catlogList.size();
+        //add to the counter
+        listSize++;
+        //create a new child and add that to the group
+        //   CategoriesChild childObj = categories.get(product);
+
+        //ECApp.catalogClient.getCategoriesParentList().iterator().next().setChildCatalog(catlogList);
+
+        //find the group position inside the list
+        groupPosition = catlogList.indexOf(parent);
+        return groupPosition;
+    }
+
+    private void expandAll() {
+        int count = categoriesAdapter.getGroupCount();
+        for (int i = 0; i < count; i++) {
+            categoriesExpandableList.expandGroup(i);
+        }
+    }
+
+    private void collapseAll() {
+        int count = categoriesAdapter.getGroupCount();
+        for (int i = 0; i < count; i++) {
+            categoriesExpandableList.collapseGroup(i);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu: sucesfully entered into method");
+        getMenuInflater().inflate(R.menu.app_bar_menu, menu);
+        // MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+
+            case R.id.carticon:
+                cartonclick();
+                return true;
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
+
+
+    }
+
+    public void cartonclick() {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent a = new Intent(this, MainActivity.class);
+
+        startActivity(a);
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+
+        Log.d(TAG, "onQueryTextChange: ");
+        newText = newText.toLowerCase();
+        ArrayList<ProductOld> newList = new ArrayList<>();
+
+        for (ProductOld productOld : mProductList.getProductsList()) {
+            String itemName = productOld.getItemName().toLowerCase();
+            if (itemName.contains(newText))
+                newList.add(productOld);
+        }
+
+        mFilteredProductList = new ProductList();
+        mFilteredProductList.setProductsList(newList);
+        return true;
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
     }
-
-
-    public CatalogFilter getCatalogFilter() {
-        return catalogFilter;
-    }
-
-    public void setCatalogFilter(CatalogFilter catalogFilter) {
-        this.catalogFilter = catalogFilter;
-    }
-
-    public int catId(CatalogFilter catalogFilter) {
-
-        return catalogFilter.getCatalogId();
-    }
-
 
 }

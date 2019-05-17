@@ -16,17 +16,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".ItemActivity" />
-        <activity android:name=".CartViewActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.RegistrationActivity" />
+        <activity android:name=".Activities.ItemActivity" />
+        <activity android:name=".Activities.CartViewActivity" />
         <activity
             android:name=".OtpClient"
             android:label="@string/title_activity_otp_client"
@@ -59,7 +59,9 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".CategoriesActivity"></activity>
+        <activity android:name=".Activities.CategoriesActivity" />
+        <activity android:name=".Activities.ExistingShippingActivity" />
+        <activity android:name=".ShippingActivity" />
     </application>
 
 </manifest>

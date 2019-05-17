@@ -1,4 +1,4 @@
-package com.dmantz.ecommerceapp;
+package com.dmantz.ecommerceapp.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,10 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.dmantz.ecommerceapp.ECApplication;
+import com.dmantz.ecommerceapp.PaymentClient;
+import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.Option;
 import com.dmantz.ecommerceapp.model.OrderItem;
-import com.dmantz.ecommerceapp.model.ProductSku;
 import com.dmantz.ecommerceapp.model.Product;
+import com.dmantz.ecommerceapp.model.ProductSku;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.Iterator;

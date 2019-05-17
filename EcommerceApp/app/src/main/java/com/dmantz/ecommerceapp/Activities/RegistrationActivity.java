@@ -1,15 +1,20 @@
-package com.dmantz.ecommerceapp;
+package com.dmantz.ecommerceapp.Activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.dmantz.ecommerceapp.ECApplication;
+import com.dmantz.ecommerceapp.LoginClient;
+import com.dmantz.ecommerceapp.OtpClient;
+import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.User;
+import com.dmantz.ecommerceapp.model.UserProfile;
 
 import org.json.simple.JSONObject;
 

@@ -1,14 +1,20 @@
-package com.dmantz.ecommerceapp;
+package com.dmantz.ecommerceapp.Activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.dmantz.ecommerceapp.Adapters.CartViewAdapter;
+import com.dmantz.ecommerceapp.ECApplication;
+import com.dmantz.ecommerceapp.R;
+import com.dmantz.ecommerceapp.ShippingActivity;
 import com.dmantz.ecommerceapp.model.OrderItem;
+import com.dmantz.ecommerceapp.model.Shipping;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.List;
@@ -17,7 +23,7 @@ public class CartViewActivity extends AppCompatActivity {
 
     public static final String TAG = CartViewActivity.class.getSimpleName();
 
-    TextView orderIdText,cartTotalValue;
+    TextView orderIdText, cartTotalValue;
     Button btnCheckout;
 
     private RecyclerView.Adapter cartAdapter;
@@ -40,7 +46,7 @@ public class CartViewActivity extends AppCompatActivity {
         btnCheckout = findViewById(R.id.btn_checkout);
 
         orderIdText = (TextView) findViewById(R.id.yourOrderText);
-        orderIdText.setText("ORDER ID : "+ Integer.toString(lapp.orderClientObj.getOrderId()));
+        orderIdText.setText("ORDER ID : " + Integer.toString(lapp.orderClientObj.getOrderId()));
 
 
         List<OrderItem> orderItems = lapp.orderClientObj.getCurrentOrder().getOrderItemList();
@@ -57,10 +63,29 @@ public class CartViewActivity extends AppCompatActivity {
         mBadge.setNumber(lapp.orderClientObj.getCurrentOrder().getTotalQty());
 
 
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                String s = null;
+                for (Shipping shipping : lapp.orderClientObj.addressList()){
+                     s = shipping.getCustomerId();
+                }
+
+                if (s.equals("102")) {
+
+
+                    intent = new Intent(CartViewActivity.this, ExistingShippingActivity.class);
+
+                } else {
+                    intent = new Intent(CartViewActivity.this, ShippingActivity.class);
+                }
+                startActivity(intent);
+            }
+        });
 
 
     }
-
 
 
 }

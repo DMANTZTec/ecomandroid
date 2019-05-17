@@ -1,4 +1,4 @@
-package com.dmantz.ecommerceapp;
+package com.dmantz.ecommerceapp.model;
 
 
 import com.dmantz.ecommerceapp.model.User;
@@ -13,12 +13,12 @@ public class UserProfile {
     User user;
     String firstName;
     String lastName;
-    String password;
+   public String password;
     String DOB;
     String gender;
     Integer Age;
-    String emailid;
-    String mobileNumber;
+   public String emailid;
+   public String mobileNumber;
     Long altmobileNumber;
     String lastLoggedLocation;
     ArrayList shipAddressList;

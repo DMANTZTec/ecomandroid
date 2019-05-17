@@ -40,6 +40,39 @@ public class PaymentClient extends Activity implements PaymentResultListener {
 
     }
 
+    private void getProductImformation() {
+
+
+        if (getIntent().hasExtra("itemName") && getIntent().hasExtra("itemImage") && getIntent().hasExtra("itemSize") && getIntent().hasExtra("itemPrice")) {
+
+            String itemName = getIntent().getStringExtra("itemName");
+            String itemUrl = getIntent().getStringExtra("itemImage");
+            String itemId = getIntent().getStringExtra("ProductId");
+            String itemPrice = getIntent().getStringExtra("itemPrice");
+            String itemSize = getIntent().getStringExtra("itemSize");
+
+            setProductImage(itemName, itemUrl, itemSize, itemPrice);
+        }
+
+
+    }
+
+    private void setProductImage(String itemName, String itemUrl, String itemSize, String itemPrice) {
+
+        mTextView = findViewById(R.id.itemInfo);
+        mTextView.setText(itemName);
+
+        mProductImage = findViewById(R.id.productImage);
+        Picasso.get().load(itemUrl).fit().into(mProductImage);
+
+        mTextView = findViewById(R.id.itemSize);
+        mTextView.setText(itemSize);
+
+        mTextView = findViewById(R.id.itemPrice);
+        mTextView.setText(itemPrice);
+
+    }
+
     public void startPayment(View view) {
         mAmount = findViewById(R.id.enterAmount);
 
@@ -79,41 +112,6 @@ public class PaymentClient extends Activity implements PaymentResultListener {
     public void onPaymentError(int i, String s) {
 
         Toast.makeText(PaymentClient.this, "Payment is failed", Toast.LENGTH_LONG).show();
-
-    }
-
-
-    private void getProductImformation() {
-
-
-        if (getIntent().hasExtra("itemName") && getIntent().hasExtra("itemImage") && getIntent().hasExtra("itemSize") && getIntent().hasExtra("itemPrice")) {
-
-            String itemName = getIntent().getStringExtra("itemName");
-            String itemUrl = getIntent().getStringExtra("itemImage");
-            String itemId = getIntent().getStringExtra("ProductId");
-            String itemPrice = getIntent().getStringExtra("itemPrice");
-            String itemSize = getIntent().getStringExtra("itemSize");
-
-            setProductImage(itemName, itemUrl, itemSize, itemPrice);
-        }
-
-
-    }
-
-
-    private void setProductImage(String itemName, String itemUrl, String itemSize, String itemPrice) {
-
-        mTextView = findViewById(R.id.itemInfo);
-        mTextView.setText(itemName);
-
-        mProductImage = findViewById(R.id.productImage);
-        Picasso.get().load(itemUrl).fit().into(mProductImage);
-
-        mTextView = findViewById(R.id.itemSize);
-        mTextView.setText(itemSize);
-
-        mTextView = findViewById(R.id.itemPrice);
-        mTextView.setText(itemPrice);
 
     }
 

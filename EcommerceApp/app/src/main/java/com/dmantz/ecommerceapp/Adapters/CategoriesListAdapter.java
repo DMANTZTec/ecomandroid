@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.dmantz.ecommerceapp.CategoriesActivity;
 import com.dmantz.ecommerceapp.ECApplication;
 import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.CategoriesChild;
@@ -18,14 +16,12 @@ import com.dmantz.ecommerceapp.model.CategoriesParent;
 
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 public class CategoriesListAdapter extends BaseExpandableListAdapter {
 
-    private Context context;
-    private List<CategoriesParent> parentList;
     public static final String TAG = CategoriesListAdapter.class.getSimpleName();
     ECApplication ECApp;
+    private Context context;
+    private List<CategoriesParent> parentList;
 
 
     public CategoriesListAdapter(Context mContext, List<CategoriesParent> mParentList) {

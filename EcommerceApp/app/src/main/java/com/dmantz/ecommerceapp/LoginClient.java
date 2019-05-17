@@ -3,6 +3,12 @@ package com.dmantz.ecommerceapp;
 
 import android.util.Log;
 
+import com.dmantz.ecommerceapp.model.UserProfile;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,18 +17,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Properties;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 
 public class LoginClient {
     private static final String TAG = "LOGINCLIENT";
-    private Properties props;
-    private UserProfile userProfile;
+    static LoginClient loginClient2;
+    public UserProfile userProfile;
     String targetURL = "http://192.168.100.4:8080/UserApp/login";
     String registerURL = "http://192.168.100.4:8080/UserApp/RegisterUser";
-    static LoginClient loginClient2;
+    private Properties props;
 
     private LoginClient() {
 
@@ -35,6 +37,17 @@ public class LoginClient {
         return loginClient2;
     }
 
+    public static void main(String[] args) throws Exception {
+        LoginClient loginClientObj = new LoginClient();
+        JSONObject loginResponse = loginClientObj.login("shashi", "shashi123");
+        System.out.println(loginResponse.toString());
+        loginClientObj.registerUser("shashi  ", "reddy ", "shashi@gmail.com ", "shashi123", "8978971254");
+        JSONObject registerResponse = loginClientObj.registerUser("shashi ", "reddy ", "shashi@gmail.com ", "shashi123", "8978971285");
+        System.out.println(registerResponse.toString());
+        //   loginClientObj.getUserProfile();
+
+
+    }
 
     public JSONObject login(String username, String password) throws IOException {
 
@@ -92,7 +105,6 @@ public class LoginClient {
         return statusJsonObj;
 
     }
-
 
     public JSONObject registerUser(String firstName, String lastName, String emailid, String password, String mobileNumber) throws Exception {
         JSONObject registerUserObj = new JSONObject();
@@ -161,18 +173,6 @@ public class LoginClient {
         userProfile.getEmailid();
         System.out.println("user first name is " + userProfile.getFirstName());
         return userProfile;
-    }
-
-    public static void main(String[] args) throws Exception {
-        LoginClient loginClientObj = new LoginClient();
-        JSONObject loginResponse = loginClientObj.login("shashi", "shashi123");
-        System.out.println(loginResponse.toString());
-        loginClientObj.registerUser("shashi  ", "reddy ", "shashi@gmail.com ", "shashi123", "8978971254");
-        JSONObject registerResponse = loginClientObj.registerUser("shashi ", "reddy ", "shashi@gmail.com ", "shashi123", "8978971285");
-        System.out.println(registerResponse.toString());
-        //   loginClientObj.getUserProfile();
-
-
     }
 
 

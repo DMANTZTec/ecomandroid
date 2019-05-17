@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShippingActivity">
+
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F44336"
+            android:elevation="4dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:title="ECApp">
+
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <android.support.v7.widget.CardView
+
+            android:id="@+id/shippingAddressDetails"
+            android:layout_width="match_parent"
+            android:layout_height="470dp"
+            android:layout_below="@id/appbar"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="1dp">
+
+            <LinearLayout
+                android:id="@+id/shippingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:layout_marginTop="50dp"
+            android:id="@+id/proceedToPaymentbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shippingAddressDetails"
+            android:text="Add Address" />
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

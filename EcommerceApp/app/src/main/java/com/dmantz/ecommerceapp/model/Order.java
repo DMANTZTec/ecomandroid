@@ -51,19 +51,6 @@ public class Order {
 
     }
 
-    public int totalQuantity() {
-        int totalQuantity = 0;
-        for (OrderItem orderItem : orderItemList) {
-
-            int qty = orderItem.getQuantity();
-            totalQuantity = totalQuantity + qty;
-            orderItem.setTotalQuantity(totalQuantity);
-            Log.d(TAG, "totalQuantity: " + totalQuantity);
-        }
-
-        return totalQuantity;
-    }
-
     public void calculateTotals() {
 
         double price;
@@ -75,10 +62,23 @@ public class Order {
             totalAmt = totalAmt + orderItem.getPrice();
             totalQty = totalQty + orderItem.getQuantity();
             Log.d(TAG, "order total amt: " + totalAmt + ";" + "order total qty " + totalQty);
-            Log.d(TAG, "calculateTotals: "+orderItem.getPrice()*orderItem.getQuantity());
+            Log.d(TAG, "calculateTotals: " + orderItem.getPrice() * orderItem.getQuantity());
 
 
         }
+    }
+
+    public int totalQuantity() {
+        int totalQuantity = 0;
+        for (OrderItem orderItem : orderItemList) {
+
+            int qty = orderItem.getQuantity();
+            totalQuantity = totalQuantity + qty;
+            orderItem.setTotalQuantity(totalQuantity);
+            Log.d(TAG, "totalQuantity: " + totalQuantity);
+        }
+
+        return totalQuantity;
     }
 
     public int cartTotal() {

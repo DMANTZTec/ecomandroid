@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dmantz.ecommerceapp.ItemActivity;
-import com.dmantz.ecommerceapp.model.Catlog;
-import com.dmantz.ecommerceapp.model.ProductList;
+import com.dmantz.ecommerceapp.Activities.ItemActivity;
 import com.dmantz.ecommerceapp.R;
+import com.dmantz.ecommerceapp.model.Catlog;
 import com.dmantz.ecommerceapp.model.Product;
+import com.dmantz.ecommerceapp.model.ProductList;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -29,31 +29,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Catlog mCatlog;
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mProductName;
-        public TextView mProductSize;
-        public TextView mProductPrice;
-        public ImageView mProductImage;
-        CardView cv;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            mProductName = itemView.findViewById(R.id.productName);
-            mProductSize = itemView.findViewById(R.id.productSize);
-            mProductPrice = itemView.findViewById(R.id.productPrice);
-            mProductImage = itemView.findViewById(R.id.productImage);
-            cv = itemView.findViewById(R.id.card_view);
-        }
-    }
-
-
     public RecyclerViewAdapter(ProductList productList, Context context) {
         mproductList = productList;
         mcontext = context;
 
         Log.d("TAG", "entered into add method");
     }
+
 
     public RecyclerViewAdapter(List<Product> mproducts, Context context) {
 
@@ -84,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             //  holder.mProductName.setText(mproductList.getProductsList().get(position).getItemName());
             // holder.mProductSize.setText(mproductList.getProductsList().get(position).getItemSize());
             // holder.mProductSize.setText(mCatlog.getProducts().get(position).getProductManufacturerName());
-             holder.mProductPrice.setText(String.valueOf(productList.get(position).getProductSkus().get(0).getPrice()));
+            holder.mProductPrice.setText(String.valueOf(productList.get(position).getProductSkus().get(0).getPrice()));
             // holder.mProductPrice.setText(Double.toString(mCatlog.getProducts().get(position).getProductSkus().get(position).getPrice()));
             Picasso.get().load(productList.get(position).getProductSkus().get(0).getImage()).fit().into(holder.mProductImage);
             //  Log.d("picasso", mproductList.getProductsList().get(position).getItemImageUrl());
@@ -118,7 +100,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("productUrl", mproductList.getProductsList().get(position).getItemImageUrl());
 
             */
-               // Log.d("on clicke recyclerview", "onClick: " + mCatlog.getProducts().get(position).getProductId());
+                // Log.d("on clicke recyclerview", "onClick: " + mCatlog.getProducts().get(position).getProductId());
 
 
                 mcontext.startActivity(intent);
@@ -128,7 +110,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
-
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
@@ -136,6 +117,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         return productList.size();
         //mproductList.getProductsList().size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView mProductName;
+        public TextView mProductSize;
+        public TextView mProductPrice;
+        public ImageView mProductImage;
+        CardView cv;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            mProductName = itemView.findViewById(R.id.productName);
+            mProductSize = itemView.findViewById(R.id.productSize);
+            mProductPrice = itemView.findViewById(R.id.productPrice);
+            mProductImage = itemView.findViewById(R.id.productImage);
+            cv = itemView.findViewById(R.id.card_view);
+        }
     }
 
 
