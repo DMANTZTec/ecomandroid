@@ -33,7 +33,7 @@ public class UserClient {
     //List<User> userList = new ArrayList<>();
 
 
-    String all_userURL = "http://192.168.100.15:8080/android/allUsers";
+    String all_userURL = "http://192.168.0.140:8080/android/allUsers";
 
     public static UserClient getUserClient() {
 
@@ -60,13 +60,13 @@ public class UserClient {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("context-Type", "application/json");
 
-            Gson gson = new Gson();
+           /* Gson gson = new Gson();
 
             String userJson = gson.toJson(userObj);
 
             DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
             dataOutputStream.write(userJson.getBytes());
-            dataOutputStream.flush();
+            dataOutputStream.flush();*/
 
             BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
@@ -81,7 +81,7 @@ public class UserClient {
 
             Log.d(TAG, "list obj" + storejsonObj);
             JSONArray jsonArrayobj = storejsonObj.getJSONArray("userEmailId");
-           // JSONArray jsonArrayobj = storejsonObj.getJSONArray("userId");
+            // JSONArray jsonArrayobj = storejsonObj.getJSONArray("userId");
 
 
             Log.d(TAG, "user" + jsonArrayobj);

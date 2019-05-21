@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
         // android.support.v7.widget.Toolbar toolbar = findViewById(R.id.)
 
-        uapp = (UserApp) getApplicationContext();
+        uapp = (UserApp) getApplication();
         uapp.userClient.setContext(getApplicationContext());
 
-        ArrayList<User> userList = uapp.userClient.getUserFromDB();
+       ArrayList<User> userList = uapp.userClient.getUserFromDB();
 
 
         mRecyclerView = findViewById(R.id.recycler_view);
