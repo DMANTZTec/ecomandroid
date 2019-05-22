@@ -17,6 +17,7 @@ public class Order {
 
 
     List<OrderItem> orderItemList = new ArrayList<>();
+    ArrayList<Shipping> shippingArrayList = new ArrayList<Shipping>();
 
 
     public Order() {
@@ -119,6 +120,13 @@ public class Order {
         this.orderItemList = orderItemList;
     }
 
+    public void shippingAddress(Shipping shippings){
+
+
+        shippingArrayList.add(shippings);
+
+    }
+
 
     public double getTotalAmt() {
         return totalAmt;
@@ -136,4 +144,11 @@ public class Order {
         this.totalQty = totalQty;
     }
 
+    public ArrayList<Shipping> getShippingArrayList() {
+        return shippingArrayList;
+    }
+
+    public void setShippingArrayList(ArrayList<Shipping> shippingArrayList) {
+        this.shippingArrayList = shippingArrayList;
+    }
 }

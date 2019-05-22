@@ -23,7 +23,7 @@ public class CartViewActivity extends AppCompatActivity {
 
     public static final String TAG = CartViewActivity.class.getSimpleName();
 
-    TextView orderIdText, cartTotalValue;
+    TextView orderIdText, cartTotalValue ;
     Button btnCheckout;
 
     private RecyclerView.Adapter cartAdapter;
@@ -44,6 +44,26 @@ public class CartViewActivity extends AppCompatActivity {
 
         cartTotalValue = findViewById(R.id.cartSubTotal);
         btnCheckout = findViewById(R.id.btn_checkout);
+
+
+        TextView name = (TextView) findViewById(R.id.name);
+        TextView hno = (TextView) findViewById(R.id.hno);
+        TextView street = (TextView) findViewById(R.id.street);
+        TextView city = (TextView) findViewById(R.id.city);
+        TextView state = (TextView) findViewById(R.id.state);
+        TextView pincode = (TextView) findViewById(R.id.pinCode);
+
+
+        for (Shipping shipping : lapp.orderClientObj.getCurrentOrder().getShippingArrayList()){
+
+            name.setText(shipping.getFirstName());
+            hno.setText(shipping.getFlatNo());
+            street.setText(shipping.getArea());
+            city.setText(shipping.getCity());
+            state.setText(shipping.getState());
+          //  pincode.setText(shipping.getPincode());
+
+           }
 
         orderIdText = (TextView) findViewById(R.id.yourOrderText);
         orderIdText.setText("ORDER ID : " + Integer.toString(lapp.orderClientObj.getOrderId()));

@@ -35,6 +35,14 @@ public class ExistingShippingActivity extends ShippingActivity {
         listView.setAdapter(addressAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+        Button button = (Button) findViewById(R.id.addNewAddress);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ShippingActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
