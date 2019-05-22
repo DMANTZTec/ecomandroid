@@ -1,5 +1,6 @@
 package com.dmantz.ecommerceapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dmantz.ecommerceapp.Activities.ExistingShippingActivity;
 import com.dmantz.ecommerceapp.model.Shipping;
 
 import java.util.ArrayList;
@@ -243,6 +245,9 @@ public class ShippingActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Added Sucessfully", Toast.LENGTH_SHORT).show();
 
                 ECApp.orderClientObj.address(shipping);
+
+                Intent intent = new Intent(getApplicationContext(),ExistingShippingActivity.class);
+                startActivity(intent);
 
 
 

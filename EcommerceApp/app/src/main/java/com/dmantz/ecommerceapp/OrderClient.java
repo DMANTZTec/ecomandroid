@@ -42,6 +42,7 @@ public class OrderClient {
 
     public static OrderClient getOrderClient() {
 
+
         if (orderClientObj == null) {
             orderClientObj = new OrderClient();
         }

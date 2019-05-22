@@ -1,156 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:scrollbars="vertical">
 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    <android.support.constraint.ConstraintLayout
 
-
-    >
-
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/cartToolBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="#F44336"
-        android:paddingBottom="2dp"
-        android:textAlignment="textStart"
-        app:title="ECApp">
-
-
-        <RelativeLayout
-
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="190dp"
-            android:paddingTop="10dp">
-
-            <ImageView
-
-                android:id="@+id/cart_item_notification"
-                android:layout_width="49dp"
-                android:layout_height="49dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="1dp"
-                android:layout_marginRight="5dp"
-                android:clickable="true"
-                android:src="@drawable/ic_action_name" />
-
-
-            <com.nex3z.notificationbadge.NotificationBadge
-
-                android:id="@+id/actionbar_notification_textview"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignTop="@id/cart_item_notification"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="-16dp"
-                android:layout_marginTop="-8dp"
-                android:layout_marginRight="0dp"
-                android:background="@drawable/badge_bg_with_shadow"
-                android:padding="2dp">
-
-            </com.nex3z.notificationbadge.NotificationBadge>
-
-        </RelativeLayout>
-
-
-    </android.support.v7.widget.Toolbar>
-
-
-    <FrameLayout
-
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp">
 
-        <TextView
-            android:id="@+id/yourOrderText"
+
+        >
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/cartToolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginBottom="15dp"
-            android:padding="5dp"
-            android:text="Order Id :"
-            android:textSize="20sp" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/layoutCardView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="35dp"
-            android:padding="10dp">
-
-
-            <android.support.v7.widget.RecyclerView
-
-
-                android:id="@+id/cartView_RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="82dp"
-                >
-
-
-
-            </android.support.v7.widget.RecyclerView>
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="#F44336"
+            android:paddingBottom="2dp"
+            android:textAlignment="textStart"
+            app:title="ECApp">
 
 
             <RelativeLayout
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="400dp">
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="190dp"
+                android:paddingTop="10dp">
 
-                <TextView
-                    android:id="@+id/cartTotal"
-                    android:text="CartSubTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:padding="10dp"
-                    android:textSize="20sp"/>
-                <TextView
-                    android:layout_toRightOf="@id/cartTotal"
-                    android:id="@+id/cartSubTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:padding="10dp"
-                    android:textSize="20sp"/>
+                <ImageView
+
+                    android:id="@+id/cart_item_notification"
+                    android:layout_width="49dp"
+                    android:layout_height="49dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="5dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_action_name" />
+
+
+                <com.nex3z.notificationbadge.NotificationBadge
+
+                    android:id="@+id/actionbar_notification_textview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignTop="@id/cart_item_notification"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="-16dp"
+                    android:layout_marginTop="-8dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/badge_bg_with_shadow"
+                    android:padding="2dp">
+
+                </com.nex3z.notificationbadge.NotificationBadge>
+
             </RelativeLayout>
 
 
-        </android.support.v7.widget.CardView>
-
-        <Button
+        </android.support.v7.widget.Toolbar>
 
 
-            android:id="@+id/btn_checkout"
+        <FrameLayout
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Proceed to Checkout"
-            />
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp">
+
+
+            <TextView
+                android:id="@+id/yourOrderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginBottom="5dp"
+                android:padding="1dp"
+                android:text="Order Id :"
+                android:textSize="20sp" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/layoutCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:padding="10dp">
+
+
+                <android.support.v7.widget.RecyclerView
+
+
+                    android:id="@+id/cartView_RecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="5dp"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="82dp">
+
+
+                </android.support.v7.widget.RecyclerView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="250dp"
+                    android:padding="10dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/shippingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Shipping Address"
+                        android:textStyle="bold"
+                        android:textSize="20dp"/>
+
+                    <TextView
+
+                        android:layout_below="@id/shippingText"
+
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:textSize="25dp" />
+
+                    <TextView
+
+                        android:id="@+id/hno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/name"
+                        android:textSize="20dp" />
+
+                    <TextView
+
+                        android:id="@+id/street"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/hno"
+                        android:textSize="20dp" />
+
+                    <TextView
+
+                        android:id="@+id/city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/street"
+                        android:textSize="20dp" />
+
+                    <TextView
+
+                        android:id="@+id/state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/street"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/city"
+                        android:textSize="20dp" />
+
+
+                    <TextView
+
+                        android:id="@+id/pinCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/state"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="20dp" />
+
+                    <View
+                        android:layout_above="@id/cartTotal"
+                        android:id="@+id/view_div"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"/>
+
+
+                    <TextView
+                        android:id="@+id/cartTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pinCode"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="30dp"
+                        android:padding="10dp"
+                        android:text="CartSubTotal"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/cartSubTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pinCode"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_toRightOf="@id/cartTotal"
+                        android:padding="10dp"
+                        android:textSize="20sp" />
 
 
 
-    </FrameLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
 
+            <Button
 
-</android.support.constraint.ConstraintLayout>
+
+                android:id="@+id/btn_checkout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Proceed to Checkout" />
+
+
+        </FrameLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

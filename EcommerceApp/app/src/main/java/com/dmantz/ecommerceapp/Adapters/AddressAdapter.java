@@ -2,6 +2,7 @@ package com.dmantz.ecommerceapp.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.dmantz.ecommerceapp.Activities.CartViewActivity;
+import com.dmantz.ecommerceapp.ECApplication;
 import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.Shipping;
 
@@ -21,6 +23,7 @@ public class AddressAdapter extends BaseAdapter {
     public static final String TAG = AddressAdapter.class.getSimpleName();
     Context context;
     ArrayList<Shipping> addressList;
+    ECApplication ECapp;
 
     public AddressAdapter(Context context, ArrayList<Shipping> addressList) {
 
@@ -79,6 +82,9 @@ public class AddressAdapter extends BaseAdapter {
         sendToThisAddressBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: "+v);
+                ECapp = (ECApplication) context.getApplicationContext();
+                ECapp.orderClientObj.getCurrentOrder().shippingAddress(addressList.get(position));
                 context.startActivity(new Intent(context, CartViewActivity.class));
             }
         });
