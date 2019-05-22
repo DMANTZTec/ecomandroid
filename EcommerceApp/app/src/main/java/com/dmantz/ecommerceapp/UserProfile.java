@@ -5,7 +5,7 @@ import com.dmantz.ecommerceapp.model.User;
 
 import java.util.ArrayList;
 
-
+//update
 public class UserProfile {
     Integer userId;
     Integer userKey;
