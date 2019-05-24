@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.dmantz.ecommerceapp.Adapters.CartViewAdapter;
@@ -23,8 +24,9 @@ public class CartViewActivity extends AppCompatActivity {
 
     public static final String TAG = CartViewActivity.class.getSimpleName();
 
-    TextView orderIdText, cartTotalValue ;
-    Button btnCheckout;
+    TextView orderIdText, cartTotalValue;
+    Button btnCheckout, applyCoupon;
+    EditText couponCodeET;
 
     private RecyclerView.Adapter cartAdapter;
 
@@ -34,7 +36,7 @@ public class CartViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_view);
 
-
+        //Handle to recyclerview and setting adapter
         RecyclerView cartViewRecyclerview = (RecyclerView) findViewById(R.id.cartView_RecyclerView);
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         cartViewRecyclerview.setLayoutManager(linearLayoutManager);
@@ -44,7 +46,8 @@ public class CartViewActivity extends AppCompatActivity {
 
         cartTotalValue = findViewById(R.id.cartSubTotal);
         btnCheckout = findViewById(R.id.btn_checkout);
-
+        applyCoupon = findViewById(R.id.applyBtn);
+        couponCodeET = findViewById(R.id.couponET);
 
         TextView name = (TextView) findViewById(R.id.name);
         TextView hno = (TextView) findViewById(R.id.hno);
@@ -54,20 +57,29 @@ public class CartViewActivity extends AppCompatActivity {
         TextView pincode = (TextView) findViewById(R.id.pinCode);
 
 
-        for (Shipping shipping : lapp.orderClientObj.getCurrentOrder().getShippingArrayList()){
+        for (Shipping shipping : lapp.orderClientObj.getCurrentOrder().getShippingArrayList()) {
 
             name.setText(shipping.getFirstName());
             hno.setText(shipping.getFlatNo());
             street.setText(shipping.getArea());
             city.setText(shipping.getCity());
             state.setText(shipping.getState());
-          //  pincode.setText(shipping.getPincode());
+            //  pincode.setText(shipping.getPincode());
 
-           }
+        }
 
         orderIdText = (TextView) findViewById(R.id.yourOrderText);
         orderIdText.setText("ORDER ID : " + Integer.toString(lapp.orderClientObj.getOrderId()));
 
+
+        // apply coupon button on click send code to BE
+        applyCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String couponcode = couponCodeET.getText().toString();
+                lapp.orderClientObj.applyCouponCode(couponcode);
+            }
+        });
 
         List<OrderItem> orderItems = lapp.orderClientObj.getCurrentOrder().getOrderItemList();
         cartAdapter = new CartViewAdapter(getApplicationContext(), orderItems);
@@ -88,8 +100,8 @@ public class CartViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent;
                 String s = "";
-                for (Shipping shipping : lapp.orderClientObj.addressList()){
-                     s = shipping.getCustomerId();
+                for (Shipping shipping : lapp.orderClientObj.addressList()) {
+                    s = shipping.getCustomerId();
                 }
 
                 if (s.equals("102")) {
@@ -97,8 +109,7 @@ public class CartViewActivity extends AppCompatActivity {
 
                     intent = new Intent(CartViewActivity.this, ExistingShippingActivity.class);
 
-                }
-                else {
+                } else {
 
                     intent = new Intent(CartViewActivity.this, ShippingActivity.class);
                 }

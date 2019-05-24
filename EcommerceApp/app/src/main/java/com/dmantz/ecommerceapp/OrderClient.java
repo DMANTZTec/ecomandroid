@@ -2,6 +2,11 @@ package com.dmantz.ecommerceapp;
 
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.dmantz.ecommerceapp.model.Order;
 import com.dmantz.ecommerceapp.model.OrderItem;
 import com.dmantz.ecommerceapp.model.Shipping;
@@ -30,15 +35,18 @@ public class OrderClient {
 
     static OrderClient orderClientObj;
     int orderId;
-    private ShippingActivity shippingAddress = new ShippingActivity();
     ArrayList<Shipping> addressList = new ArrayList<>();
+
     private Order currentOrder;
+
     private String orderUrl = "http://192.168.100.20:8090/EcommerceApp/createOrder2";
     private String updateUrl = "http://192.168.100.20:8090/EcommerceApp/updateOrder";
     private String shippingUrl = "http://192.168.100.20:8090/EcommerceApp/addShippingAddress";
     private String addressListUrl = "http://192.168.100.20:8090/EcommerceApp/viewShippingAddresses";
 
-    private Shipping shipping;
+    private String couponUrl = "http://192.168.100.20:8090/EcommerceApp/applyCouponCode";
+
+
 
     public static OrderClient getOrderClient() {
 
@@ -300,12 +308,12 @@ public class OrderClient {
     }
 
 
-    public ArrayList<Shipping> addressList(){
+    public ArrayList<Shipping> addressList() {
 
 
         try {
 
-            URL url = new URL(addressListUrl+"/102");
+            URL url = new URL(addressListUrl + "/102");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -327,7 +335,7 @@ public class OrderClient {
 
             Type collectionType = new TypeToken<ArrayList<Shipping>>() {
             }.getType();
-            addressList =  gson.fromJson(String.valueOf(jsonArray),collectionType );
+            addressList = gson.fromJson(String.valueOf(jsonArray), collectionType);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -335,12 +343,53 @@ public class OrderClient {
             e.printStackTrace();
         }
 
-        return addressList ;
+        return addressList;
 
     }
 
 
-    public ArrayList<Shipping> address(Shipping address){
+    public void applyCouponCode(String coupon) {
+
+        JSONObject couponJson = new JSONObject();
+        try {
+            couponJson.put("couponCode", coupon);
+            couponJson.put("orderId", getOrderId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, couponUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.d(TAG, "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return couponJson.toString().getBytes();
+            }
+        };
+        ECApplication.getInstance().addToRequestQueue(stringRequest, "getRequest");
+
+
+    }
+
+
+    public ArrayList<Shipping> address(Shipping address) {
 
         addressList.add(address);
         return addressList;
