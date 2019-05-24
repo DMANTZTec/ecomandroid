@@ -13,6 +13,7 @@ import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.List;
 
+//CartViewActivity
 public class CartViewActivity extends AppCompatActivity {
 
     public static final String TAG = CartViewActivity.class.getSimpleName();
