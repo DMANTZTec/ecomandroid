@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.dmantz.ecommerceapp.Activities.CartViewActivity;
 import com.dmantz.ecommerceapp.ECApplication;
 import com.dmantz.ecommerceapp.R;
+import com.dmantz.ecommerceapp.ShippingActivity;
+import com.dmantz.ecommerceapp.UpdateShippingAddress;
 import com.dmantz.ecommerceapp.model.Shipping;
 
 import java.util.ArrayList;
@@ -85,11 +87,25 @@ public class AddressAdapter extends BaseAdapter {
                 Log.d(TAG, "onClick: "+v);
                 ECapp = (ECApplication) context.getApplicationContext();
                 ECapp.orderClientObj.getCurrentOrder().shippingAddress(addressList.get(position));
+
                 context.startActivity(new Intent(context, CartViewActivity.class));
             }
         });
 
         pincode.setText(String.valueOf(address.getPincode()));
+
+
+        editaddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ECapp = (ECApplication) context.getApplicationContext();
+                ECapp.orderClientObj.getCurrentOrder().shippingAddress(addressList.get(position));
+                context.startActivity(new Intent(context, UpdateShippingAddress.class));
+
+
+
+            }
+        });
 
 
         return convertView;

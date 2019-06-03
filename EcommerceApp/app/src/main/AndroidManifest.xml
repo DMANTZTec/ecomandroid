@@ -62,6 +62,7 @@
         <activity android:name=".Activities.CategoriesActivity" />
         <activity android:name=".Activities.ExistingShippingActivity" />
         <activity android:name=".ShippingActivity" />
+        <activity android:name=".UpdateShippingAddress"></activity>
     </application>
 
 </manifest>

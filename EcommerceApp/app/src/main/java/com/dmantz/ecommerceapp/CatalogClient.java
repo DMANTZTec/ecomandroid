@@ -37,8 +37,8 @@ public class CatalogClient extends ProductList {
     public List<CategoriesParent> categoriesParentList = new ArrayList<>();
     public Catlog catlog;
     CategoriesParent categories;
-    String catalogURL = "http://192.168.100.20:8090/ec/catalog";
-    String categoriesUrl = "http://192.168.100.20:8090/catalog_dir";
+    String catalogURL = "http://192.168.100.20:8080/ec/catalog";
+    String categoriesUrl = "http://192.168.100.20:8080/catalog_dir";
     private ProductList productList;
     private CatalogFilter catalogFilterObj;
     private Context context;

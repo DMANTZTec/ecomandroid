@@ -11,10 +11,10 @@ public class Order {
 
     String customerId;
     int OrderId;
-
     double totalAmt;
     int totalQty;
-
+    double finalAmount;
+    double discountedAmount;
 
     List<OrderItem> orderItemList = new ArrayList<>();
     ArrayList<Shipping> shippingArrayList = new ArrayList<Shipping>();
@@ -51,6 +51,7 @@ public class Order {
         }
 
     }
+
 
     public void calculateTotals() {
 
@@ -120,13 +121,34 @@ public class Order {
         this.orderItemList = orderItemList;
     }
 
-    public void shippingAddress(Shipping shippings){
+    public void shippingAddress(Shipping shippings) {
 
 
         shippingArrayList.add(shippings);
 
     }
 
+
+    public double finalAmt(CouponRes couponRes) {
+
+        finalAmount = couponRes.getFinalAmount();
+        return finalAmount;
+    }
+
+    public double disountedAmt(CouponRes couponRes) {
+
+        discountedAmount = couponRes.getDiscountToApply();
+        return discountedAmount;
+
+    }
+
+    public double getFinalAmount() {
+        return finalAmount;
+    }
+
+    public void setFinalAmount(double finalAmount) {
+        this.finalAmount = finalAmount;
+    }
 
     public double getTotalAmt() {
         return totalAmt;
@@ -150,5 +172,13 @@ public class Order {
 
     public void setShippingArrayList(ArrayList<Shipping> shippingArrayList) {
         this.shippingArrayList = shippingArrayList;
+    }
+
+    public double getDiscountedAmount() {
+        return discountedAmount;
+    }
+
+    public void setDiscountedAmount(double discountedAmount) {
+        this.discountedAmount = discountedAmount;
     }
 }

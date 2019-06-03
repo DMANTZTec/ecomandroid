@@ -215,12 +215,56 @@
                         android:layout_toRightOf="@id/cartTotal"
                         android:padding="10dp"
                         android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/discountAppliedTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/cartTotal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:text="Discounted amt :"
+                        android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/disountApplied"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/cartSubTotal"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/discountAppliedTV"
+                        android:padding="10dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/finalAmtTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/discountAppliedTV"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Final amount :   "
+                        android:textSize="20sp" />
+
+
+                    <TextView
+                        android:id="@+id/finalAmt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/disountApplied"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_toRightOf="@id/finalAmtTV"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        />
+
 
                     <View
                         android:id="@+id/view_div2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@id/cartSubTotal"
+                        android:layout_below="@id/finalAmt"
                         android:layout_marginTop="10dp"
                         android:background="@android:color/darker_gray"
                         android:padding="10dp" />

@@ -27,8 +27,6 @@ public class ShippingActivity extends AppCompatActivity {
     List<EditText> editTextList = new ArrayList<EditText>();
     Button addNewAddressBtn;
     ArrayList<String> hintNames = new ArrayList<>();
-
-
     Shipping shipping = new Shipping();
     ECApplication ECApp;
 
@@ -88,6 +86,7 @@ public class ShippingActivity extends AppCompatActivity {
                             } else
 
                                 shipping.setFirstName(addressFieldText.getText().toString());
+
 
 
                             Log.d(TAG, "getting first name  " + shipping.getFirstName());
