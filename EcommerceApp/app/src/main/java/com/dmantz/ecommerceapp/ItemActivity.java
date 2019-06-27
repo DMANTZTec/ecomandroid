@@ -112,7 +112,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
 
-                Intent buyNow = new Intent(ItemActivity.this, PaymentClient.class);
+                Intent buyNow = new Intent(ItemActivity.this, PaymentActivity.class);
                 startActivity(buyNow);
             }
         });

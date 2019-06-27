@@ -1,19 +1,16 @@
 package com.dmantz.ecommerceapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.dmantz.ecommerceapp.model.CouponInfo;
 import com.dmantz.ecommerceapp.model.CouponRes;
 import com.dmantz.ecommerceapp.model.Order;
 import com.dmantz.ecommerceapp.model.OrderItem;
+import com.dmantz.ecommerceapp.model.PaymentResponse;
 import com.dmantz.ecommerceapp.model.Shipping;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -31,27 +28,30 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 public class OrderClient {
 
     public static final String TAG = OrderClient.class.getSimpleName();
-
-    CouponInfo couponInfo;
     static OrderClient orderClientObj;
+    CouponInfo couponInfo;
     int orderId;
     ArrayList<Shipping> addressList = new ArrayList<>();
     CouponRes couponRes = new CouponRes();
+    Properties props = new Properties();
+    PaymentResponse paymentResponse;
+
+
     private Order currentOrder;
-    private String orderUrl = "http://192.168.100.20:8080/EcommerceApp/createOrder2";
-    private String updateUrl = "http://192.168.100.20:8080/EcommerceApp/updateOrder";
-    private String shippingUrl = "http://192.168.100.20:8080/EcommerceApp/addOrUpdateShippingAddress";
-    private String addressListUrl = "http://192.168.100.20:8080/EcommerceApp/viewShippingAddresses";
-
-    private String couponUrl = "http://192.168.100.20:8080/EcommerceApp/applyCouponCode";
-
-
+    private String orderUrl = "http://192.168.100.8:8080/EcommerceApp/createOrder2";
+    private String updateUrl = "http://192.168.100.8:8080/EcommerceApp/updateOrder";
+    private String shippingUrl = "http://192.168.100.8:8080/EcommerceApp/addOrUpdateShippingAddress";
+    private String addressListUrl = "http://192.168.100.8:8080/EcommerceApp/viewShippingAddresses";
+    private String couponUrl =  "http://192.168.100.8:8080/EcommerceApp/applyCouponCode";
+    private String paymentUrl = "http://192.168.100.9:8080/EcommerceApp/getDetails?paymentId=";
 
 
     public static OrderClient getOrderClient() {
@@ -59,24 +59,95 @@ public class OrderClient {
 
         if (orderClientObj == null) {
             orderClientObj = new OrderClient();
+
+
         }
         return orderClientObj;
+
+
     }
 
 
-    public void applyCoupon(String coupon){
+    public void applyCoupon(String coupon) {
 
-        if(coupon!= null){
+        if (coupon != null) {
             couponInfo = new CouponInfo();
             couponInfo.setCouponCode(coupon);
             applyCouponCode(coupon);
             currentOrder.finalAmt(couponRes);
             currentOrder.disountedAmt(couponRes);
+            currentOrder.CouponInfo(getCouponInfo());
         }
 
     }
 
+    public void applyCouponCode(String coupon) {
 
+        JSONObject couponJson = new JSONObject();
+        try {
+            couponJson.put("couponCode", coupon);
+            couponJson.put("orderId", getOrderId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            URL url = new URL(couponUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("content-Type", "application/json");
+
+            DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
+            dataOutputStream.write(couponJson.toString().getBytes());
+            dataOutputStream.flush();
+            BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while ((line = bufferedresponse.readLine()) != null) {
+                response.append(line);
+                response.append("/r");
+            }
+            bufferedresponse.close();
+
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new StringReader(response.toString()));
+            reader.setLenient(true);
+            couponRes = gson.fromJson(reader, CouponRes.class);
+            Log.d(TAG, "applyCouponCode: " + couponRes.getCouponStatus());
+            getCurrentOrder().finalAmt(couponRes);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public CouponInfo getCouponInfo() {
+        return couponInfo;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public Order getCurrentOrder() {
+        return currentOrder;
+    }
+
+    public void setCurrentOrder(Order currentOrder) {
+        this.currentOrder = currentOrder;
+    }
+
+    public void setCouponInfo(CouponInfo couponInfo) {
+        this.couponInfo = couponInfo;
+    }
 
     public void addItem(OrderItem orderItemObj) {
 
@@ -237,6 +308,40 @@ public class OrderClient {
         }
 
     }
+      /*  JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, couponUrl, couponJson, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, "onResponse: " + response.toString());
+                Gson gson = new Gson();
+
+                couponRes = gson.fromJson(String.valueOf(response), CouponRes.class);
+
+
+
+                String s = getCouponRes().getCouponStatus();
+                getCurrentOrder().setCouponStatus(s);
+
+                    for(OrderItem orderItem : getCurrentOrder().getOrderItemList()){
+
+                        orderItem.setCartTotalPrice((int) Double.parseDouble(String.valueOf((getCouponRes().getFinalAmount()))));
+                        orderItem.getTotalPrice();
+                    }
+
+
+                //   Log.d(TAG, "onResponse: " + getCouponRes().getFinalAmount());
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.d(TAG, "onErrorResponse: "+error.toString());
+            }
+        });
+
+        ECApplication.getInstance().addToRequestQueue(jsonObjectRequest, "getRequest");
+*/
 
     public void addItemToOrderBE(OrderItem orderItemObj, String customerId) {
 
@@ -287,14 +392,6 @@ public class OrderClient {
 
     }
 
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
     //method to add shipping address to BE
     public void addAddress(Shipping shippingAddress) {
 
@@ -326,9 +423,6 @@ public class OrderClient {
         }
 
     }
-
-
-
 
     public ArrayList<Shipping> addressList() {
 
@@ -369,29 +463,16 @@ public class OrderClient {
 
     }
 
-
-
-
-    public void applyCouponCode(String coupon) {
-
-        JSONObject couponJson = new JSONObject();
-        try {
-            couponJson.put("couponCode", coupon);
-            couponJson.put("orderId", getOrderId());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void payment(String paymentkey) {
 
         try {
 
-            URL url = new URL(couponUrl);
+            URL url = new URL(paymentUrl + paymentkey);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
+            connection.setRequestMethod("GET");
             connection.setRequestProperty("content-Type", "application/json");
 
-            DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
-            dataOutputStream.write(couponJson.toString().getBytes());
-            dataOutputStream.flush();
+
             BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line;
             StringBuffer response = new StringBuffer();
@@ -400,66 +481,19 @@ public class OrderClient {
                 response.append("/r");
             }
             bufferedresponse.close();
+            Log.d(TAG, "payment: " + response);
+            String jsonstring = response.toString();
 
-            Gson gson = new Gson();
-            JsonReader reader = new JsonReader(new StringReader(response.toString()));
-            reader.setLenient(true);
-            couponRes  = gson.fromJson(reader, CouponRes.class);
-            Log.d(TAG, "applyCouponCode: "+couponRes.getCouponStatus());
-            getCurrentOrder().finalAmt(couponRes);
 
+
+           Gson gson = new Gson();
+           paymentResponse = gson.fromJson(jsonstring,PaymentResponse.class);
+            Log.d(TAG, "payment: "+paymentResponse.getStatus());
 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-
-      /*  JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, couponUrl, couponJson, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d(TAG, "onResponse: " + response.toString());
-                Gson gson = new Gson();
-
-                couponRes = gson.fromJson(String.valueOf(response), CouponRes.class);
-
-
-
-                String s = getCouponRes().getCouponStatus();
-                getCurrentOrder().setCouponStatus(s);
-
-                    for(OrderItem orderItem : getCurrentOrder().getOrderItemList()){
-
-                        orderItem.setCartTotalPrice((int) Double.parseDouble(String.valueOf((getCouponRes().getFinalAmount()))));
-                        orderItem.getTotalPrice();
-                    }
-
-
-                //   Log.d(TAG, "onResponse: " + getCouponRes().getFinalAmount());
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.d(TAG, "onErrorResponse: "+error.toString());
-            }
-        });
-
-        ECApplication.getInstance().addToRequestQueue(jsonObjectRequest, "getRequest");
-*/
-
-    }
-
-    public Order getCurrentOrder() {
-        return currentOrder;
-    }
-
-    public void setCurrentOrder(Order currentOrder) {
-        this.currentOrder = currentOrder;
     }
 
     public ArrayList<Shipping> address(Shipping address) {
@@ -476,7 +510,6 @@ public class OrderClient {
         this.addressList = addressList;
     }
 
-
     public CouponRes getCouponRes() {
         return couponRes;
     }
@@ -484,4 +517,6 @@ public class OrderClient {
     public void setCouponRes(CouponRes couponRes) {
         this.couponRes = couponRes;
     }
+
+
 }

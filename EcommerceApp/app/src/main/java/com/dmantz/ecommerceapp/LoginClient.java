@@ -22,8 +22,8 @@ public class LoginClient {
     private static final String TAG = "LOGINCLIENT";
     static LoginClient loginClient2;
     public UserProfile userProfile;
-    String targetURL = "http://192.168.100.4:8080/UserApp/login";
-    String registerURL = "http://192.168.100.4:8080/UserApp/RegisterUser";
+    String targetURL = "http://192.168.100.8:8080/UserApp/login";
+    String registerURL = "http://192.168.100.8:8080/UserApp/RegisterUser";
     private Properties props;
 
     private LoginClient() {

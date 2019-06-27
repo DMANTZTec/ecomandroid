@@ -15,6 +15,7 @@ public class Order {
     int totalQty;
     double finalAmount;
     double discountedAmount;
+    String couponCode;
 
     List<OrderItem> orderItemList = new ArrayList<>();
     ArrayList<Shipping> shippingArrayList = new ArrayList<Shipping>();
@@ -180,5 +181,18 @@ public class Order {
 
     public void setDiscountedAmount(double discountedAmount) {
         this.discountedAmount = discountedAmount;
+    }
+
+    public String CouponInfo (CouponInfo couponInfo){
+        couponCode = couponInfo.getCouponCode();
+        return couponCode;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
     }
 }

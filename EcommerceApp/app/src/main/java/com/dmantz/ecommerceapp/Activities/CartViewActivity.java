@@ -13,10 +13,9 @@ import android.widget.Toast;
 
 import com.dmantz.ecommerceapp.Adapters.CartViewAdapter;
 import com.dmantz.ecommerceapp.ECApplication;
+import com.dmantz.ecommerceapp.PaymentActivity;
 import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.ShippingActivity;
-import com.dmantz.ecommerceapp.model.CouponRes;
-import com.dmantz.ecommerceapp.model.Order;
 import com.dmantz.ecommerceapp.model.OrderItem;
 import com.dmantz.ecommerceapp.model.Shipping;
 import com.nex3z.notificationbadge.NotificationBadge;
@@ -27,8 +26,8 @@ public class CartViewActivity extends AppCompatActivity {
 
     public static final String TAG = CartViewActivity.class.getSimpleName();
 
-    TextView orderIdText, cartTotalValue, finalAmt, disountApplied;
-    Button btnCheckout, applyCoupon;
+    TextView orderIdText, cartTotalValue, finalAmt, disountApplied, couponstatus;
+    Button btnCheckout, applyCoupon, addAddress;
     EditText couponCodeET;
     private RecyclerView.Adapter cartAdapter;
 
@@ -42,7 +41,6 @@ public class CartViewActivity extends AppCompatActivity {
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         cartViewRecyclerview.setLayoutManager(linearLayoutManager);
 
-
         ECApplication lapp = (ECApplication) getApplication();
 
         cartTotalValue = findViewById(R.id.cartSubTotal);
@@ -50,8 +48,11 @@ public class CartViewActivity extends AppCompatActivity {
         applyCoupon = findViewById(R.id.applyBtn);
         couponCodeET = findViewById(R.id.couponET);
         disountApplied = findViewById(R.id.disountApplied);
-
         finalAmt = findViewById(R.id.finalAmt);
+        orderIdText = (TextView) findViewById(R.id.yourOrderText);
+        couponstatus = findViewById(R.id.couponStatus);
+        addAddress = findViewById(R.id.editAddress);
+
         TextView name = (TextView) findViewById(R.id.name);
         TextView hno = (TextView) findViewById(R.id.hno);
         TextView street = (TextView) findViewById(R.id.street);
@@ -60,6 +61,7 @@ public class CartViewActivity extends AppCompatActivity {
         TextView pincode = (TextView) findViewById(R.id.pinCode);
 
 
+        // looping through the shipping to set selected shipping address in cartview or orderview
         for (Shipping shipping : lapp.orderClientObj.getCurrentOrder().getShippingArrayList()) {
 
             name.setText(shipping.getFirstName());
@@ -71,8 +73,16 @@ public class CartViewActivity extends AppCompatActivity {
 
         }
 
-        orderIdText = (TextView) findViewById(R.id.yourOrderText);
         orderIdText.setText("ORDER ID : " + Integer.toString(lapp.orderClientObj.getOrderId()));
+
+        // condition to check coupon code is applied or not in cartview
+
+        if (lapp.orderClientObj.getCurrentOrder().getCouponCode() == null) {
+            couponCodeET.setEnabled(true);
+
+        } else
+            couponCodeET.setEnabled(true);
+        couponCodeET.setText(lapp.orderClientObj.getCurrentOrder().getCouponCode());
 
 
         // apply coupon button on click send code to BE
@@ -81,10 +91,11 @@ public class CartViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String couponcode = couponCodeET.getText().toString();
                 lapp.orderClientObj.applyCoupon(couponcode);
-                Toast toast = Toast.makeText(getApplicationContext(), lapp.orderClientObj.getCouponRes().getCouponStatus(), Toast.LENGTH_SHORT);
-                toast.show();
 
-                finalAmt.setText(Double.toString( lapp.orderClientObj.getCurrentOrder().getFinalAmount()));
+                couponstatus.setText(lapp.orderClientObj.getCouponRes().getCouponStatus());
+                Toast toast = Toast.makeText(getApplicationContext(), lapp.orderClientObj.getCouponRes().getCouponStatus(), Toast.LENGTH_LONG);
+                toast.show();
+                finalAmt.setText(Double.toString(lapp.orderClientObj.getCurrentOrder().getFinalAmount()));
                 disountApplied.setText("-" + lapp.orderClientObj.getCouponRes().getDiscountToApply().toString());
                 //cartTotalValue.setText(Double.toString( lapp.orderClientObj.getCouponRes().getFinalAmount()));
             }
@@ -92,27 +103,22 @@ public class CartViewActivity extends AppCompatActivity {
 
         });
 
-
         //finalAmt.setText(Double.toString(lapp.orderClientObj.getCurrentOrder().finalAmt()));
-
-
         List<OrderItem> orderItems = lapp.orderClientObj.getCurrentOrder().getOrderItemList();
         cartAdapter = new CartViewAdapter(getApplicationContext(), orderItems);
         cartViewRecyclerview.setAdapter(cartAdapter);
 
-        finalAmt.setText(Double.toString( lapp.orderClientObj.getCurrentOrder().getFinalAmount()));
+        finalAmt.setText(Double.toString(lapp.orderClientObj.getCurrentOrder().getFinalAmount()));
         disountApplied.setText("-" + lapp.orderClientObj.getCurrentOrder().getDiscountedAmount());
         lapp.orderClientObj.getCurrentOrder().calculateTotals();
         cartTotalValue.setText(Integer.toString((int) lapp.orderClientObj.getCurrentOrder().cartTotal()));
 
         NotificationBadge mBadge;
         mBadge = findViewById(R.id.actionbar_notification_textview);
-
-
         mBadge.setNumber(lapp.orderClientObj.getCurrentOrder().getTotalQty());
 
 
-        btnCheckout.setOnClickListener(new View.OnClickListener() {
+        addAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent;
@@ -122,18 +128,24 @@ public class CartViewActivity extends AppCompatActivity {
                 }
 
                 if (s.equals("102")) {
-
-
                     intent = new Intent(CartViewActivity.this, ExistingShippingActivity.class);
-
                 } else {
-
                     intent = new Intent(CartViewActivity.this, ShippingActivity.class);
                 }
                 startActivity(intent);
             }
         });
 
+
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(CartViewActivity.this, PaymentActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
 

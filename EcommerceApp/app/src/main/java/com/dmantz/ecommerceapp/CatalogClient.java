@@ -33,12 +33,13 @@ public class CatalogClient extends ProductList {
     public static final String TAG = CatalogClient.class.getSimpleName();
 
     static CatalogClient catalogClientObj;
-
     public List<CategoriesParent> categoriesParentList = new ArrayList<>();
     public Catlog catlog;
     CategoriesParent categories;
-    String catalogURL = "http://192.168.100.20:8080/ec/catalog";
-    String categoriesUrl = "http://192.168.100.20:8080/catalog_dir";
+
+    String catalogURL = "http://192.168.100.8:8080/ec/catalog";
+    String categoriesUrl = "http://192.168.100.8:8080/catalog_dir";
+
     private ProductList productList;
     private CatalogFilter catalogFilterObj;
     private Context context;

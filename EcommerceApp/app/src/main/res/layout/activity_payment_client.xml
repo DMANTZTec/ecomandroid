@@ -1,95 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentClient">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    tools:context=".PaymentActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F44336"
+        android:elevation="4dp"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:title="ECApp">
+
+
+    </android.support.v7.widget.Toolbar>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <android.support.v7.widget.CardView
             android:id="@+id/productInfoCardView"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:padding="5dp"
+            android:layout_width="350dp"
+            android:layout_height="250dp"
+            android:layout_margin="10dp"
+            android:elevation="5dp"
+            android:padding="15dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:elevation="2dp"
-            >
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="@color/gen_black">
+
             <RelativeLayout
                 android:id="@+id/product_details_layout"
-                android:layout_width="match_parent"
-                android:layout_height="150dp">
-
-                <ImageView
-                    android:id="@+id/productImage"
-                    android:layout_width="80dp"
-                    android:layout_height="100dp"
-                    android:padding="2dp"/>
-
-
-            <TextView
-                android:layout_toRightOf="@id/productImage"
-                android:id="@+id/itemInfo"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:textSize="20sp"
-                android:paddingLeft="50dp"
-                android:padding="10dp"/>
+                android:layout_width="350dp"
+                android:layout_height="250dp">
 
                 <TextView
-                    android:layout_toRightOf="@id/productImage"
-                    android:layout_below="@+id/itemInfo"
-                    android:id="@+id/itemSize"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
+                    android:id="@+id/paymentDetailsTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:text="PAYMENT DETAILS"
                     android:textSize="20sp"
-                    android:paddingLeft="50dp"
-                    android:padding="1dp"/>
+                    android:textColor="@color/white"/>
 
                 <TextView
-                    android:layout_toRightOf="@id/productImage"
-                    android:layout_below="@+id/itemSize"
-                    android:id="@+id/itemPrice"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
-                    android:textSize="20sp"
-                    android:paddingLeft="50dp"
-                    android:padding="1dp"/>
+                    android:id="@+id/orderIdTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/paymentDetailsTV"
+                    android:layout_margin="1dp"
+                    android:padding="1dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"/>
 
+                <TextView
+                    android:id="@+id/productNameTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/orderIdTV"
+                    android:layout_margin="1dp"
+                    android:padding="1dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"/>
 
-
+                <TextView
+                    android:id="@+id/finalAmountTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/productNameTV"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"/>
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
 
-        <EditText
-
-            android:layout_below="@id/productInfoCardView"
-            android:id="@+id/enterAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Amount"
-            android:textSize="40sp" />
-
         <Button
             android:id="@+id/btn_pay"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/enterAmount"
-            android:layout_centerInParent="true"
             android:onClick="startPayment"
             android:paddingTop="20sp"
             android:text="Pay"
-            android:textSize="30sp" />
-
+            android:layout_alignParentBottom="true"/>
 
 
     </RelativeLayout>

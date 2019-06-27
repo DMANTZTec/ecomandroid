@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.dmantz.ecommerceapp.ECApplication;
-import com.dmantz.ecommerceapp.PaymentClient;
+import com.dmantz.ecommerceapp.PaymentActivity;
 import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.Option;
 import com.dmantz.ecommerceapp.model.OrderItem;
@@ -115,7 +115,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
 
-                Intent buyNow = new Intent(ItemActivity.this, PaymentClient.class);
+                Intent buyNow = new Intent(ItemActivity.this, PaymentActivity.class);
                 startActivity(buyNow);
             }
         });

@@ -186,6 +186,18 @@
                         android:layout_marginLeft="5dp"
                         android:textSize="20dp" />
 
+                    <Button
+                        android:id="@+id/editAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add /Edit Address"
+                        android:textSize="15sp"
+                        android:layout_below="@id/pinCode"
+                        android:layout_margin="10dp"
+                        android:padding="10dp"
+
+                        />
+
                     <View
                         android:id="@+id/view_div"
                         android:layout_width="match_parent"
@@ -198,7 +210,7 @@
                         android:id="@+id/cartTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/pinCode"
+                        android:layout_below="@id/editAddress"
                         android:layout_marginLeft="50dp"
                         android:layout_marginTop="30dp"
                         android:padding="10dp"
@@ -209,7 +221,7 @@
                         android:id="@+id/cartSubTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/pinCode"
+                        android:layout_below="@id/editAddress"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="30dp"
                         android:layout_toRightOf="@id/cartTotal"
@@ -288,7 +300,15 @@
                         android:layout_below="@id/couponTV"
                         android:layout_marginTop="15dp"
                         android:layout_marginRight="20dp"
-                        android:hint="enter code" />
+                        android:hint="enter code"
+                        />
+                    <TextView
+                        android:id="@+id/couponStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/green_light"
+                        android:layout_below="@id/couponET"
+                        android:textSize="20sp"/>
 
                     <Button
                         android:id="@+id/applyBtn"
@@ -304,7 +324,7 @@
                         android:id="@+id/view_div3"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@id/couponET"
+                        android:layout_below="@id/couponStatus"
                         android:layout_marginTop="10dp"
                         android:background="@android:color/darker_gray"
                         android:padding="10dp" />
@@ -314,7 +334,7 @@
                         android:id="@+id/btn_checkout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/couponET"
+                        android:layout_below="@id/couponStatus"
                         android:layout_gravity="bottom"
                         android:layout_marginTop="15dp"
                         android:gravity="center"
