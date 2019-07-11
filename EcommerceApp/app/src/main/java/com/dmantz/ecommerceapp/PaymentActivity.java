@@ -32,7 +32,7 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
         finalAmount = findViewById(R.id.finalAmountTV);
         mPay = findViewById(R.id.btn_pay);
 
-        orderID.setText("Order ID : "+Integer.toString(ECApp.orderClientObj.getOrderId()));
+        orderID.setText(Integer.toString(ECApp.orderClientObj.getOrderId()));
         productName.setText("Product Name :"+"\n" +ECApp.orderClientObj.getCurrentOrder().getOrderItemList().iterator().next().getProductName()+"/n");
         Log.d(TAG, "onCreate: "+finalAmount.getText());
 
@@ -77,9 +77,10 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
 
         Toast.makeText(PaymentActivity.this, "Payment is succeessful", Toast.LENGTH_LONG).show();
         Log.d(TAG, "onPaymentSuccess: "+s);
-        ECApp.orderClientObj.payment(s);
-        Intent intent = new Intent(PaymentActivity.this,PaymentCon.class);
 
+        ECApp.orderClientObj.payment(s);
+
+        Intent intent = new Intent(PaymentActivity.this,PaymentCon.class);
         startActivity(intent);
 
     }

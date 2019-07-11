@@ -1,7 +1,5 @@
 package com.dmantz.ecommerceapp;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.dmantz.ecommerceapp.model.CouponInfo;
@@ -10,6 +8,7 @@ import com.dmantz.ecommerceapp.model.Order;
 import com.dmantz.ecommerceapp.model.OrderItem;
 import com.dmantz.ecommerceapp.model.PaymentResponse;
 import com.dmantz.ecommerceapp.model.Shipping;
+import com.dmantz.ecommerceapp.model.TrackingModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -28,7 +27,6 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -41,8 +39,9 @@ public class OrderClient {
     int orderId;
     ArrayList<Shipping> addressList = new ArrayList<>();
     CouponRes couponRes = new CouponRes();
-    Properties props = new Properties();
-    PaymentResponse paymentResponse;
+    TrackingModel trackingModel;
+
+
 
 
     private Order currentOrder;
@@ -50,8 +49,9 @@ public class OrderClient {
     private String updateUrl = "http://192.168.100.8:8080/EcommerceApp/updateOrder";
     private String shippingUrl = "http://192.168.100.8:8080/EcommerceApp/addOrUpdateShippingAddress";
     private String addressListUrl = "http://192.168.100.8:8080/EcommerceApp/viewShippingAddresses";
-    private String couponUrl =  "http://192.168.100.8:8080/EcommerceApp/applyCouponCode";
-    private String paymentUrl = "http://192.168.100.9:8080/EcommerceApp/getDetails?paymentId=";
+    private String couponUrl = "http://192.168.100.8:8080/EcommerceApp/applyCouponCode";
+    private String paymentUrl = "http://192.168.100.27:8080/EcommerceApp/getPayment?paymentId=";
+    private String OrderTrackingUrl = "http://192.168.100.27:8080/EcommerceApp/getOrderStatus?orderId=";
 
 
     public static OrderClient getOrderClient() {
@@ -259,9 +259,7 @@ public class OrderClient {
     }
 
     //below method is  for updating the quantity
-    public void updateQuantityBE(int orderId, String productSku, int quantity)
-
-    {
+    public void updateQuantityBE(int orderId, String productSku, int quantity) {
 
         try {
             URL url = new URL(updateUrl);
@@ -463,6 +461,7 @@ public class OrderClient {
 
     }
 
+
     public void payment(String paymentkey) {
 
         try {
@@ -485,16 +484,64 @@ public class OrderClient {
             String jsonstring = response.toString();
 
 
-
-           Gson gson = new Gson();
-           paymentResponse = gson.fromJson(jsonstring,PaymentResponse.class);
-            Log.d(TAG, "payment: "+paymentResponse.getStatus());
-
+           /* paymentRes = new JSONObject();
+            try {
+                paymentRes.put("paymentRes ", response);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Gson gson = new Gson();
+            paymentResponse = gson.fromJson(jsonstring, PaymentResponse.class);
+            Log.d(TAG, "payment: " + paymentResponse.getStatus());
+*/
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+    public void orderTracking() {
+
+        try {
+
+            Log.d(TAG, "Entered into order tracking method from OrderClient");
+            URL url = new URL(OrderTrackingUrl + getOrderId());
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("content-Type", "application/json");
+
+
+            BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while ((line = bufferedresponse.readLine()) != null) {
+                response.append(line);
+                response.append("/r");
+            }
+            bufferedresponse.close();
+            Log.d(TAG, "payment: " + response);
+            String jsonstring = response.toString();
+
+
+            Gson gson = new Gson();
+            JsonReader reader = new JsonReader(new StringReader(jsonstring));
+            reader.setLenient(true);
+
+            trackingModel = gson.fromJson(reader, TrackingModel.class);
+            Log.d(TAG, "tracking model " + trackingModel.getStatusCd());
+
+            setTrackingModel(trackingModel);
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     public ArrayList<Shipping> address(Shipping address) {
 
@@ -516,6 +563,14 @@ public class OrderClient {
 
     public void setCouponRes(CouponRes couponRes) {
         this.couponRes = couponRes;
+    }
+
+    public TrackingModel getTrackingModel() {
+        return trackingModel;
+    }
+
+    public void setTrackingModel(TrackingModel trackingModel) {
+        this.trackingModel = trackingModel;
     }
 
 
