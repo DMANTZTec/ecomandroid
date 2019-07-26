@@ -26,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/appbar"
-            android:padding="5dp"
             android:elevation="10dp"
+            android:padding="5dp"
             app:cardBackgroundColor="@color/grey_light"
 
             >
@@ -35,8 +35,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="5dp"
-                >
+                android:padding="5dp">
 
                 <TextView
                     android:id="@+id/ettv"
@@ -44,8 +43,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginLeft="10dp"
-                    android:text="ESTIMATED TIME"
                     android:padding="5dp"
+                    android:text="ESTIMATED TIME"
                     android:textColor="@color/gen_black"
                     android:textStyle="bold"
 
@@ -67,26 +66,27 @@
                     android:layout_margin="5dp"
                     android:layout_marginLeft="350dp"
                     android:layout_toRightOf="@id/ettv"
+                    android:padding="5dp"
                     android:text="#TRACKING NUMBER"
                     android:textColor="@color/gen_black"
-                    android:padding="5dp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/trackingNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/orderTV"
-                    android:layout_toRightOf="@id/ettv" />
+                    android:layout_toRightOf="@id/ettv"
+                    android:layout_marginLeft="80dp"/>
 
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
 
         <RelativeLayout
-            android:layout_below="@id/cardViewTrack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/cardViewTrack"
             android:layout_marginTop="10dp">
 
             <com.baoyachi.stepview.VerticalStepView
@@ -94,8 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="25dp"
-                />
+                android:layout_marginTop="25dp" />
 
         </RelativeLayout>
 

@@ -19,6 +19,7 @@ public class Order {
 
     List<OrderItem> orderItemList = new ArrayList<>();
     ArrayList<Shipping> shippingArrayList = new ArrayList<Shipping>();
+    TrackingModel trackingModel;
 
 
     public Order() {
@@ -194,5 +195,14 @@ public class Order {
 
     public void setCouponCode(String couponCode) {
         this.couponCode = couponCode;
+    }
+
+
+    public TrackingModel getTrackingModel() {
+        return trackingModel;
+    }
+
+    public void setTrackingModel(TrackingModel trackingModel) {
+        this.trackingModel = trackingModel;
     }
 }

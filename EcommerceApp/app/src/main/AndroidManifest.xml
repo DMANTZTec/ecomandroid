@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.ChatActivity"></activity>
+        <activity android:name=".Activities.YourOrdersActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,7 +66,7 @@
         <activity android:name=".ShippingActivity" />
         <activity android:name=".UpdateShippingAddress" />
         <activity android:name=".Activities.PaymentCon" />
-        <activity android:name=".Activities.OrderTracking"></activity>
+        <activity android:name=".Activities.OrderTracking" />
     </application>
 
 </manifest>

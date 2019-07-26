@@ -21,7 +21,6 @@ android {
     }
 
 
-
     buildTypes {
         release {
             minifyEnabled false
@@ -50,9 +49,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-    implementation 'com.google.firebase:firebase-core:16.0.1'
-    implementation 'com.google.firebase:firebase-auth:16.0.2'
-    implementation 'com.google.gms:google-services:4.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.gms:google-services:4.3.0'
     implementation 'com.razorpay:checkout:1.4.5'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
@@ -65,5 +64,7 @@ dependencies {
     implementation 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
     implementation 'com.github.baoyachi:StepView:1.9'
     implementation 'com.github.vipulasri:timelineview:1.1.0'
+    implementation 'io.kommunicate:kommunicate:1.8.8'
 }
 apply plugin: 'com.google.gms.google-services'
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

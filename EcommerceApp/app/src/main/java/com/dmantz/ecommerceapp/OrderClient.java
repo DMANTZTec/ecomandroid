@@ -6,9 +6,9 @@ import com.dmantz.ecommerceapp.model.CouponInfo;
 import com.dmantz.ecommerceapp.model.CouponRes;
 import com.dmantz.ecommerceapp.model.Order;
 import com.dmantz.ecommerceapp.model.OrderItem;
-import com.dmantz.ecommerceapp.model.PaymentResponse;
 import com.dmantz.ecommerceapp.model.Shipping;
 import com.dmantz.ecommerceapp.model.TrackingModel;
+import com.dmantz.ecommerceapp.model.YourOrderModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -29,44 +29,35 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 public class OrderClient {
 
     public static final String TAG = OrderClient.class.getSimpleName();
     static OrderClient orderClientObj;
     CouponInfo couponInfo;
+    TrackingModel trackingModel;
     int orderId;
     ArrayList<Shipping> addressList = new ArrayList<>();
+    ArrayList<YourOrderModel> yourOrderList = new ArrayList<YourOrderModel>();
     CouponRes couponRes = new CouponRes();
-    TrackingModel trackingModel;
-
-
-
-
     private Order currentOrder;
+
+
     private String orderUrl = "http://192.168.100.8:8080/EcommerceApp/createOrder2";
     private String updateUrl = "http://192.168.100.8:8080/EcommerceApp/updateOrder";
     private String shippingUrl = "http://192.168.100.8:8080/EcommerceApp/addOrUpdateShippingAddress";
-    private String addressListUrl = "http://192.168.100.8:8080/EcommerceApp/viewShippingAddresses";
+    private String addressListUrl = "http://192.168.100.8:8080/EcommerceApp/viewShippingAddresses?customerId=";
     private String couponUrl = "http://192.168.100.8:8080/EcommerceApp/applyCouponCode";
-    private String paymentUrl = "http://192.168.100.27:8080/EcommerceApp/getPayment?paymentId=";
-    private String OrderTrackingUrl = "http://192.168.100.27:8080/EcommerceApp/getOrderStatus?orderId=";
-
+    private String paymentUrl = "http://192.168.100.8:8080/EcommerceApp/getPayment?paymentId=";
+    private String OrderTrackingUrl = "http://192.168.100.8:8080/EcommerceApp/getOrderStatus?orderId=";
+    private String yourOrdersUrl = "http://192.168.100.8:8080/EcommerceApp/getCustomerOrders?customerId=";
 
     public static OrderClient getOrderClient() {
-
-
         if (orderClientObj == null) {
             orderClientObj = new OrderClient();
-
-
         }
         return orderClientObj;
-
-
     }
-
 
     public void applyCoupon(String coupon) {
 
@@ -81,6 +72,7 @@ public class OrderClient {
 
     }
 
+    //Apply coupon service call
     public void applyCouponCode(String coupon) {
 
         JSONObject couponJson = new JSONObject();
@@ -136,6 +128,40 @@ public class OrderClient {
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
+      /*  JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, couponUrl, couponJson, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, "onResponse: " + response.toString());
+                Gson gson = new Gson();
+
+                couponRes = gson.fromJson(String.valueOf(response), CouponRes.class);
+
+
+
+                String s = getCouponRes().getCouponStatus();
+                getCurrentOrder().setCouponStatus(s);
+
+                    for(OrderItem orderItem : getCurrentOrder().getOrderItemList()){
+
+                        orderItem.setCartTotalPrice((int) Double.parseDouble(String.valueOf((getCouponRes().getFinalAmount()))));
+                        orderItem.getTotalPrice();
+                    }
+
+
+                //   Log.d(TAG, "onResponse: " + getCouponRes().getFinalAmount());
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.d(TAG, "onErrorResponse: "+error.toString());
+            }
+        });
+
+        ECApplication.getInstance().addToRequestQueue(jsonObjectRequest, "getRequest");
+*/
 
     public Order getCurrentOrder() {
         return currentOrder;
@@ -149,11 +175,10 @@ public class OrderClient {
         this.couponInfo = couponInfo;
     }
 
+    // add item to cart api call
     public void addItem(OrderItem orderItemObj) {
 
-
         if (currentOrder == null) {
-
 
             createOrderBE("102", orderItemObj);
             currentOrder = new Order();
@@ -166,7 +191,6 @@ public class OrderClient {
             Log.d(TAG, "addItem: " + ":" + existingItem.getQuantity() + ":");
             existingItem.setTotalPrice(existingItem.getQuantity() * orderItemObj.getPrice());
             Log.d(TAG, "addItem: " + ":" + existingItem.getPrice() + ":");
-
 
             currentOrder.calculateTotals();
             currentOrder.totalQuantity();
@@ -202,6 +226,7 @@ public class OrderClient {
         }
     }
 
+    // Create order api call
     public void createOrderBE(String customerId, OrderItem orderItemObj) {
 
 
@@ -306,41 +331,8 @@ public class OrderClient {
         }
 
     }
-      /*  JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, couponUrl, couponJson, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d(TAG, "onResponse: " + response.toString());
-                Gson gson = new Gson();
 
-                couponRes = gson.fromJson(String.valueOf(response), CouponRes.class);
-
-
-
-                String s = getCouponRes().getCouponStatus();
-                getCurrentOrder().setCouponStatus(s);
-
-                    for(OrderItem orderItem : getCurrentOrder().getOrderItemList()){
-
-                        orderItem.setCartTotalPrice((int) Double.parseDouble(String.valueOf((getCouponRes().getFinalAmount()))));
-                        orderItem.getTotalPrice();
-                    }
-
-
-                //   Log.d(TAG, "onResponse: " + getCouponRes().getFinalAmount());
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.d(TAG, "onErrorResponse: "+error.toString());
-            }
-        });
-
-        ECApplication.getInstance().addToRequestQueue(jsonObjectRequest, "getRequest");
-*/
-
+    //Adding new item to the existing order api call
     public void addItemToOrderBE(OrderItem orderItemObj, String customerId) {
 
 
@@ -422,12 +414,13 @@ public class OrderClient {
 
     }
 
+    //List of address api call
     public ArrayList<Shipping> addressList() {
 
 
         try {
 
-            URL url = new URL(addressListUrl + "/102");
+            URL url = new URL(addressListUrl + "102");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -461,7 +454,7 @@ public class OrderClient {
 
     }
 
-
+    //payment api call of razor pay
     public void payment(String paymentkey) {
 
         try {
@@ -500,13 +493,13 @@ public class OrderClient {
         }
     }
 
-
-    public void orderTracking() {
+    //Ordertracking api call
+    public void orderTracking(int orderId) {
 
         try {
 
             Log.d(TAG, "Entered into order tracking method from OrderClient");
-            URL url = new URL(OrderTrackingUrl + getOrderId());
+            URL url = new URL(OrderTrackingUrl +orderId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("content-Type", "application/json");
@@ -531,8 +524,7 @@ public class OrderClient {
             trackingModel = gson.fromJson(reader, TrackingModel.class);
             Log.d(TAG, "tracking model " + trackingModel.getStatusCd());
 
-            setTrackingModel(trackingModel);
-
+           setTrackingModel(trackingModel);
 
 
         } catch (IOException e) {
@@ -542,6 +534,39 @@ public class OrderClient {
 
     }
 
+    // list of orders of the customers api call
+    public ArrayList<YourOrderModel> yourOrders() {
+
+        try {
+            URL url = new URL(yourOrdersUrl + "102");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("content-Type", "application/json");
+
+            BufferedReader bufferedresponse = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while ((line = bufferedresponse.readLine()) != null) {
+                response.append(line);
+                response.append("/r");
+            }
+            bufferedresponse.close();
+            JSONArray jsonArray = new JSONArray(response.toString());
+            Gson gson = new Gson();
+
+            Type collectionType = new TypeToken<ArrayList<YourOrderModel>>() {
+            }.getType();
+            yourOrderList = gson.fromJson(String.valueOf(jsonArray), collectionType);
+            Log.d(TAG, "yourOrders: " + response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return yourOrderList;
+    }
 
     public ArrayList<Shipping> address(Shipping address) {
 
@@ -574,4 +599,11 @@ public class OrderClient {
     }
 
 
+    public ArrayList<YourOrderModel> getYourOrderList() {
+        return yourOrderList;
+    }
+
+    public void setYourOrderList(ArrayList<YourOrderModel> yourOrderList) {
+        this.yourOrderList = yourOrderList;
+    }
 }

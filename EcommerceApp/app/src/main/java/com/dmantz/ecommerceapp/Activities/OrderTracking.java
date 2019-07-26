@@ -13,7 +13,6 @@ import com.dmantz.ecommerceapp.R;
 import com.dmantz.ecommerceapp.model.TrackingModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class OrderTracking extends AppCompatActivity {
@@ -22,8 +21,12 @@ public class OrderTracking extends AppCompatActivity {
     ECApplication ECApp;
     TextView EstimatedTime, TrackingNo;
     TrackingModel trackingModel;
-    int tracking,i;
+    int tracking, i;
     int tot;
+
+
+    int orderId;
+    String DeliveryTime, statusCd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +34,23 @@ public class OrderTracking extends AppCompatActivity {
         setContentView(R.layout.activity_order_tracking);
 
         ECApp = (ECApplication) getApplicationContext();
-        ECApp.orderClientObj.orderTracking();
 
+        orderId = getIntent().getIntExtra("orderId", 0);
+        DeliveryTime = getIntent().getStringExtra("EstimatedTime");
+        statusCd = getIntent().getStringExtra("statusCd");
+
+        Log.d("Order Tracking", "onCreate: " + orderId);
+        ECApp.orderClientObj.orderTracking(orderId);
 
         EstimatedTime = findViewById(R.id.estimatedTime);
         TrackingNo = findViewById(R.id.trackingNo);
 
-        EstimatedTime.setText(ECApp.orderClientObj.getTrackingModel().getEstimatedTime().toString());
-        TrackingNo.setText(ECApp.orderClientObj.getTrackingModel().getOrderId());
+        EstimatedTime.setText(DeliveryTime);
+        TrackingNo.setText(Integer.toString(orderId));
+
         verticalStepView = (VerticalStepView) findViewById(R.id.stepView);
-      List<String> trackingStatus = new ArrayList<>();
-       // trackingStatus.add(ECApp.orderClientObj.getStatuscd().toString());
+        List<String> trackingStatus = new ArrayList<>();
+        // trackingStatus.add(ECApp.orderClientObj.getStatuscd().toString());
 
         trackingStatus.add("PAID");
         trackingStatus.add("Shipped");
@@ -52,24 +61,24 @@ public class OrderTracking extends AppCompatActivity {
 
         verticalStepView.setStepViewTexts(trackingStatus);
 
-        String s = ECApp.orderClientObj.getTrackingModel().getStatusCd();
-        for(String track : trackingStatus){
+        String s = statusCd;
+        for (String track : trackingStatus) {
 
-            if(track.contains(s)){
+            if (track.contains(s)) {
 
-                 tracking  = trackingStatus.size();
-                 i = trackingStatus.indexOf(track);
-                 tot = tracking+i;
+                tracking = trackingStatus.size();
+                i = trackingStatus.indexOf(track);
+                tot = tracking + i;
 
-                Log.d("Order tracking", "entered into for each loop: "+i+tracking);
-              //  Log.d("Order tracking", "entered into for each loop: "+tracking);
+                Log.d("Order tracking", "entered into for each loop: " + i + tracking);
+                //  Log.d("Order tracking", "entered into for each loop: "+tracking);
             }
 
         }
 
-        Log.d("OrderTRacking", "onCreate: "+tot);
+        Log.d("OrderTRacking", "onCreate: " + tot);
 
-        verticalStepView.setStepsViewIndicatorComplectingPosition(tot- trackingStatus.size())
+        verticalStepView.setStepsViewIndicatorComplectingPosition(tot - trackingStatus.size())
                 .reverseDraw(false)
 
                 .setLinePaddingProportion(1.90f)

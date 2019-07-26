@@ -6,8 +6,10 @@ public class TrackingModel {
     private String orderId;
     private String orderTrackUpdateTime;
     private String statusCd;
-    private String orderTrackDesc;
     private String estimatedTime;
+    private Integer statusCdId;
+    private Integer orderId2;
+    private String orderTracksDesc;
 
     public Integer getOrderTrackRef() {
         return orderTrackRef;
@@ -41,14 +43,6 @@ public class TrackingModel {
         this.statusCd = statusCd;
     }
 
-    public String getOrderTrackDesc() {
-        return orderTrackDesc;
-    }
-
-    public void setOrderTrackDesc(String orderTrackDesc) {
-        this.orderTrackDesc = orderTrackDesc;
-    }
-
     public String getEstimatedTime() {
         return estimatedTime;
     }
@@ -57,5 +51,28 @@ public class TrackingModel {
         this.estimatedTime = estimatedTime;
     }
 
+    public Integer getStatusCdId() {
+        return statusCdId;
+    }
+
+    public void setStatusCdId(Integer statusCdId) {
+        this.statusCdId = statusCdId;
+    }
+
+    public Integer getOrderId2() {
+        return orderId2;
+    }
+
+    public void setOrderId2(Integer orderId2) {
+        this.orderId2 = orderId2;
+    }
+
+    public String getOrderTracksDesc() {
+        return orderTracksDesc;
+    }
+
+    public void setOrderTracksDesc(String orderTracksDesc) {
+        this.orderTracksDesc = orderTracksDesc;
+    }
 
 }

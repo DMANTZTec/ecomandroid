@@ -117,24 +117,35 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mDrawerLayout = findViewById(R.id.navigation_drawer);
         final Menu menu = navigationView.getMenu();
 
+
         MenuModel menuModel = new MenuModel();
 
         // SubMenu subMenu = menu.addSubMenu("Shop for");
         //   SubMenu brands = menu.addSubMenu("BRANDS");
 
+        SubMenu subMenu1 = menu.addSubMenu("Orders");
+        subMenu1.getItem();
+
+        SubMenu chat = menu.addSubMenu("Contact Us");
+        chat.getItem();
+
 
         org.json.JSONObject navMenuOptions = menuModel.menuDetails(this);
 
+        MenuItem ch = null;
         MenuItem mi = null;
         String filterKey;
         Iterator<String> keys = navMenuOptions.keys();
         String[] displayNameArray = new String[3];
+
 
         while (keys.hasNext()) {
 
             filterKey = (String) keys.next();
             final SubMenu subMenu = menu.addSubMenu(filterKey);
             //    mi = subMenu.add(filterKey);
+
+
             try {
 
                 org.json.JSONArray categorieData = navMenuOptions.getJSONArray(filterKey);
@@ -169,7 +180,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     }
 
                     mi = subMenu.add(displayName).setActionView(menuItemCheckBox);
+
                     mi.setIntent(miIntent);
+
 
                     menuItemCheckBox.setTag(bundle);
                     menuItemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -235,6 +248,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         }
 
+        // 3 lines of code is of to get my orders page
+
+        mi = subMenu1.add("Your Orders");
+        ch = chat.add("Coustomer Srervice");
+
+        Intent chatIntent = new Intent(MainActivity.this, ChatActivity.class);
+        ch.setIntent(chatIntent);
+
+        Intent intent = new Intent(MainActivity.this, YourOrdersActivity.class);
+        mi.setIntent(intent);
+
         mDrawerLayout.closeDrawers();
 
     }
@@ -244,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         Log.d(TAG, "onCreateOptionsMenu: sucesfully entered into method");
         getMenuInflater().inflate(R.menu.app_bar_menu, menu);
         // MenuItem menuItem = menu.findItem(R.id.search);
+
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextListener(this);
@@ -268,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 onCategoriesClick();
                 return true;
 
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -285,6 +311,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public void onCategoriesClick() {
         Intent OnClick = new Intent(this, CategoriesActivity.class);
         startActivity(OnClick);
+    }
+
+    public void yourOrder() {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+
+
     }
 
     @Override
