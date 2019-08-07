@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,8 +27,12 @@ import com.dmantz.ecommerceapp.model.Product;
 import com.dmantz.ecommerceapp.model.ProductSku;
 import com.nex3z.notificationbadge.NotificationBadge;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ItemActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -40,7 +45,6 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
     ImageView cartIconView;
     NotificationBadge mBadge;
-    Spinner productColor, productSize;
     String itemName;
     String itemPrice;
     String itemSize;
@@ -51,19 +55,24 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
     Product productObj;
     OrderItem orderItem;
 
+    HashMap<List<String>, List<String>> optionValueMap = new HashMap<>();
+    String size, color;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ecApp = (ECApplication) getApplication();
-        setContentView(R.layout.activity_item_client);
+        setContentView(R.layout.activity_item);
 
         cartIconView = findViewById(R.id.cart_item_notification);
         buyNow = findViewById(R.id.buyNow);
         mBadge = findViewById(R.id.actionbar_notification_textview);
         quantityIncrementBtn = (ElegantNumberButton) findViewById(R.id.elegentBtn);
 
+
         getItemInfo();
+
 
         RelativeLayout ll = (RelativeLayout) findViewById(R.id.activity_item_details);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -82,7 +91,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
                 orderItem = new OrderItem();
                 orderItem.setProductName(productObj.getProductName());
                 orderItem.setPrice(productSku.getPrice());
-                orderItem.setProductSku(productSku.getSku());
+                orderItem.setProductSku(productSku.getProductSkuId());
 
                 int qty = Integer.parseInt(quantityIncrementBtn.getNumber());
                 orderItem.setQuantity(qty);
@@ -129,7 +138,8 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
         ProductId = getIntent().getStringExtra("productId");
         productObj = ecApp.catalogClient.getProduct(ProductId);
 
-        ProductSku productSku = productObj.getProductSkus().get(0);
+        List<ProductSku> productSkus = productObj.getProductSkus();
+        Log.d(TAG, "list of product sku " + productSkus);
 
         quantityIncrementBtn.setBackgroundColor(Color.BLUE);
         quantityIncrementBtn.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
@@ -142,7 +152,133 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
 
-        List<Option> options = productSku.getOptions();
+        List<String> productSkuList = productSkus.stream()
+                .flatMap(a -> a.getOptions().stream())
+                .map(b -> b.getOptionName()).collect(Collectors.toList());
+
+        List<String> optionNames = productSkuList.stream().distinct().collect(Collectors.toList());
+        Log.d(TAG, "option name " + optionNames);
+
+
+        List<String> optionValues = productSkus.stream()
+                .flatMap(y -> y.getOptions().stream())
+                .filter(x -> x.getOptionName().equals("color"))
+                .map(z -> z.getOptionValue()).collect(Collectors.toList());
+        Log.d(TAG, "getItemInfo: " + optionValues);
+
+        List<String> optionValuesSize = productSkus.stream()
+                .flatMap(y -> y.getOptions().stream())
+                .filter(x -> x.getOptionName().equals("size"))
+                .map(z -> z.getOptionValue()).collect(Collectors.toList());
+        Log.d(TAG, "getItemInfo: " + optionValues);
+
+        // hashmap concatinat to the productsku list
+
+        List<String> productId = new ArrayList<>();
+        List<String> Size = new ArrayList<>();
+        List<String> colorList = new ArrayList<>();
+        List<String> concatinateDemo = new ArrayList<>();
+
+        HashMap<List<String>, List<String>> hm = new HashMap<>();
+
+        // for loop to get productskuid
+        for (ProductSku productSku : productSkus) {
+
+            String s = productSku.getProductSkuId();
+
+            productId.add(s);
+            Log.d(TAG, "product id " + productId);
+
+            //for loop to get options values
+            for (Option option : productSku.getOptions()) {
+
+                String optionDetails = option.getOptionValue();
+                Log.d(TAG, "option details " + optionDetails);
+
+                if (optionDetails.length() <= 1) {
+                    size = optionDetails;
+
+                    Size.add(size);
+                    Log.d(TAG, "Size " + Size);
+
+
+                } else {
+                    color = optionDetails;
+                    colorList.add(color);
+                    Log.d(TAG, "getItemInfo: " + colorList);
+
+                }
+
+
+            }
+
+            concatinateDemo.add(color + ":" + size);
+
+
+        }
+        hm.put(productId, concatinateDemo);
+
+
+        Log.d(TAG, "concatinatedemo " + hm);
+
+
+
+
+
+
+/*
+        for (int i = 0; i < productSku.size(); i++) {
+
+            List<Option> option = productSku.get(i).getOptions();
+
+
+            for (int k = 0; k < option.size(); k++) {
+
+
+                if (option.get(k).getOptionName().equals("size")) {
+                    sizeList.add(option.get(k).getOptionValue());
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.activity_spin1_layout, sizeList);
+
+                    spinSize.setAdapter(dataAdapter);
+                    spinSize.setPadding(10, 10, 10, 10);
+                    dataAdapter.setDropDownViewResource(R.layout.activity_spin1_layout);
+                    spinSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            Log.d(TAG, "onItemSelected: " + position);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
+
+                } else if (option.get(k).getOptionName().equals("color")) {
+                    concatinateDemo.add(option.get(k).getOptionValue());
+
+                    ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, R.layout.activity_color_layout, concatinateDemo);
+
+                    spinColor.setAdapter(dataAdapter1);
+                    spinColor.setPadding(10, 10, 10, 10);
+                    dataAdapter1.setDropDownViewResource(R.layout.activity_color_layout);
+
+                }
+
+
+            }
+
+
+            //sizeSpinner.setTextColor(Color.BLUE);
+            //sizeSpinner.setTextSize(30);
+
+        }
+        */
+
+
+        List<Option> options = productSkus.iterator().next().getOptions();
+
         Iterator i = options.iterator();
         LinearLayout optionsLayout = null;
 
@@ -154,9 +290,8 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
             optionsLayout = findViewById(R.id.options_layout);
 
-
             TextView optionNameText = new TextView(this);
-            TextView optionValueText = new TextView(this);
+            Spinner optionValueText = new Spinner(this);
 
 
             optionNameText.setText(option.getOptionName() + ":  ");
@@ -166,10 +301,15 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
             optionNameText.setTextSize(30);
 
 
-            optionValueText.setText(option.getOptionValue());
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.activity_spin1_layout, optionValues);
+
+
+            optionValueText.setAdapter(dataAdapter);
             optionValueText.setPadding(10, 10, 10, 10);
-            optionValueText.setTextColor(Color.BLUE);
-            optionValueText.setTextSize(30);
+            //optionValueText.setTextColor(Color.BLUE);
+            //optionValueText.setTextSize(30);
+
+            //  dataAdapter.setDropDownViewResource(R.layout.activity_spin1_layout);
 
 
             optionsLayout.addView(optionNameText);
@@ -181,7 +321,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
         TextView priceText = new TextView(this);
 
-        priceText.setText(String.valueOf(productSku.getPrice()));
+        // priceText.setText(String.valueOf(productSku.getPrice()));
         priceText.setPadding(10, 10, 10, 10);
         priceText.setTextSize(30);
         priceText.setTextColor(Color.BLUE);

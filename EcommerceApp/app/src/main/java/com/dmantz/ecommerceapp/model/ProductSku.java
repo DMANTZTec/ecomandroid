@@ -4,11 +4,11 @@ import java.util.List;
 
 public class ProductSku {
 
-    private String sku;
+    private String productSkuId;
     private List<Option> options = null;
-    private String image;
+    private String imageUrl;
     private Double price;
-    private String productSkuCode;
+    private String productSkuCd;
 
 
 
@@ -16,12 +16,12 @@ public class ProductSku {
     }
 
 
-    public String getSku() {
-        return sku;
+    public String getProductSkuId() {
+        return productSkuId;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
+    public void setProductSkuId(String productSkuId) {
+        this.productSkuId = productSkuId;
     }
 
     public List<Option> getOptions() {
@@ -32,12 +32,12 @@ public class ProductSku {
         this.options = options;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Double getPrice() {
@@ -48,11 +48,11 @@ public class ProductSku {
         this.price = price;
     }
 
-    public String getProductSkuCode() {
-        return productSkuCode;
+    public String getProductSkuCd() {
+        return productSkuCd;
     }
 
-    public void setProductSkuCode(String productSkuCode) {
-        this.productSkuCode = productSkuCode;
+    public void setProductSkuCd(String productSkuCd) {
+        this.productSkuCd = productSkuCd;
     }
 }

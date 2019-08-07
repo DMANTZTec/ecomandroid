@@ -53,7 +53,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ecApp = (ECApplication) getApplication();
-        setContentView(R.layout.activity_item_client);
+        setContentView(R.layout.activity_item);
 
         cartIconView = findViewById(R.id.cart_item_notification);
         buyNow = findViewById(R.id.buyNow);
@@ -79,7 +79,7 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
                 orderItem = new OrderItem();
                 orderItem.setProductName(productObj.getProductName());
                 orderItem.setPrice(productSku.getPrice());
-                orderItem.setProductSku(productSku.getSku());
+                orderItem.setProductSku(productSku.getProductSkuId());
 
                 int qty = Integer.parseInt(quantityIncrementBtn.getNumber());
                 orderItem.setQuantity(qty);

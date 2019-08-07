@@ -43,14 +43,14 @@ public class OrderClient {
     private Order currentOrder;
 
 
-    private String orderUrl = "http://192.168.100.8:8080/EcommerceApp/createOrder2";
-    private String updateUrl = "http://192.168.100.8:8080/EcommerceApp/updateOrder";
-    private String shippingUrl = "http://192.168.100.8:8080/EcommerceApp/addOrUpdateShippingAddress";
-    private String addressListUrl = "http://192.168.100.8:8080/EcommerceApp/viewShippingAddresses?customerId=";
-    private String couponUrl = "http://192.168.100.8:8080/EcommerceApp/applyCouponCode";
-    private String paymentUrl = "http://192.168.100.8:8080/EcommerceApp/getPayment?paymentId=";
-    private String OrderTrackingUrl = "http://192.168.100.8:8080/EcommerceApp/getOrderStatus?orderId=";
-    private String yourOrdersUrl = "http://192.168.100.8:8080/EcommerceApp/getCustomerOrders?customerId=";
+    private String orderUrl = "http://192.168.100.3:8080/EcommerceApp/createOrder2";
+    private String updateUrl = "http://192.168.100.3:8080/EcommerceApp/updateOrder";
+    private String shippingUrl = "http://192.168.100.3:8080/EcommerceApp/addOrUpdateShippingAddress";
+    private String addressListUrl = "http://192.168.100.3:8080/EcommerceApp/viewShippingAddresses?customerId=";
+    private String couponUrl = "http://192.168.100.3:8080/EcommerceApp/applyCouponCode";
+    private String paymentUrl = "http://192.168.100.3:8080/EcommerceApp/getPayment?paymentId=";
+    private String OrderTrackingUrl = "http://192.168.100.3:8080/EcommerceApp/getOrderStatus?orderId=";
+    private String yourOrdersUrl = "http://192.168.100.3:8080/EcommerceApp/getCustomerOrders?customerId=";
 
     public static OrderClient getOrderClient() {
         if (orderClientObj == null) {
@@ -501,6 +501,7 @@ public class OrderClient {
             Log.d(TAG, "Entered into order tracking method from OrderClient");
             URL url = new URL(OrderTrackingUrl +orderId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
             connection.setRequestMethod("GET");
             connection.setRequestProperty("content-Type", "application/json");
 
