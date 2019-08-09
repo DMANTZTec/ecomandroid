@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ItemActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -220,6 +219,38 @@ public class ItemActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         Log.d(TAG, "concatinatedemo " + hm);
+
+
+        // drop down mapping to put values in the spinners
+        HashMap<String, List<String>> dropDownMapping = new HashMap<>();
+        List<String> optionValueMap = new ArrayList<>();
+        List<String> optionValueMap1 = new ArrayList<>();
+        String optionName = "";
+
+
+        for (String s : optionNames) {
+
+            for (ProductSku productSku : productSkus) {
+
+                List<Option> k = productSku.getOptions();
+                for (int f = 0; f < k.size(); f++) {
+
+                    if (s.equals(k.get(f).getOptionName())) {
+
+                        optionName = k.get(f).getOptionValue();
+                        Log.d(TAG, "getItemInfo: "+optionName);
+
+                        optionValueMap.add(optionName);
+                    }
+                }
+
+
+                Log.d(TAG, "option Value map    "+optionValueMap);
+            }
+
+            Log.d(TAG, "option names 2nd loop" + s);
+        }
+
 
 
 
